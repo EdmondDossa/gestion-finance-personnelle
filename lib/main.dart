@@ -14,9 +14,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme:  ThemeData(
+        scaffoldBackgroundColor: Color(0xFF1C2833),
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),
-      home: LoginScreen()
+      home: LoginPage()
     );
   }
 }

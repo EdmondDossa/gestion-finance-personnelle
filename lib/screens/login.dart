@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginPageState extends State<LoginPage> {
   TextEditingController _email = TextEditingController(text: "");
   TextEditingController _password = TextEditingController(text: "");
   bool _obscureText = true;
@@ -22,7 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget getBody() {
-    var size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Center(
           child: Column(
