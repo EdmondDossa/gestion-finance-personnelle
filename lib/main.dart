@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/login.dart';
+import 'package:gestion_finance/utilities/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme:  ThemeData(
-        scaffoldBackgroundColor: Color(0xFF1C2833),
+        scaffoldBackgroundColor: primary,
         fontFamily: GoogleFonts.poppins().fontFamily,
       ),
       home: LoginPage()

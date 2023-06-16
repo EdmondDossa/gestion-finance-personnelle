@@ -2,6 +2,8 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/daily.dart';
+import 'package:gestion_finance/screens/home_page.dart';
+import 'package:gestion_finance/screens/statistics.dart';
 import 'package:gestion_finance/screens/transaction.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
@@ -15,11 +17,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int pageIndex = 0;
   List<Widget> pages = [
-    const DailyPage(),
+    const StartPage(),
     const TransactionPage(),
-    Container(),
-    Container(),
-    Container(),
+    const DailyPage(),
+    const StattisticsPage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -75,7 +76,7 @@ class _HomePageState extends State<HomePage> {
       leftCornerRadius: 18,
       rightCornerRadius: 18,
       iconSize: 25,
-      activeColor: blue,
+      activeColor: buttonColor,
     );
   }
 
