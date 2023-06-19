@@ -11,6 +11,8 @@ dependencies:
     sdk: flutter
   hive: ^2.2.3
   hive_flutter: ^1.1.0
+  cloud_firestore: ^4.8.1
+  firebase_auth: ^4.6.3
   cupertino_icons: ^1.0.5
   google_fonts: ^5.0.0
   sizer: ^2.0.15
