@@ -57,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   controller: _email,
                   cursorColor: black,
+                  keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     color: black,
@@ -67,8 +68,19 @@ class _LoginPageState extends State<LoginPage> {
                     prefixIcon: Icon(Icons.email_outlined),
                     prefixIconColor: black,
                   ),
-                )
+                ),
               ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical:10),
+            child: Text(
+              "Email incorrect",
+              style: TextStyle(
+                fontSize: 13,
+                color: red,
+                fontWeight: FontWeight.w500
+              ),
             ),
           ),
           const SizedBox(
@@ -104,6 +116,7 @@ class _LoginPageState extends State<LoginPage> {
                 TextField(
                   obscureText: _obscureText,
                   controller: _password,
+                  keyboardType: TextInputType.text,
                   cursorColor: black,
                   style: const TextStyle(
                     fontWeight: FontWeight.w400,
@@ -122,11 +135,22 @@ class _LoginPageState extends State<LoginPage> {
                           },
                           child: Icon(
                             _obscureText
-                                ? Icons.visibility_off
-                                : Icons.visibility,
+                                ? Icons.visibility
+                                : Icons.visibility_off,
                           color: black,))),
-                )
+                ),
               ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.symmetric(vertical:10),
+            child: Text(
+              "mot de passe incorrect",
+              style: TextStyle(
+                fontSize: 13,
+                color: red,
+                fontWeight: FontWeight.w500
+              ),
             ),
           ),
           const SizedBox(
