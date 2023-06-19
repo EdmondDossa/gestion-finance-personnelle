@@ -2,6 +2,7 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/daily.dart';
+import 'package:gestion_finance/screens/expenses.dart';
 import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/statistics.dart';
 import 'package:gestion_finance/screens/transaction.dart';
@@ -32,7 +33,12 @@ class _HomePageState extends State<HomePage> {
           floatingActionButton: SafeArea(
               child: FloatingActionButton(
             backgroundColor: buttonColor,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const CreateExpense()));
+            },
             child: const Icon(Icons.add, size: 20),
           )),
           floatingActionButtonLocation:

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
+import 'inscription.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -46,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    "Email Address",
+                    "Adresse électronique",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 13,
@@ -93,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 10),
                   child: Text(
-                    "Password",
+                    "Mot de passe",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 13,
@@ -124,7 +126,8 @@ class _LoginPageState extends State<LoginPage> {
                             _obscureText
                                 ? Icons.visibility_off
                                 : Icons.visibility,
-                          color: black,))),
+                            color: black,
+                          ))),
                 )
               ],
             ),
@@ -134,9 +137,8 @@ class _LoginPageState extends State<LoginPage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (context) => const HomePage())
-              );
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const HomePage()));
             },
             child: Container(
               padding: const EdgeInsets.all(20),
@@ -145,7 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                   color: buttonColor, borderRadius: BorderRadius.circular(25)),
               child: const Center(
                 child: Text(
-                  "Login",
+                  "Connexion",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
@@ -159,35 +161,40 @@ class _LoginPageState extends State<LoginPage> {
             height: 25,
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      "I haven't account!!!",
+                    Text(
+                      "Pas de compte !!!",
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w200,
                           color: grey),
                     ),
                     GestureDetector(
-                      onTap: () {},
-                      child: const Text(
-                        "SignUp",
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const InscriptionPage()));
+                      },
+                      child: Text(
+                        "S'inscrire",
                         style: TextStyle(
                             color: blue,
                             fontSize: 14,
                             fontWeight: FontWeight.w500),
-                      ))
+                      ),
+                    )
                   ],
                 ),
                 GestureDetector(
                     onTap: () {},
                     child: const Text(
-                      "Forget Password",
+                      "Mot de passe oublié",
                       style: TextStyle(
                           color: black,
                           fontSize: 14,
