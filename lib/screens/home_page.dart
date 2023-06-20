@@ -104,13 +104,50 @@ class _StartPageState extends State<StartPage> {
                                 ),
                               )
                             ),
+                            Positioned(
+                              top: 35,
+                              right: 55,
+                              width: 150,
+                              height: 40,
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
+                                decoration: BoxDecoration(
+                                  color: Colors.white38,
+                                  borderRadius: BorderRadius.circular(50)
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      "Septembre",
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                        color: white.withOpacity(0.65),
+                                      ),
+                                    ),
+                                    RotatedBox(
+                                      quarterTurns: 1, 
+                                      child: Container(
+                                        width: 30,
+                                        height: 30,
+                                        decoration: BoxDecoration(
+                                          color: grey.withOpacity(0.1),
+                                          borderRadius: BorderRadius.circular(30)
+                                        ),
+                                        child: Icon(Icons.chevron_right, color: black.withOpacity(0.4),),
+                                      ),)
+                                  ],
+                                ),
+                              )
+                            ),
                             Padding(
                               padding: EdgeInsets.only(top: 30, left: 10),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Hello",
+                                    "Salut",
                                     style:  TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 16,
@@ -152,7 +189,7 @@ class _StartPageState extends State<StartPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
-                                  "Total Balances",
+                                  "Montant Total",
                                   textAlign: TextAlign.center,
                                   style:  TextStyle(
                                     fontWeight: FontWeight.w500,
@@ -275,7 +312,7 @@ class _StartPageState extends State<StartPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Historiques",
+                    "Récentes dépenses",
                     style:  TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 19,

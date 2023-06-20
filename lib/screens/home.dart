@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/screens/add_categorie.dart';
 import 'package:gestion_finance/screens/daily.dart';
-import 'package:gestion_finance/screens/expenses.dart';
+import 'package:gestion_finance/screens/depenses.dart';
 import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/statistics.dart';
 import 'package:gestion_finance/screens/transaction.dart';
@@ -20,8 +23,8 @@ class _HomePageState extends State<HomePage> {
   List<Widget> pages = [
     const StartPage(),
     const TransactionPage(),
-    const DailyPage(),
     const StattisticsPage(),
+    const AddCategorie(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -34,10 +37,7 @@ class _HomePageState extends State<HomePage> {
               child: FloatingActionButton(
             backgroundColor: buttonColor,
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const CreateExpense()));
+              showModal(pageIndex);
             },
             child: const Icon(Icons.add, size: 20),
           )),
@@ -65,14 +65,14 @@ class _HomePageState extends State<HomePage> {
     List<IconData> iconItems = [
       CupertinoIcons.home,
       CupertinoIcons.creditcard,
-      CupertinoIcons.money_dollar,
-      CupertinoIcons.person,
+      Icons.stadium,
+      CupertinoIcons.settings,
     ];
     return AnimatedBottomNavigationBar(
       onTap: (index) {
         setTabs(index);
       },
-      backgroundColor: Color(0xFF1C2833).withOpacity(0.4),
+      backgroundColor: buttonColor,
       icons: iconItems,
       splashColor: white,
       inactiveColor: white,
@@ -82,10 +82,120 @@ class _HomePageState extends State<HomePage> {
       leftCornerRadius: 18,
       rightCornerRadius: 18,
       iconSize: 25,
-      activeColor: buttonColor,
+      activeColor: blue,
     );
   }
 
+  showModal(int index) {
+    showModalBottomSheet(
+      context: context,
+      elevation: 5,
+      isScrollControlled: true,
+      builder: (_) {
+        if (index == 3) {
+          return Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              top: 15,
+              left: 15,
+              right: 15,
+            ),
+            child: AddCategorie(),
+          );
+        } else if (index == 0 || index == 1) {
+          return Container(
+            height: 150,
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              top: 15,
+              left: 15,
+              right: 15,
+            ),
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric( horizontal:20, vertical: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25), 
+                          color: green
+                        ),
+                        child:Text(
+                          "Revenu",
+                          style: TextStyle(
+                            fontSize: 16, 
+                            fontWeight: FontWeight.w400,
+                            color: white
+                          ),
+                        )
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CreateDepensePage()),
+                            );
+                      },
+                      child: Container(
+                        padding: EdgeInsets.symmetric( horizontal:20, vertical: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25), 
+                          color: red
+                        ),
+                        child:Text(
+                          "Dépense",
+                          style: TextStyle(
+                            fontSize: 16, 
+                            fontWeight: FontWeight.w400,
+                            color: white
+                          ),
+                        )
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 25,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: (){},
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal:20, vertical: 10),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(25),
+                          color: buttonColor.withOpacity(0.75),
+                        ),
+                        child:Text(
+                          "Budget",
+                          style: TextStyle(
+                            fontSize: 16, 
+                            fontWeight: FontWeight.w400,
+                            color: white
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
+        }
+        return widget;
+      }
+    );
+  }
   setTabs(index) {
     setState(() {
       pageIndex = index;

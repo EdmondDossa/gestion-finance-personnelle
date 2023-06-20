@@ -10,7 +10,7 @@ class StattisticsPage extends StatefulWidget {
 }
 
 class _StattisticsPageState extends State<StattisticsPage> {
-  List days = ["Jours","week","Mois","years"];
+  List days = ["Jour","Semaine","Mois","Annee"];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
