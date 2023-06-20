@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/screens/incomes.dart';
 import 'package:gestion_finance/screens/login.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -18,8 +19,8 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: primary,
           fontFamily: GoogleFonts.poppins().fontFamily,
         ),
-        home: LoginPage()
-        //AddExpensePage()
+        home: CreateIncome() 
+        //LoginPage()
         );
   }
 }
