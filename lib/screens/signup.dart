@@ -64,6 +64,7 @@ class _SignupPageState extends State<SignupPage> {
                 TextField(
                   controller: _email,
                   cursorColor: black,
+                  keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(
                     fontWeight: FontWeight.w400,
                     color: black,
@@ -276,6 +277,12 @@ class _SignupPageState extends State<SignupPage> {
                     _haveError = true;
                     _isDifferent = false;
                   });
+                }else{
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => HomePage(),
+                    ));
                 }
               }
             },

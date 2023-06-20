@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/add_categorie.dart';
 import 'package:gestion_finance/screens/daily.dart';
+import 'package:gestion_finance/screens/depenses.dart';
 import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/statistics.dart';
 import 'package:gestion_finance/screens/transaction.dart';
@@ -137,7 +138,11 @@ class _HomePageState extends State<HomePage> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        
+                        Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CreateDepensePage()),
+                            );
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric( horizontal:20, vertical: 10),

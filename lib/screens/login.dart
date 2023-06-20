@@ -158,18 +158,26 @@ class _LoginPageState extends State<LoginPage> {
             ),
             GestureDetector(
               onTap: () async {
-                var auth = await authServices.signIn(_email.text, _password.text);
+                var auth =
+                    await authServices.signIn(_email.text, _password.text);
                 if (!auth) {
                   setState(() {
-                    haveError = false;
+                    haveError = true;
                   });
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HomePage(),
+                      ));
                 }
               },
               child: Container(
                 padding: const EdgeInsets.all(20),
                 margin: const EdgeInsets.symmetric(horizontal: 25),
                 decoration: BoxDecoration(
-                    color: buttonColor, borderRadius: BorderRadius.circular(25)),
+                    color: buttonColor,
+                    borderRadius: BorderRadius.circular(25)),
                 child: const Center(
                   child: Text(
                     "Se Connecter",

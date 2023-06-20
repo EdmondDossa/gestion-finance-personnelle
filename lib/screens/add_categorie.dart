@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -155,7 +156,10 @@ class _AddCategorieState extends State<AddCategorie> {
                 ),
               ),
             ],
-          )
+          ),
+          TextButton(
+              onPressed: () =>  authServices.signOut(),
+              child: Text("Deconnecter"))
         ],
       ),
     );
