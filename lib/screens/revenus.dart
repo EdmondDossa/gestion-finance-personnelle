@@ -1,19 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
-class CreateIncome extends StatefulWidget {
-  const CreateIncome({super.key});
+class CreateIncomePage extends StatefulWidget {
+  const CreateIncomePage({super.key});
 
   @override
-  State<CreateIncome> createState() => _CreateIncomeState();
+  State<CreateIncomePage> createState() => _CreateIncomePageState();
 }
 
-class _CreateIncomeState extends State<CreateIncome> {
-  TextEditingController _nameIncomes = TextEditingController();
+class _CreateIncomePageState extends State<CreateIncomePage> {
+  TextEditingController _nameEspense = TextEditingController();
   TextEditingController _description = TextEditingController();
   TextEditingController _amount = TextEditingController();
-  TextEditingController _date = TextEditingController();
+  DateTime? _date;
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _date ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _date = pickedDate;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +40,29 @@ class _CreateIncomeState extends State<CreateIncome> {
   }
 
   Widget getBody() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           children: [
             const SizedBox(height: 60),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.cancel_outlined,
-                  size: 30,
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: white,
+                        border: Border.all(color: grey, width: 1),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Icon(
+                      Icons.close,
+                      size: 25,
+                    ),
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {},
@@ -45,25 +72,38 @@ class _CreateIncomeState extends State<CreateIncome> {
                       vertical: 8.0,
                     ),
                     decoration: BoxDecoration(
-                        //color: Color(0xFF21ca79),
+                        color: green,
                         borderRadius: BorderRadius.circular(20.0),
                         border: Border.all(
-                          color: Color.fromARGB(255, 146, 146, 146),
+                          color: green,
                           width: 1,
                         )),
                     child: Row(
                       children: [
                         Icon(
                           Icons.download_outlined,
+                          color: white,
                         ),
-                        Text("Revenu"),
+                        Text(
+                          "Revenu",
+                          style: TextStyle(color: white),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                Icon(
-                  Icons.delete,
-                  size: 30,
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: white,
+                      border: Border.all(color: grey, width: 1),
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Icon(
+                    Icons.delete,
+                    size: 25,
+                    color: red,
+                  ),
                 ),
               ],
             ),
@@ -74,7 +114,7 @@ class _CreateIncomeState extends State<CreateIncome> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "Titre du revenu",
+                  "Enregistrer un revenu",
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w900,
@@ -86,7 +126,48 @@ class _CreateIncomeState extends State<CreateIncome> {
             SizedBox(
               height: 20,
             ),
-            GestureDetector(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 10.0,
+                ),
+                decoration: BoxDecoration(
+                    //color: Colors.green,
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(
+                      color: Color.fromARGB(255, 146, 146, 146),
+                      width: 1,
+                    )),
+                child: Row(
+                  children: [
+                    Icon(Icons.source_outlined),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      width: 250,
+                      child: TextField(
+                        controller: _description,
+                        maxLines: null,
+                        cursorColor: black,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Renseigner la source du revenu",
+                            hintStyle: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                              color: grey.withOpacity(0.5),
+                            )),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+            /*  GestureDetector(
               onTap: () {},
               child: Wrap(children: [
                 Container(
@@ -114,7 +195,7 @@ class _CreateIncomeState extends State<CreateIncome> {
                         width: 10,
                       ),
                       Text(
-                        "Renseigner la source",
+                        "Food & Drinks",
                         style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -132,80 +213,78 @@ class _CreateIncomeState extends State<CreateIncome> {
                   ),
                 ),
               ]),
-            ),
+            ), */
             SizedBox(
-              height: 30,
+              height: 15,
             ),
-            Container(
-              //width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 10.0,
-              ),
-              decoration: BoxDecoration(
-                  //color: Colors.green,
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(
-                    color: Color.fromARGB(255, 146, 146, 146),
-                    width: 1,
-                  )),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.list_outlined),
-                      Text(
-                        "Description",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.bold,
-                          color: black.withOpacity(0.5),
-                        ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 10.0,
+                ),
+                decoration: BoxDecoration(
+                    //color: Colors.green,
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(
+                      color: Color.fromARGB(255, 146, 146, 146),
+                      width: 1,
+                    )),
+                child: Row(
+                  children: [
+                    Icon(Icons.list_outlined),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Container(
+                      width: 250,
+                      child: TextField(
+                        controller: _description,
+                        maxLines: null,
+                        cursorColor: black,
+                        decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Ajouter une description",
+                            hintStyle: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                              color: grey.withOpacity(0.5),
+                            )),
                       ),
-                    ],
-                  ),
-                  TextField(
-                    controller: _description,
-                    cursorColor: black,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
-                      color: black,
-                    ),
-                    //textAlign: TextAlign.center,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "Une description",
-                    ),
-                  ),
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 15,
             ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 20.0,
-                vertical: 10.0,
-              ),
-              decoration: BoxDecoration(
-                  //color: Colors.green,
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(
-                    color: Color.fromARGB(255, 146, 146, 146),
-                    width: 1,
-                  )),
-              child: Column(
-                children: [
-                  Row(
+            GestureDetector(
+              onTap: () => _selectDate(context),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 20.0,
+                  ),
+                  decoration: BoxDecoration(
+                      //color: Colors.green,
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(
+                        color: Color.fromARGB(255, 146, 146, 146),
+                        width: 1,
+                      )),
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
                           Icon(Icons.calendar_month_outlined),
                           Text(
-                            "Date de création",
+                            "Crée le",
                             style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.normal,
@@ -214,29 +293,26 @@ class _CreateIncomeState extends State<CreateIncome> {
                           ),
                         ],
                       ),
+                      Text(
+                        _date != null
+                            ? DateFormat('dd MMMM yyyy').format(_date!)
+                            : "",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: black.withOpacity(0.5),
+                        ),
+                      ),
                     ],
                   ),
-                  TextField(
-                    controller: _date,
-                    cursorColor: black,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: black,
-                    ),
-                    //textAlign: TextAlign.center,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      hintText: "20/06/2023",
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             SizedBox(
-              height: 60,
+              height: 5,
             ),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               padding: const EdgeInsets.all(50),
               decoration: BoxDecoration(
                   color: white,
@@ -289,7 +365,10 @@ class _CreateIncomeState extends State<CreateIncome> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Icon(Icons.save),
+                            Icon(
+                              Icons.save,
+                              color: white,
+                            ),
                             Text(
                               "Enregistrer",
                               style: TextStyle(
@@ -304,7 +383,7 @@ class _CreateIncomeState extends State<CreateIncome> {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,19 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
-class CreateExpense extends StatefulWidget {
-  const CreateExpense({super.key});
+class CreateBudgetPage extends StatefulWidget {
+  const CreateBudgetPage({super.key});
 
   @override
-  State<CreateExpense> createState() => _CreateExpenseState();
+  State<CreateBudgetPage> createState() => _CreateBudgetPageState();
 }
 
-class _CreateExpenseState extends State<CreateExpense> {
-  TextEditingController _nameEspense = TextEditingController();
-  TextEditingController _description = TextEditingController();
+class _CreateBudgetPageState extends State<CreateBudgetPage> {
   TextEditingController _amount = TextEditingController();
   DateTime _date = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _date ?? DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _date = pickedDate;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,18 +38,29 @@ class _CreateExpenseState extends State<CreateExpense> {
   }
 
   Widget getBody() {
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: SingleChildScrollView(
+    return SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: Column(
           children: [
             const SizedBox(height: 60),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Icon(
-                  Icons.cancel_outlined,
-                  size: 30,
+                GestureDetector(
+                  onTap: () => Navigator.of(context).pop(),
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: white,
+                        border: Border.all(color: grey, width: 1),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Icon(
+                      Icons.close,
+                      size: 25,
+                    ),
+                  ),
                 ),
                 GestureDetector(
                   onTap: () {},
@@ -45,25 +70,38 @@ class _CreateExpenseState extends State<CreateExpense> {
                       vertical: 8.0,
                     ),
                     decoration: BoxDecoration(
-                        //color: Color(0xFF21ca79),
+                        color: buttonColor.withOpacity(0.75),
                         borderRadius: BorderRadius.circular(20.0),
                         border: Border.all(
-                          color: Color.fromARGB(255, 146, 146, 146),
+                          color: buttonColor.withOpacity(0.75),
                           width: 1,
                         )),
                     child: Row(
                       children: [
                         Icon(
-                          Icons.upload_outlined,
+                          Icons.money_outlined,
+                          color: white,
                         ),
-                        Text("Expense"),
+                        Text(
+                          "Budget",
+                          style: TextStyle(color: white),
+                        ),
                       ],
                     ),
                   ),
                 ),
-                Icon(
-                  Icons.delete,
-                  size: 30,
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                      color: white,
+                      border: Border.all(color: grey, width: 1),
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Icon(
+                    Icons.delete,
+                    size: 25,
+                    color: red,
+                  ),
                 ),
               ],
             ),
@@ -74,7 +112,7 @@ class _CreateExpenseState extends State<CreateExpense> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "Expense title",
+                  "Enregistrer un budget",
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w900,
@@ -87,129 +125,103 @@ class _CreateExpenseState extends State<CreateExpense> {
               height: 20,
             ),
             GestureDetector(
-              onTap: () {},
-              child: Wrap(children: [
-                Container(
-                  //width: (MediaQuery.of(context).size.width) * 0.6,
+              onTap: () => _selectDate(context),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Container(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 8.0,
+                    horizontal: 30.0,
+                    vertical: 20.0,
                   ),
                   decoration: BoxDecoration(
-                      color: Colors.green,
+                      color: white,
                       borderRadius: BorderRadius.circular(20.0),
                       border: Border.all(
                         color: Color.fromARGB(255, 146, 146, 146),
                         width: 1,
                       )),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Icon(
-                        Icons.food_bank_outlined,
-                        color: white,
-                        size: 15,
-                      ),
-                      SizedBox(
-                        width: 10,
+                      Row(
+                        children: [
+                          //Icon(Icons.calendar_month_outlined),
+                          Text(
+                            "Année",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                              color: grey.withOpacity(0.5),
+                            ),
+                          ),
+                        ],
                       ),
                       Text(
-                        "Food & Drinks",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: white),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: white,
-                        size: 15,
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              //width: double.infinity,
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30.0,
-                vertical: 20.0,
-              ),
-              decoration: BoxDecoration(
-                  //color: Colors.green,
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(
-                    color: Color.fromARGB(255, 146, 146, 146),
-                    width: 1,
-                  )),
-              child: Row(
-                children: [
-                  Icon(Icons.list_outlined),
-                  Text(
-                    "Add description",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: black.withOpacity(0.5),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 30.0,
-                vertical: 20.0,
-              ),
-              decoration: BoxDecoration(
-                  //color: Colors.green,
-                  borderRadius: BorderRadius.circular(20.0),
-                  border: Border.all(
-                    color: Color.fromARGB(255, 146, 146, 146),
-                    width: 1,
-                  )),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Icon(Icons.calendar_month_outlined),
-                      Text(
-                        "Created on",
+                        DateFormat('yyyy').format(_date),
                         style: TextStyle(
                           fontSize: 15,
-                          fontWeight: FontWeight.normal,
-                          color: grey.withOpacity(0.5),
+                          fontWeight: FontWeight.bold,
+                          color: black.withOpacity(0.5),
                         ),
                       ),
                     ],
                   ),
-                  Text(
-                    "19 Juin 2023",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                      color: black.withOpacity(0.5),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
             SizedBox(
-              height: 60,
+              height: 15,
+            ),
+            GestureDetector(
+              onTap: () => _selectDate(context),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 20.0,
+                  ),
+                  decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(
+                        color: Color.fromARGB(255, 146, 146, 146),
+                        width: 1,
+                      )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          //Icon(Icons.calendar_month_outlined),
+                          Text(
+                            "Mois",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                              color: grey.withOpacity(0.5),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        DateFormat('MMMM ').format(_date),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: black.withOpacity(0.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 5,
             ),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
               padding: const EdgeInsets.all(50),
               decoration: BoxDecoration(
                   color: white,
@@ -253,7 +265,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                           vertical: 8.0,
                         ),
                         decoration: BoxDecoration(
-                            color: Colors.green,
+                            color: buttonColor,
                             borderRadius: BorderRadius.circular(20.0),
                             border: Border.all(
                               color: Color.fromARGB(255, 146, 146, 146),
@@ -262,7 +274,10 @@ class _CreateExpenseState extends State<CreateExpense> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Icon(Icons.save),
+                            Icon(
+                              Icons.save,
+                              color: white,
+                            ),
                             Text(
                               "Enregistrer",
                               style: TextStyle(
@@ -277,7 +292,7 @@ class _CreateExpenseState extends State<CreateExpense> {
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
