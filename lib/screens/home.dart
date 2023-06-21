@@ -1,10 +1,7 @@
-import 'dart:ui';
-
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/add_categorie.dart';
-import 'package:gestion_finance/screens/daily.dart';
 import 'package:gestion_finance/screens/depenses.dart';
 import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/statistics.dart';
@@ -90,6 +87,11 @@ class _HomePageState extends State<HomePage> {
     showModalBottomSheet(
       context: context,
       elevation: 5,
+      shape:RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(30.0),
+        ),
+      ) ,
       isScrollControlled: true,
       builder: (_) {
         if (index == 3) {

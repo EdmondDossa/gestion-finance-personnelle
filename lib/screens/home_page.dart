@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/models/transaction.dart';
+import 'package:gestion_finance/models/users.dart';
 import 'package:gestion_finance/utilities/colors.dart';
+import 'package:gestion_finance/utilities/db_services.dart';
 import 'package:gestion_finance/widgets/transaction-widget.dart';
 
 class StartPage extends StatefulWidget {
@@ -14,55 +16,77 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   List transactionsList = [
     Transaction(
-      icon: Icon(Icons.payment,color: mainFontColor,), 
-      title: "Loyer", 
-      description: "", 
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Loyer",
+      description: "",
       amount: 400,
       amountColor: red,
     ),
     Transaction(
-      icon: Icon(Icons.payment,color: mainFontColor,), 
-      title: "Manger", 
-      description: "", 
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Manger",
+      description: "",
       amount: 400,
       amountColor: red,
     ),
     Transaction(
-      icon: Icon(Icons.payment,color: mainFontColor,), 
-      title: "Transport", 
-      description: "", 
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Transport",
+      description: "",
       amount: 400,
       amountColor: red,
     ),
     Transaction(
-      icon: Icon(Icons.payment,color: mainFontColor,), 
-      title: "Shopping", 
-      description: "Montant pour mon habillement", 
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Shopping",
+      description: "Montant pour mon habillement",
       amount: 400,
       amountColor: red,
     ),
     Transaction(
-      icon: Icon(Icons.payment,color: mainFontColor,), 
-      title: "Payment", 
-      description: "Payment from Andrea", 
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Payment",
+      description: "Payment from Andrea",
       amount: 400,
       amountColor: red,
     ),
     Transaction(
-      icon: Icon(Icons.payment,color: mainFontColor,), 
-      title: "Sante", 
-      description: "La santé avant tout", 
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Sante",
+      description: "La santé avant tout",
       amount: 400,
       amountColor: red,
     ),
     Transaction(
-      icon: Icon(Icons.payment,color: mainFontColor,), 
-      title: "Dettes", 
-      description: "Mes dettes envers Arlette", 
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Dettes",
+      description: "Mes dettes envers Arlette",
       amount: 400,
       amountColor: red,
     ),
   ];
+  Stream<List<GFUsers>> currentInfo = dbServies.getUser();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +99,8 @@ class _StartPageState extends State<StartPage> {
               child: Stack(
                 children: [
                   Column(
-                    children:[
-                        Container(
+                    children: [
+                      Container(
                         width: double.infinity,
                         height: 240,
                         decoration: BoxDecoration(
@@ -89,58 +113,61 @@ class _StartPageState extends State<StartPage> {
                         child: Stack(
                           children: [
                             Positioned(
-                              top: 30,
-                              right: 15,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(7),
-                                child:  Container(
-                                  height: 40,
-                                  width: 40,
-                                  child:  Icon(
-                                    Icons.notification_add_outlined,
-                                    size: 30,
-                                    color: white,
-                                  ),
-                                ),
-                              )
-                            ),
-                            Positioned(
-                              top: 35,
-                              right: 55,
-                              width: 150,
-                              height: 40,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 7),
-                                decoration: BoxDecoration(
-                                  color: Colors.white38,
-                                  borderRadius: BorderRadius.circular(50)
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      "Septembre",
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w500,
-                                        color: white.withOpacity(0.65),
-                                      ),
+                                top: 30,
+                                right: 15,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(7),
+                                  child: Container(
+                                    height: 40,
+                                    width: 40,
+                                    child: Icon(
+                                      Icons.notification_add_outlined,
+                                      size: 30,
+                                      color: white,
                                     ),
-                                    RotatedBox(
-                                      quarterTurns: 1, 
-                                      child: Container(
-                                        width: 30,
-                                        height: 30,
-                                        decoration: BoxDecoration(
-                                          color: grey.withOpacity(0.1),
-                                          borderRadius: BorderRadius.circular(30)
+                                  ),
+                                )),
+                            Positioned(
+                                top: 35,
+                                right: 55,
+                                width: 150,
+                                height: 40,
+                                child: Container(
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 5, vertical: 7),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white38,
+                                      borderRadius: BorderRadius.circular(50)),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Text(
+                                        "Septembre",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.w500,
+                                          color: white.withOpacity(0.65),
                                         ),
-                                        child: Icon(Icons.chevron_right, color: black.withOpacity(0.4),),
-                                      ),)
-                                  ],
-                                ),
-                              )
-                            ),
+                                      ),
+                                      RotatedBox(
+                                        quarterTurns: 1,
+                                        child: Container(
+                                          width: 30,
+                                          height: 30,
+                                          decoration: BoxDecoration(
+                                              color: grey.withOpacity(0.1),
+                                              borderRadius:
+                                                  BorderRadius.circular(30)),
+                                          child: Icon(
+                                            Icons.chevron_right,
+                                            color: black.withOpacity(0.4),
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                )),
                             Padding(
                               padding: EdgeInsets.only(top: 30, left: 10),
                               child: Column(
@@ -148,20 +175,24 @@ class _StartPageState extends State<StartPage> {
                                 children: [
                                   Text(
                                     "Salut",
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 16,
                                       color: white.withOpacity(0.65),
                                     ),
                                   ),
-                                  Text(
-                                    "Aboka Jr",
-                                    textAlign: TextAlign.center,
-                                    style:  TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      color: white,
-                                    ),
+                                  StreamBuilder(
+                                    stream: currentInfo,
+                                    builder: (context, s) {
+                                      return s.data != null ? Text(
+                                        s.data![0].username.toString(),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                          color: white,
+                                        ),
+                                      ) : Text("");
+                                    },
                                   )
                                 ],
                               ),
@@ -173,7 +204,7 @@ class _StartPageState extends State<StartPage> {
                   ),
                   Positioned(
                     top: 160,
-                    left:20,
+                    left: 20,
                     child: Container(
                       width: 320,
                       height: 170,
@@ -184,32 +215,32 @@ class _StartPageState extends State<StartPage> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical:10),
+                            padding: const EdgeInsets.symmetric(vertical: 10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
                                   "Montant Total",
                                   textAlign: TextAlign.center,
-                                  style:  TextStyle(
+                                  style: TextStyle(
                                     fontWeight: FontWeight.w500,
                                     fontSize: 16,
                                     color: white,
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: (){},
+                                  onTap: () {},
                                   child: Icon(Icons.more_vert, color: white),
                                 ),
                               ],
                             ),
-                            
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 5),
                             child: Text(
                               "\$20000",
-                              style:  TextStyle(
+                              style: TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 22,
                                 color: white,
@@ -217,24 +248,30 @@ class _StartPageState extends State<StartPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal:12),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.only(top:8.0, left: 8),
+                                  padding:
+                                      const EdgeInsets.only(top: 8.0, left: 8),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       CircleAvatar(
                                         radius: 13,
-                                        backgroundColor: green.withOpacity(0.75),
-                                        child: Icon(Icons.arrow_downward,color: white,size:15),
+                                        backgroundColor:
+                                            green.withOpacity(0.75),
+                                        child: Icon(Icons.arrow_downward,
+                                            color: white, size: 15),
                                       ),
-                                      SizedBox(width: 5,)
-                                      ,Text(
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
                                         "Budgets",
-                                        style:  TextStyle(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,
                                           color: green.withOpacity(0.75),
@@ -244,19 +281,24 @@ class _StartPageState extends State<StartPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: const EdgeInsets.only(top:8.0, left: 8),
+                                  padding:
+                                      const EdgeInsets.only(top: 8.0, left: 8),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       CircleAvatar(
                                         radius: 13,
                                         backgroundColor: red.withOpacity(0.75),
-                                        child: Icon(Icons.arrow_upward,color: white,size:15),
+                                        child: Icon(Icons.arrow_upward,
+                                            color: white, size: 15),
                                       ),
-                                      SizedBox(width: 5,)
-                                      ,Text(
+                                      SizedBox(
+                                        width: 5,
+                                      ),
+                                      Text(
                                         "Depenses",
-                                        style:  TextStyle(
+                                        style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,
                                           color: red.withOpacity(0.75),
@@ -269,15 +311,17 @@ class _StartPageState extends State<StartPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal:8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 15),
                                   child: Text(
                                     "\$2000000000",
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16,
                                       color: white,
@@ -285,10 +329,11 @@ class _StartPageState extends State<StartPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 5, horizontal: 15),
                                   child: Text(
                                     "\$0",
-                                    style:  TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16,
                                       color: white,
@@ -302,7 +347,6 @@ class _StartPageState extends State<StartPage> {
                       ),
                     ),
                   ),
-                  
                 ],
               ),
             ),
@@ -313,20 +357,19 @@ class _StartPageState extends State<StartPage> {
                 children: [
                   Text(
                     "Récentes dépenses",
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 19,
                     ),
                   ),
                   GestureDetector(
-                    onTap: (){},
+                    onTap: () {},
                     child: Text(
                       "Tout voir",
-                      style:  TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                        color: grey
-                      ),
+                      style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14,
+                          color: grey),
                     ),
                   ),
                 ],
@@ -334,21 +377,18 @@ class _StartPageState extends State<StartPage> {
             ),
             Container(
               width: double.infinity,
-              height: MediaQuery.of(context).size.height*0.45,
-              child: ListView(
-                physics: BouncingScrollPhysics(),
-                children: [
-                  ...List.generate(transactionsList.length, (index) {
-                    return WTransaction(
-                      icon: transactionsList[index].icon, 
-                      title: transactionsList[index].title, 
-                      description: transactionsList[index].description, 
-                      amount: transactionsList[index].amount,
-                      amountColor: transactionsList[index].amountColor,
-                    );
-                  })
-                ]
-              ),
+              height: MediaQuery.of(context).size.height * 0.45,
+              child: ListView(physics: BouncingScrollPhysics(), children: [
+                ...List.generate(transactionsList.length, (index) {
+                  return WTransaction(
+                    icon: transactionsList[index].icon,
+                    title: transactionsList[index].title,
+                    description: transactionsList[index].description,
+                    amount: transactionsList[index].amount,
+                    amountColor: transactionsList[index].amountColor,
+                  );
+                })
+              ]),
             )
           ],
         ),

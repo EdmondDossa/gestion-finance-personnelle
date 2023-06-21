@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
 class CreateDepensePage extends StatefulWidget {
@@ -11,7 +10,6 @@ class CreateDepensePage extends StatefulWidget {
 }
 
 class _CreateDepensePageState extends State<CreateDepensePage> {
-  TextEditingController _nameEspense = TextEditingController();
   TextEditingController _description = TextEditingController();
   TextEditingController _amount = TextEditingController();
   DateTime? _date;
@@ -119,7 +117,7 @@ class _CreateDepensePageState extends State<CreateDepensePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "Expense title",
+                  "Enrégistrer une dépense",
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.w900,
@@ -133,64 +131,49 @@ class _CreateDepensePageState extends State<CreateDepensePage> {
             ),
             GestureDetector(
               onTap: () {},
-              child: Wrap(children: [
-                Container(
-                  //width: (MediaQuery.of(context).size.width) * 0.6,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 8.0,
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(20.0),
-                      border: Border.all(
-                        color: Color.fromARGB(255, 146, 146, 146),
-                        width: 1,
-                      )),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.food_bank_outlined,
-                        color: white,
-                        size: 15,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Food & Drinks",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: white),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: white,
-                        size: 15,
-                      ),
-                    ],
-                  ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 15.0,
+                  vertical: 20.0,
                 ),
-              ]),
+                decoration: BoxDecoration(
+                    color: white,
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(
+                      color: Color.fromARGB(255, 146, 146, 146),
+                      width: 1,
+                    )),
+                child: Row(
+                  children: [
+                    Icon(Icons.category_outlined),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Choisissez une catégorie",
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.normal,
+                        color: grey.withOpacity(0.5),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
-                width: double.infinity,
+                
                 padding: const EdgeInsets.symmetric(
                   horizontal: 15.0,
                   vertical: 10.0,
                 ),
                 decoration: BoxDecoration(
-                    //color: Colors.green,
+                    color: white,
                     borderRadius: BorderRadius.circular(20.0),
                     border: Border.all(
                       color: Color.fromARGB(255, 146, 146, 146),
@@ -223,7 +206,7 @@ class _CreateDepensePageState extends State<CreateDepensePage> {
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             GestureDetector(
               onTap: () =>  _selectDate(context),
@@ -233,7 +216,7 @@ class _CreateDepensePageState extends State<CreateDepensePage> {
                   vertical: 20.0,
                 ),
                 decoration: BoxDecoration(
-                    //color: Colors.green,
+                    color: white,
                     borderRadius: BorderRadius.circular(20.0),
                     border: Border.all(
                       color: Color.fromARGB(255, 146, 146, 146),
@@ -270,10 +253,10 @@ class _CreateDepensePageState extends State<CreateDepensePage> {
               ),
             ),
             SizedBox(
-              height: 60,
+              height: 20,
             ),
             Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 50),
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
               padding: const EdgeInsets.all(50),
               decoration: BoxDecoration(
                   color: white,
