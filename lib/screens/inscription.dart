@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/screens/configuration.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
@@ -247,8 +248,10 @@ class _InscriptionPageState extends State<InscriptionPage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const HomePage()));
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ConfigurationPage()));
             },
             child: Container(
               padding: const EdgeInsets.all(20),
