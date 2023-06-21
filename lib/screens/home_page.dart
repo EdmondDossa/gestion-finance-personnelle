@@ -95,14 +95,14 @@ class _StartPageState extends State<StartPage> {
           children: [
             Container(
               width: double.infinity,
-              height: 350,
+              height: 400,
               child: Stack(
                 children: [
                   Column(
                     children: [
                       Container(
                         width: double.infinity,
-                        height: 240,
+                        height: 200,
                         decoration: BoxDecoration(
                           color: buttonColor.withOpacity(0.9),
                           borderRadius: BorderRadius.only(
@@ -176,23 +176,20 @@ class _StartPageState extends State<StartPage> {
                                   Text(
                                     "Salut",
                                     style: TextStyle(
+                                    style: TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 16,
                                       color: white.withOpacity(0.65),
                                     ),
                                   ),
-                                  StreamBuilder(
-                                    stream: currentInfo,
-                                    builder: (context, s) {
-                                      return s.data != null ? Text(
-                                        s.data![0].username.toString(),
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 18,
-                                          color: white,
-                                        ),
-                                      ) : Text("");
-                                    },
+                                  Text(
+                                    "Aboka Jr",
+                                    textAlign: TextAlign.center,
+                                    style:  TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 18,
+                                      color: white,
+                                    ),
                                   )
                                 ],
                               ),
@@ -203,11 +200,11 @@ class _StartPageState extends State<StartPage> {
                     ],
                   ),
                   Positioned(
-                    top: 160,
+                    top: 120,
                     left: 20,
                     child: Container(
                       width: 320,
-                      height: 170,
+                      height: 230,
                       decoration: BoxDecoration(
                         color: buttonColor,
                         borderRadius: BorderRadius.circular(25),
@@ -215,32 +212,32 @@ class _StartPageState extends State<StartPage> {
                       child: Column(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.symmetric(vertical:10),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 Text(
                                   "Montant Total",
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style:  TextStyle(
                                     fontWeight: FontWeight.w500,
-                                    fontSize: 16,
+                                    fontSize: 22,
                                     color: white,
                                   ),
                                 ),
                                 GestureDetector(
-                                  onTap: () {},
+                                  onTap: (){},
                                   child: Icon(Icons.more_vert, color: white),
                                 ),
                               ],
                             ),
+                            
                           ),
                           Padding(
-                            padding: EdgeInsets.symmetric(
-                                vertical: 5, horizontal: 5),
+                            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
                             child: Text(
                               "\$20000",
-                              style: TextStyle(
+                              style:  TextStyle(
                                 fontWeight: FontWeight.w500,
                                 fontSize: 22,
                                 color: white,
@@ -248,30 +245,24 @@ class _StartPageState extends State<StartPage> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            padding: const EdgeInsets.symmetric(horizontal:12),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8.0, left: 8),
+                                  padding: const EdgeInsets.only(top:8.0, left: 8),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       CircleAvatar(
                                         radius: 13,
-                                        backgroundColor:
-                                            green.withOpacity(0.75),
-                                        child: Icon(Icons.arrow_downward,
-                                            color: white, size: 15),
+                                        backgroundColor: green.withOpacity(0.75),
+                                        child: Icon(Icons.arrow_downward,color: white,size:15),
                                       ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
+                                      SizedBox(width: 5,)
+                                      ,Text(
                                         "Budgets",
-                                        style: TextStyle(
+                                        style:  TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,
                                           color: green.withOpacity(0.75),
@@ -281,24 +272,19 @@ class _StartPageState extends State<StartPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 8.0, left: 8),
+                                  padding: const EdgeInsets.only(top:8.0, left: 8),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       CircleAvatar(
                                         radius: 13,
                                         backgroundColor: red.withOpacity(0.75),
-                                        child: Icon(Icons.arrow_upward,
-                                            color: white, size: 15),
+                                        child: Icon(Icons.arrow_upward,color: white,size:15),
                                       ),
-                                      SizedBox(
-                                        width: 5,
-                                      ),
-                                      Text(
+                                      SizedBox(width: 5,)
+                                      ,Text(
                                         "Depenses",
-                                        style: TextStyle(
+                                        style:  TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,
                                           color: red.withOpacity(0.75),
@@ -311,17 +297,15 @@ class _StartPageState extends State<StartPage> {
                             ),
                           ),
                           Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding: const EdgeInsets.symmetric(horizontal:8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 15),
+                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                                   child: Text(
                                     "\$2000000000",
-                                    style: TextStyle(
+                                    style:  TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16,
                                       color: white,
@@ -329,11 +313,10 @@ class _StartPageState extends State<StartPage> {
                                   ),
                                 ),
                                 Padding(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 5, horizontal: 15),
+                                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
                                   child: Text(
                                     "\$0",
-                                    style: TextStyle(
+                                    style:  TextStyle(
                                       fontWeight: FontWeight.w500,
                                       fontSize: 16,
                                       color: white,
@@ -356,7 +339,7 @@ class _StartPageState extends State<StartPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "Récentes dépenses",
+                    "Récentes actions",
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 19,

@@ -27,7 +27,6 @@ class _TransactionPageState extends State<TransactionPage> {
           children: [
             Container(
               decoration: BoxDecoration(
-                
                 color: white.withOpacity(0.85),
                 boxShadow: [
                   BoxShadow(
@@ -42,21 +41,19 @@ class _TransactionPageState extends State<TransactionPage> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                       child: Text(
-                        "\$20000",
+                        "20000 FCFA",
                         style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w600
-                        ),
+                            fontSize: 17, fontWeight: FontWeight.w600),
                       ),
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(horizontal: 8, vertical: 7),
                       decoration: BoxDecoration(
-                        color: buttonColor,
-                        borderRadius: BorderRadius.circular(50)
-                      ),
+                          color: buttonColor,
+                          borderRadius: BorderRadius.circular(50)),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -69,16 +66,19 @@ class _TransactionPageState extends State<TransactionPage> {
                             ),
                           ),
                           RotatedBox(
-                            quarterTurns: 1, 
+                            quarterTurns: 1,
                             child: Container(
                               width: 30,
                               height: 30,
                               decoration: BoxDecoration(
-                                color: grey.withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(30)
+                                  color: grey.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(30)),
+                              child: Icon(
+                                Icons.chevron_right,
+                                color: white,
                               ),
-                              child: Icon(Icons.chevron_right, color: white,),
-                            ),)
+                            ),
+                          )
                         ],
                       ),
                     )
@@ -94,7 +94,7 @@ class _TransactionPageState extends State<TransactionPage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Mes transactions",
+                  Text("Mes réalisations",
                       style: TextStyle(
                           fontSize: 20,
                           color: mainFontColor,
@@ -131,7 +131,9 @@ class _TransactionPageState extends State<TransactionPage> {
                               "Tout",
                               style: TextStyle(
                                 fontSize: 13,
-                                color: _index == 0 ? white : black.withOpacity(0.5),
+                                color: _index == 0
+                                    ? white
+                                    : black.withOpacity(0.5),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -158,10 +160,12 @@ class _TransactionPageState extends State<TransactionPage> {
                               ]),
                           child: Center(
                             child: Text(
-                              "Revenus",
+                              "Recettes",
                               style: TextStyle(
                                 fontSize: 13,
-                                color: _index == 1 ? white :black.withOpacity(0.5),
+                                color: _index == 1
+                                    ? white
+                                    : black.withOpacity(0.5),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -191,7 +195,9 @@ class _TransactionPageState extends State<TransactionPage> {
                               "Dépenses",
                               style: TextStyle(
                                 fontSize: 13,
-                                color: _index == 2 ? white : black.withOpacity(0.5),
+                                color: _index == 2
+                                    ? white
+                                    : black.withOpacity(0.5),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -200,7 +206,9 @@ class _TransactionPageState extends State<TransactionPage> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -220,7 +228,9 @@ class _TransactionPageState extends State<TransactionPage> {
                               "Dettes",
                               style: TextStyle(
                                 fontSize: 13,
-                                color: _index == 3 ? white : black.withOpacity(0.5),
+                                color: _index == 3
+                                    ? white
+                                    : black.withOpacity(0.5),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -250,7 +260,9 @@ class _TransactionPageState extends State<TransactionPage> {
                               "Prêts",
                               style: TextStyle(
                                 fontSize: 13,
-                                color: _index == 4 ? white :black.withOpacity(0.5),
+                                color: _index == 4
+                                    ? white
+                                    : black.withOpacity(0.5),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),

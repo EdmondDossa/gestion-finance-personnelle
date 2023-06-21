@@ -21,6 +21,7 @@ dependencies:
   animated_bottom_navigation_bar: ^1.2.0
   percent_indicator: ^4.2.3
   icon_badge: ^1.0.0
+  fl_chart: ^0.63.0
 dev_dependencies:
   flutter_test:
     sdk: flutter
