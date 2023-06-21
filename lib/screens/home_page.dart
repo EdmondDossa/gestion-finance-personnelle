@@ -176,7 +176,6 @@ class _StartPageState extends State<StartPage> {
                                   Text(
                                     "Salut",
                                     style: TextStyle(
-                                    style: TextStyle(
                                       fontWeight: FontWeight.w300,
                                       fontSize: 16,
                                       color: white.withOpacity(0.65),
