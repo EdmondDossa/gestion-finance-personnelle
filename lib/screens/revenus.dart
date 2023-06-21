@@ -167,53 +167,6 @@ class _CreateIncomePageState extends State<CreateIncomePage> {
                 ),
               ),
             ),
-            /*  GestureDetector(
-              onTap: () {},
-              child: Wrap(children: [
-                Container(
-                  //width: (MediaQuery.of(context).size.width) * 0.6,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20.0,
-                    vertical: 8.0,
-                  ),
-                  decoration: BoxDecoration(
-                      color: Colors.green,
-                      borderRadius: BorderRadius.circular(20.0),
-                      border: Border.all(
-                        color: Color.fromARGB(255, 146, 146, 146),
-                        width: 1,
-                      )),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      Icon(
-                        Icons.food_bank_outlined,
-                        color: white,
-                        size: 15,
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "Food & Drinks",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: white),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios_outlined,
-                        color: white,
-                        size: 15,
-                      ),
-                    ],
-                  ),
-                ),
-              ]),
-            ), */
             SizedBox(
               height: 15,
             ),

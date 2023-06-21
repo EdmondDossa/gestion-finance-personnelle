@@ -11,7 +11,7 @@ import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/prets.dart';
 import 'package:gestion_finance/screens/revenus.dart';
 import 'package:gestion_finance/screens/statistics.dart';
-import 'package:gestion_finance/screens/transaction.dart';
+import 'package:gestion_finance/screens/realisation.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -35,7 +35,51 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
           backgroundColor: primary,
           body: getBody(),
-          bottomNavigationBar: getFooter(),
+          bottomNavigationBar: Container(
+            height: 80,
+            decoration: BoxDecoration(color: buttonColor),
+            child: Column(
+              children: [
+                getFooter(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Accueil",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: pageIndex == 0 ? blue : white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "Réalisations",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: pageIndex == 1 ? blue : white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "Statistiques",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: pageIndex == 2 ? blue : white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Text(
+                        "Paramètres",
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: pageIndex == 3 ? blue : white,
+                            fontWeight: FontWeight.w500),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
           floatingActionButton: SafeArea(
               child: FloatingActionButton(
             backgroundColor: buttonColor,
@@ -86,6 +130,7 @@ class _HomePageState extends State<HomePage> {
       rightCornerRadius: 18,
       iconSize: 25,
       activeColor: blue,
+      elevation: 0,
     );
   }
 
