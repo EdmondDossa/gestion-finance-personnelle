@@ -4,6 +4,8 @@ import 'package:gestion_finance/screens/signup.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
+import 'inscription.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 

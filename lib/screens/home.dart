@@ -1,8 +1,8 @@
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/screens/add_categorie.dart';
-import 'package:gestion_finance/screens/depenses.dart';
+import 'package:gestion_finance/screens/daily.dart';
+import 'package:gestion_finance/screens/expenses.dart';
 import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/statistics.dart';
 import 'package:gestion_finance/screens/transaction.dart';
