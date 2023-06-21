@@ -12,8 +12,8 @@ class StattisticsPage extends StatefulWidget {
 }
 
 class _StattisticsPageState extends State<StattisticsPage> {
-   final double income = 0;
-  final double expenses = 0;
+   final double income = 5000;
+  final double expenses = 3000;
   //StatisticsPage({required this.income, required this.expenses});
   List days = ["Jour","Semaine","Mois","Annee"];
   @override
