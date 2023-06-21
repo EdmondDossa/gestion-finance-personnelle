@@ -1,8 +1,11 @@
+import 'dart:ui';
+
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/add_categorie.dart';
 import 'package:gestion_finance/screens/budgets.dart';
+import 'package:gestion_finance/screens/daily.dart';
 import 'package:gestion_finance/screens/expense.dart';
 import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/prets.dart';
@@ -133,59 +136,110 @@ class _HomePageState extends State<HomePage> {
 
   showModal(int index) {
     showModalBottomSheet(
-      context: context,
-      elevation: 5,
-      shape:RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          top: Radius.circular(30.0),
-        ),
-      ) ,
-      isScrollControlled: true,
-      builder: (_) {
-        if (index == 3) {
-          return Container(
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-              top: 15,
-              left: 15,
-              right: 15,
-            ),
-            child: AddCategorie(),
-          );
-        } else if (index == 0 || index == 1) {
-          return Container(
-            height: 150,
-            padding: EdgeInsets.only(
-              bottom: MediaQuery.of(context).viewInsets.bottom,
-              top: 15,
-              left: 15,
-              right: 15,
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric( horizontal:20, vertical: 10),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25), 
-                          color: green
-                        ),
-                        child:Text(
-                          "Revenu",
-                          style: TextStyle(
-                            fontSize: 16, 
-                            fontWeight: FontWeight.w400,
-                            color: white
+        context: context,
+        elevation: 5,
+        isScrollControlled: true,
+        builder: (_) {
+          if (index == 3) {
+            return Container(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                top: 15,
+                left: 15,
+                right: 15,
+              ),
+              child: AddCategorie(),
+            );
+          } else if (index == 0) {
+            return Container(
+              height: 150,
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                top: 15,
+                left: 15,
+                right: 15,
+              ),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreateIncomePage()),
+                          );
+                        },
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: green),
+                            child: Text(
+                              "Revenu",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: white),
+                            )),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreateExpansePage()),
+                          );
+                        },
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: red),
+                            child: Text(
+                              "Dépense",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: white),
+                            )),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreateBudgetPage()),
+                          );
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(25),
+                            color: buttonColor.withOpacity(0.75),
+                          ),
+                          child: Text(
+                            "Budget",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: white),
                           ),
                         ),
                       ),
-                    )
                     ],
                   )
                 ],

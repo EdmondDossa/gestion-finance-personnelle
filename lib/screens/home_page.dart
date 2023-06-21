@@ -86,7 +86,7 @@ class _StartPageState extends State<StartPage> {
       amountColor: red,
     ),
   ];
-  Stream<List<GFUsers>> currentInfo = dbServies.getUser();
+  /* Stream<List<GFUsers>> currentInfo = dbServies.getUser(); */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
