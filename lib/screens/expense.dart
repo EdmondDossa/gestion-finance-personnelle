@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
-class CreateDepensePage extends StatefulWidget {
-  const CreateDepensePage({super.key});
+class CreateExpansePage extends StatefulWidget {
+  const CreateExpansePage({super.key});
 
   @override
-  State<CreateDepensePage> createState() => _CreateDepensePageState();
+  State<CreateExpansePage> createState() => _CreateExpansePageState();
 }
 
-class _CreateDepensePageState extends State<CreateDepensePage> {
+class _CreateExpansePageState extends State<CreateExpansePage> {
   TextEditingController _description = TextEditingController();
   TextEditingController _amount = TextEditingController();
   DateTime? _date;
