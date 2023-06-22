@@ -64,6 +64,9 @@ class _StattisticsPageState extends State<StattisticsPage> {
               }),
             ],
           ),
+          SizedBox(
+            height: 20,
+          ),
           Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

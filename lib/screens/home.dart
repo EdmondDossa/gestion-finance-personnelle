@@ -8,6 +8,7 @@ import 'package:gestion_finance/screens/budgets.dart';
 import 'package:gestion_finance/screens/daily.dart';
 import 'package:gestion_finance/screens/expense.dart';
 import 'package:gestion_finance/screens/home_page.dart';
+import 'package:gestion_finance/screens/param%C3%A8tre.dart';
 import 'package:gestion_finance/screens/prets.dart';
 import 'package:gestion_finance/screens/revenus.dart';
 import 'package:gestion_finance/screens/statistics.dart';
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     const StartPage(),
     const TransactionPage(),
     const StattisticsPage(),
-    const AddCategorie(),
+    const ParametrePage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -151,7 +152,7 @@ class _HomePageState extends State<HomePage> {
               ),
               child: AddCategorie(),
             );
-          } else if (index == 0) {
+          } else if (index == 0 || index == 1 || index == 2) {
             return Container(
               height: 150,
               padding: EdgeInsets.only(
@@ -160,6 +161,7 @@ class _HomePageState extends State<HomePage> {
                 left: 15,
                 right: 15,
               ),
+              alignment: Alignment.center,
               child: Column(
                 children: [
                   Row(
@@ -178,9 +180,9 @@ class _HomePageState extends State<HomePage> {
                                 horizontal: 20, vertical: 10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                color: green),
+                                color: Colors.orange),
                             child: Text(
-                              "Revenu",
+                              "Prévisions",
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
@@ -200,9 +202,9 @@ class _HomePageState extends State<HomePage> {
                                 horizontal: 20, vertical: 10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                color: red),
+                                color: green),
                             child: Text(
-                              "Dépense",
+                              "Réalisation",
                               style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400,
@@ -210,43 +212,12 @@ class _HomePageState extends State<HomePage> {
                             )),
                       ),
                     ],
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreateBudgetPage()),
-                          );
-                        },
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: buttonColor.withOpacity(0.75),
-                          ),
-                          child: Text(
-                            "Budget",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: white),
-                          ),
-                        ),
-                      ),
-                    ],
                   )
                 ],
               ),
             );
-          } else if (index == 1) {
+          }
+          /*  else if (index == 1) {
             return Container(
               height: 200,
               padding: EdgeInsets.only(
@@ -402,7 +373,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             );
-          }
+          } */
           return widget;
         });
   }

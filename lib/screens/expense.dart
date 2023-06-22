@@ -47,20 +47,15 @@ class _CreateExpansePageState extends State<CreateExpansePage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                
                 GestureDetector(
-                  onTap: ()=>Navigator.of(context).pop(),
+                  onTap: () => Navigator.of(context).pop(),
                   child: Container(
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: white,
-                      border: Border.all(
-                        color: grey,
-                        width: 1
-                      ),
-                      borderRadius: BorderRadius.circular(50)
-                    ),
+                        color: white,
+                        border: Border.all(color: grey, width: 1),
+                        borderRadius: BorderRadius.circular(50)),
                     child: Icon(
                       Icons.close,
                       size: 25,
@@ -84,9 +79,13 @@ class _CreateExpansePageState extends State<CreateExpansePage> {
                     child: Row(
                       children: [
                         Icon(
-                          Icons.upload_outlined,color: white,
+                          Icons.upload_outlined,
+                          color: white,
                         ),
-                        Text("Dépense",style: TextStyle(color: white),),
+                        Text(
+                          "Dépense",
+                          style: TextStyle(color: white),
+                        ),
                       ],
                     ),
                   ),
@@ -95,13 +94,9 @@ class _CreateExpansePageState extends State<CreateExpansePage> {
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: white,
-                    border: Border.all(
-                      color: grey,
-                      width: 1
-                    ),
-                    borderRadius: BorderRadius.circular(50)
-                  ),
+                      color: white,
+                      border: Border.all(color: grey, width: 1),
+                      borderRadius: BorderRadius.circular(50)),
                   child: Icon(
                     Icons.delete,
                     size: 25,
@@ -209,7 +204,7 @@ class _CreateExpansePageState extends State<CreateExpansePage> {
               height: 20,
             ),
             GestureDetector(
-              onTap: () =>  _selectDate(context),
+              onTap: () => _selectDate(context),
               child: Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 30.0,

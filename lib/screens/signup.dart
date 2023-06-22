@@ -31,7 +31,7 @@ class _SignupPageState extends State<SignupPage> {
   Widget getBody() {
     return SingleChildScrollView(
       child: Center(
-          child: Column(
+        child: Column(
         children: [
           const SizedBox(height: 100),
           Container(
