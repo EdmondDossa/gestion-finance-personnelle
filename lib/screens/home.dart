@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/add_categorie.dart';
 import 'package:gestion_finance/screens/budgets.dart';
 import 'package:gestion_finance/screens/daily.dart';
-import 'package:gestion_finance/screens/depenses.dart';
+import 'package:gestion_finance/screens/expense.dart';
 import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/param%C3%A8tre.dart';
 import 'package:gestion_finance/screens/prets.dart';
@@ -136,6 +136,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   showModal(int index) {
+    
     showModalBottomSheet(
         context: context,
         elevation: 5,
@@ -193,7 +194,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => CreateDepensePage()),
+                                builder: (context) => CreateExpansePage()),
                           );
                         },
                         child: Container(
@@ -259,7 +260,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => CreateDepensePage()),
+                                builder: (context) => CreateExpansePage()),
                           );
                         },
                         child: Container(

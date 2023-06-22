@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
@@ -11,9 +10,9 @@ class ConfigurationPage extends StatefulWidget {
 }
 
 class _ConfigurationPageState extends State<ConfigurationPage> {
-  TextEditingController _avoirs = TextEditingController();
-  TextEditingController _dettes = TextEditingController();
-  TextEditingController _prets = TextEditingController();
+  TextEditingController _avoirs = TextEditingController(text: "0");
+  TextEditingController _dettes = TextEditingController(text: "0");
+  TextEditingController _prets = TextEditingController(text: "0");
   DateTime? _date;
 
   Future<void> _selectDate(BuildContext context) async {
@@ -147,7 +146,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                       ),
                     ),
                     TextField(
-                      controller: _avoirs,
+                      controller: _dettes,
                       cursorColor: black,
                       style: const TextStyle(
                         fontWeight: FontWeight.w400,
@@ -199,7 +198,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                       ),
                     ),
                     TextField(
-                      controller: _avoirs,
+                      controller: _prets,
                       cursorColor: black,
                       style: const TextStyle(
                         fontWeight: FontWeight.w400,

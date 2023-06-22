@@ -34,7 +34,7 @@ class DBServies {
 
   Stream<List<GFUsers>> getUser() {
     return userCollection
-        .where('uid', isEqualTo: AuthServices().currentUser.uid)
+        .where('uid', isEqualTo: authServices.currentUser.uid)
         .snapshots()
         .map((event) =>
             event.docs.map((doc) => GFUsers.fromJson(doc.data())).toList());
