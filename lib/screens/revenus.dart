@@ -72,20 +72,20 @@ class _CreateIncomePageState extends State<CreateIncomePage> {
                       vertical: 8.0,
                     ),
                     decoration: BoxDecoration(
-                        color: green,
+                        color: Colors.orange,
                         borderRadius: BorderRadius.circular(20.0),
                         border: Border.all(
-                          color: green,
+                          color: Colors.orange,
                           width: 1,
                         )),
                     child: Row(
                       children: [
                         Icon(
-                          Icons.download_outlined,
+                          Icons.trending_up_outlined,
                           color: white,
                         ),
                         Text(
-                          "Revenu",
+                          "Prévision",
                           style: TextStyle(color: white),
                         ),
                       ],
@@ -114,9 +114,9 @@ class _CreateIncomePageState extends State<CreateIncomePage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "Enregistrer un revenu",
+                  "Faites une prévision pour un mois",
                   style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 20,
                     fontWeight: FontWeight.w900,
                     color: grey.withOpacity(0.9),
                   ),

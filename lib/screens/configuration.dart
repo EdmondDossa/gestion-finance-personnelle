@@ -219,7 +219,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
               height: 20,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 GestureDetector(
                   onTap: () {},
@@ -261,19 +261,19 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     );
                   },
                   child: Container(
-                      width: 150,
+                      width: 100,
                       alignment: Alignment.center,
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(25),
-                          color: Colors.orange),
+                        border:
+                            Border(bottom: BorderSide(color: blue, width: 2)),
+                      ),
                       child: Text(
                         "Plus tard",
                         style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
-                            color: white),
+                            color: blue),
                       )),
                 ),
               ],
