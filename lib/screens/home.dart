@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/screens/add_categorie.dart';
+import 'package:gestion_finance/screens/add_rubrique.dart';
 import 'package:gestion_finance/screens/budgets.dart';
 import 'package:gestion_finance/screens/daily.dart';
 import 'package:gestion_finance/screens/expense.dart';
@@ -141,6 +141,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         elevation: 5,
         isScrollControlled: true,
+        backgroundColor: white.withOpacity(0.4),
         builder: (_) {
           if (index == 3) {
             return Container(
@@ -180,7 +181,7 @@ class _HomePageState extends State<HomePage> {
                                 horizontal: 20, vertical: 10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                color: Colors.orange),
+                                color: Colors.red[600]),
                             child: Text(
                               "Prévisions",
                               style: TextStyle(
@@ -217,163 +218,7 @@ class _HomePageState extends State<HomePage> {
               ),
             );
           }
-          /*  else if (index == 1) {
-            return Container(
-              height: 200,
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-                top: 15,
-                left: 15,
-                right: 15,
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreateIncomePage()),
-                          );
-                        },
-                        child: Container(
-                            width: 100,
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: green),
-                            child: Text(
-                              "Revenu",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: white),
-                            )),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreateExpansePage()),
-                          );
-                        },
-                        child: Container(
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: red),
-                            child: Text(
-                              "Dépense",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: white),
-                            )),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreateBudgetPage()),
-                          );
-                        },
-                        child: Container(
-                          width: 100,
-                          alignment: Alignment.center,
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(25),
-                            color: buttonColor.withOpacity(0.75),
-                          ),
-                          child: Text(
-                            "Budget",
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                                color: white),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreatePretPage()),
-                          );
-                        },
-                        child: Container(
-                            width: 100,
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: blue),
-                            child: Text(
-                              "Prêt",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: white),
-                            )),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreatePretPage()),
-                          );
-                        },
-                        child: Container(
-                            width: 100,
-                            alignment: Alignment.center,
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Colors.orange),
-                            child: Text(
-                              "Dette",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: white),
-                            )),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          } */
+         
           return widget;
         });
   }
