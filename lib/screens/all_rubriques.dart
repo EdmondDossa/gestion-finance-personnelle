@@ -20,10 +20,11 @@ class _AllRubriquesState extends State<AllRubriques> {
   TextEditingController _description = TextEditingController();
   final _rubriquesBox = Hive.box<HRubriques>('Rubriques');
   List<GFRubriques> _rubriquesListe = [];
+  
   @override
   void initState() {
     super.initState();
-    _rubriquesListe = _initRubriquesList();
+    _initRubriquesList();
   }
 
   @override
@@ -244,6 +245,7 @@ class _AllRubriquesState extends State<AllRubriques> {
   void _refreshList() {
     final data = _rubriquesBox.keys.map((key) {
       final item = _rubriquesBox.get(key);
+      print(key);
       return GFRubriques(item!.nomRubrique, item.description, item.userUid,
           uid: key.toString());
     }).toList();
@@ -253,12 +255,16 @@ class _AllRubriquesState extends State<AllRubriques> {
     });
   }
 
-  List<GFRubriques> _initRubriquesList() {
-    return _rubriquesBox.keys.map((key) {
+  void _initRubriquesList() {
+    var data = _rubriquesBox.keys.map((key) {
       final item = _rubriquesBox.get(key);
+      print(key);
       return GFRubriques(item!.nomRubrique, item.description, item.userUid,
           uid: key.toString());
     }).toList();
+    setState(() {
+      _rubriquesListe = data;
+    });
   }
 
   _showAddModal() {
@@ -397,7 +403,7 @@ class _AllRubriquesState extends State<AllRubriques> {
   }
 
   _updateRubrique(key, HRubriques r) async {
-     await _rubriquesBox.put(key, r);
+    await _rubriquesBox.put(key, r);
     _nomRubrique.text = "";
     _description.text = "";
     _refreshList();

@@ -15,7 +15,7 @@ void main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   Hive.registerAdapter(HRubriquesAdapter());
-  /* await Hive.deleteBoxFromDisk("Rubriques" ); */
+  /* await Hive.deleteBoxFromDisk("Rubriques"); */
   await Hive.openBox<HRubriques>("Rubriques");
   initializeDateFormatting('fr_FR', null).then((_) {
     runApp(MyApp());
