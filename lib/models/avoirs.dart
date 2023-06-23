@@ -1,9 +1,11 @@
+import 'package:gestion_finance/utilities/auth_services.dart';
+
 class GFAvoirs {
   String? uid;
   double capital = 0;
-  String userUid = "";
+  String? userUid = authServices.currentUser.uid;
   
-  GFAvoirs(this.capital,this.userUid);
+  GFAvoirs(this.capital);
 
   GFAvoirs.fromJson(Map<String, dynamic> json) {
     capital = json["capital"];

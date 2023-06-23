@@ -139,10 +139,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 5,
         isScrollControlled: true,
         builder: (_) {
-          if (index == 3) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => AddRubriquePage()));
-          } else if (index == 0 || index == 1 || index == 2) {
+          if (index == 0 || index == 1 || index == 2) {
             return Container(
               height: 150,
               padding: EdgeInsets.only(

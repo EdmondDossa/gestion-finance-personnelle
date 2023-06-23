@@ -13,7 +13,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await Hive.initFlutter();
-  initDatabase();
+  await initDatabase();
   initializeDateFormatting('fr_FR', null).then((_) {
     runApp(MyApp());
   });
