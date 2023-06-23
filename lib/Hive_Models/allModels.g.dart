@@ -54,19 +54,16 @@ class HDettesAdapter extends TypeAdapter<HDettes> {
     };
     return HDettes(
       fields[0] as double,
-      fields[1] as String,
-    )..userUid = fields[2] as String;
+    )..userUid = fields[1] as String;
   }
 
   @override
   void write(BinaryWriter writer, HDettes obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.montant)
       ..writeByte(1)
-      ..write(obj.date)
-      ..writeByte(2)
       ..write(obj.userUid);
   }
 
@@ -136,19 +133,16 @@ class HPretsAdapter extends TypeAdapter<HPrets> {
     };
     return HPrets(
       fields[0] as double,
-      fields[1] as String,
-    )..userUid = fields[2] as String;
+    )..userUid = fields[1] as String;
   }
 
   @override
   void write(BinaryWriter writer, HPrets obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.montant)
       ..writeByte(1)
-      ..write(obj.date)
-      ..writeByte(2)
       ..write(obj.userUid);
   }
 

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/Hive_Models/allModels.dart';
+import 'package:gestion_finance/models/avoirs.dart';
+import 'package:gestion_finance/models/dettes.dart';
+import 'package:gestion_finance/models/prets.dart';
 import 'package:gestion_finance/screens/all_rubriques.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/db_services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 import '../utilities/colors.dart';
 
@@ -15,9 +20,58 @@ class ParametrePage extends StatefulWidget {
 class _ParametrePageState extends State<ParametrePage> {
   TextEditingController _email = TextEditingController();
   TextEditingController _username = TextEditingController();
+  var _avoir;
+  var _dette;
+  var _pret;
   bool isModalOpen = false;
 
+  _getConfig() async {
+    var _avoirBox = Hive.box<HAvoirs>("Avoirs");
+    var _detteBox = Hive.box<HDettes>("Dettes");
+    var _pretBox = Hive.box<HPrets>("Prets");
+    final dataAvoirs = _avoirBox.keys.map((key) {
+      final item = _avoirBox.get(key);
+
+      return GFAvoirs(item!.capital);
+    }).toList();
+
+    final dataDettes = _detteBox.keys.map((key) {
+      final item = _detteBox.get(key);
+
+      return GFDettes(montantTotal: item!.montant);
+    }).toList();
+
+    final dataPrets = _pretBox.keys.map((key) {
+      final item = _pretBox.get(key);
+
+      return GFPrets(montantTotal: item!.montant);
+    }).toList();
+   _avoirBox.close();
+    _detteBox.close();
+    _pretBox.close();
+    setState(() {
+      if (dataAvoirs.length!=0){
+        _avoir = dataAvoirs[0];
+      }
+      if (dataDettes.length!=0){
+        _dette = dataDettes[0];
+      }
+      if (dataPrets.length!=0){
+        _pret = dataPrets[0];
+      }
+      
+      
+    });
+  }
+
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _getConfig();
+  }
+
+   @override
   Widget build(BuildContext context) {
     return getBody();
   }
@@ -30,13 +84,13 @@ class _ParametrePageState extends State<ParametrePage> {
           Column(children: [
             Container(
               width: double.infinity,
-              height: 120,
+              height: 300,
               //decoration: BoxDecoration(color: grey),
               child: Column(
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 95,
+                    height: 200,
                     decoration: BoxDecoration(
                       color: buttonColor.withOpacity(0.9),
                       borderRadius: BorderRadius.only(
@@ -76,31 +130,31 @@ class _ParametrePageState extends State<ParametrePage> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   StreamBuilder(
-                                    stream: dbServies.getUser(),
-                                    builder: (_, s) {
-                                      if (s.hasData) {
-                                        final user = s.data![0];
-                                        return Text(
-                                          user.username.toString(),
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w300,
-                                            fontSize: 15,
-                                            color: white,
-                                          ),
-                                        );
-                                      } else {
-                                        return Text(
-                                          "",
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontWeight: FontWeight.w600,
-                                            fontSize: 18,
-                                            color: white,
-                                          ),
-                                        );
-                                      }
-                                    }),
+                                      stream: dbServies.getUser(),
+                                      builder: (_, s) {
+                                        if (s.hasData) {
+                                          final user = s.data![0];
+                                          return Text(
+                                            user.username.toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w300,
+                                              fontSize: 15,
+                                              color: white,
+                                            ),
+                                          );
+                                        } else {
+                                          return Text(
+                                            "",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 18,
+                                              color: white,
+                                            ),
+                                          );
+                                        }
+                                      }),
                                   SizedBox(
                                     width: 5,
                                   ),
@@ -108,8 +162,7 @@ class _ParametrePageState extends State<ParametrePage> {
                                     width: 30,
                                     height: 30,
                                     decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(30),
+                                        borderRadius: BorderRadius.circular(30),
                                         border: Border.all(color: white)),
                                     child: Icon(Icons.person_outlined,
                                         color: white),
@@ -119,6 +172,27 @@ class _ParametrePageState extends State<ParametrePage> {
                             ],
                           ),
                         ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Avoirs: ",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: white),
+                              ),
+                              Text(
+                                _avoir != null ? _avoir!.montantTotal.toString() + " FCFA" : "0 FCFA",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: white),
+                              )
+                            ],
+                          ),
+                        )
                       ],
                     ),
                   ),

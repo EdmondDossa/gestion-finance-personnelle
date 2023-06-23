@@ -18,11 +18,9 @@ class HDettes extends HiveObject {
   @HiveField(0)
   late double montant;
   @HiveField(1)
-  late String date;
-  @HiveField(2)
   late String userUid = authServices.currentUser.uid;
 
-  HDettes(this.montant,this.date);
+  HDettes(this.montant);
 }
 
 @HiveType(typeId: 2)
@@ -44,10 +42,8 @@ class HPrets extends HiveObject {
   @HiveField(0)
   double montant;
   @HiveField(1)
-  String date;
-  @HiveField(2)
   String userUid = authServices.currentUser.uid;
-  HPrets(this.montant, this.date);
+  HPrets(this.montant);
 }
 
 @HiveType(typeId: 4)
