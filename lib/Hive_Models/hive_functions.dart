@@ -3,7 +3,7 @@ import 'package:gestion_finance/Hive_Models/allModels.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 initDatabase() async {
-  await Hive.initFlutter();
+  
 
   Hive.registerAdapter(HRubriquesAdapter());
   await Hive.openBox<HRubriques>("Rubriques");

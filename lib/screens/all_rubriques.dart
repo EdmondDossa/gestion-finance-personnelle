@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/Hive_Models/allModels.dart';
 import 'package:gestion_finance/models/rubriques.dart';
-import 'package:gestion_finance/models/transaction.dart';
 import 'package:gestion_finance/utilities/colors.dart';
-import 'package:gestion_finance/utilities/fonctions.dart';
 import 'package:gestion_finance/widgets/transaction-widget.dart';
 import 'package:hive/hive.dart';
 
@@ -212,10 +209,8 @@ class _AllRubriquesState extends State<AllRubriques> {
               ),
               GestureDetector(
                 onTap: () {
-                  _updateRubrique(
-                      rubrique.uid,
-                      HRubriques(
-                          _nomRubrique.text, _description.text, "00001"));
+                  _updateRubrique(rubrique.uid,
+                      HRubriques(_nomRubrique.text, _description.text));
                 },
                 child: Container(
                   padding: const EdgeInsets.all(20),
@@ -357,8 +352,7 @@ class _AllRubriquesState extends State<AllRubriques> {
           ),
           GestureDetector(
             onTap: () {
-              _createRubrique(
-                  HRubriques(_nomRubrique.text, _description.text, "00001"));
+              _createRubrique(HRubriques(_nomRubrique.text, _description.text));
             },
             child: Container(
               padding: const EdgeInsets.all(20),

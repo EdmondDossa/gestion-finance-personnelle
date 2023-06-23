@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/configuration.dart';
-import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
@@ -30,8 +29,8 @@ class _SignupPageState extends State<SignupPage> {
 
   Widget getBody() {
     return SingleChildScrollView(
-      child: Center(
-        child: Column(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const SizedBox(height: 100),
           Container(
@@ -271,20 +270,20 @@ class _SignupPageState extends State<SignupPage> {
                   _isDifferent = true;
                 });
               } else {
-                /* var auth = await authServices.signUp(
+                var auth = await authServices.signUp(
                     _email.text, _password.text, _username.text);
                 if (!auth) {
                   setState(() {
                     _haveError = true;
                     _isDifferent = false;
                   });
-                }else{ */
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ConfigurationPage(),
-                    ));
-                //}
+                } else {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ConfigurationPage(),
+                      ));
+                }
               }
             },
             child: Container(
@@ -341,7 +340,7 @@ class _SignupPageState extends State<SignupPage> {
             ),
           )
         ],
-      )),
+      ),
     );
   }
 }

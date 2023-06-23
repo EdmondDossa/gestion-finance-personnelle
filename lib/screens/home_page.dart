@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gestion_finance/models/transaction.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/colors.dart';
+import 'package:gestion_finance/utilities/db_services.dart';
 import 'package:gestion_finance/utilities/fonctions.dart';
 import 'package:gestion_finance/widgets/transaction-widget.dart';
 import 'package:intl/intl.dart';
@@ -192,15 +193,32 @@ class _StartPageState extends State<StartPage> {
                                       color: white.withOpacity(0.65),
                                     ),
                                   ),
-                                  Text(
-                                    "Aboka Jr",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                      color: white,
-                                    ),
-                                  )
+                                  StreamBuilder(
+                                      stream: dbServies.getUser(),
+                                      builder: (_, s) {
+                                        if (s.hasData) {
+                                          final user = s.data![0];
+                                          return Text(
+                                            user.username.toString(),
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 18,
+                                              color: white,
+                                            ),
+                                          );
+                                        } else {
+                                          return Text(
+                                            "",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 18,
+                                              color: white,
+                                            ),
+                                          );
+                                        }
+                                      }),
                                 ],
                               ),
                             )

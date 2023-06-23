@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
 class CreateIncomePage extends StatefulWidget {

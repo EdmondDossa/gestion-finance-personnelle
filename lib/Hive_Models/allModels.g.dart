@@ -263,8 +263,7 @@ class HRubriquesAdapter extends TypeAdapter<HRubriques> {
     return HRubriques(
       fields[0] as String,
       fields[1] as String,
-      fields[2] as String,
-    );
+    )..userUid = fields[2] as String;
   }
 
   @override

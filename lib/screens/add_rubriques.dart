@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
 class AddRubriquePage extends StatefulWidget {

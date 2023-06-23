@@ -85,7 +85,7 @@ class HRubriques extends HiveObject {
   @HiveField(1)
   String description;
   @HiveField(2)
-  String userUid;
+  String userUid =authServices.currentUser.uid;
 
-  HRubriques(this.nomRubrique, this.description, this.userUid, [String? uid]);
+  HRubriques(this.nomRubrique, this.description);
 }

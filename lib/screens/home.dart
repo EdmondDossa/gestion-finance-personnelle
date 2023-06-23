@@ -4,12 +4,9 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/add_rubriques.dart';
-import 'package:gestion_finance/screens/budgets.dart';
-import 'package:gestion_finance/screens/daily.dart';
 import 'package:gestion_finance/screens/expense.dart';
 import 'package:gestion_finance/screens/home_page.dart';
-import 'package:gestion_finance/screens/param%C3%A8tre.dart';
-import 'package:gestion_finance/screens/prets.dart';
+import 'package:gestion_finance/screens/parametre.dart';
 import 'package:gestion_finance/screens/revenus.dart';
 import 'package:gestion_finance/screens/statistics.dart';
 import 'package:gestion_finance/screens/realisation.dart';

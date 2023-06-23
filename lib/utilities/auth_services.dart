@@ -12,7 +12,7 @@ class AuthServices {
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       return true;
-    } on FirebaseException catch(e){
+    } on FirebaseException {
       return false;
     }
   }
@@ -23,7 +23,7 @@ class AuthServices {
         email: email, password: password);
         dbServies.saveUser(GFUsers(email: email, username: username, uid: currentUser.uid));
       return true;
-    } on FirebaseException catch(e){
+    } on FirebaseException {
       return false;
     }
   }

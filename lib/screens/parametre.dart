@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/screens/add_rubriques.dart';
 import 'package:gestion_finance/screens/all_rubriques.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 
@@ -16,7 +15,6 @@ class _ParametrePageState extends State<ParametrePage> {
   TextEditingController _email = TextEditingController();
   TextEditingController _username = TextEditingController();
   bool isModalOpen = false;
-  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -343,8 +341,5 @@ class _ParametrePageState extends State<ParametrePage> {
 
   setTabs(index) {
     _showModal(index);
-    setState(() {
-      _index = index;
-    });
   }
 }
