@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/Hive%20Models/rubriques.dart';
-import 'package:gestion_finance/screens/all_rubriques.dart';
 import 'package:gestion_finance/screens/signup.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/screens/login.dart';
@@ -34,6 +33,6 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: primary,
           fontFamily: GoogleFonts.aBeeZee().fontFamily,
         ),
-        home: AllRubriques());
+        home: SignupPage());
   }
 }

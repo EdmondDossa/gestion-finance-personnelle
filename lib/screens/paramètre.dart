@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/screens/add_rubrique.dart';
+import 'package:gestion_finance/screens/add_rubriques.dart';
+import 'package:gestion_finance/screens/all_rubriques.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 
 import '../utilities/colors.dart';
@@ -139,7 +140,10 @@ class _ParametrePageState extends State<ParametrePage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          setTabs(1);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllRubriques()));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8.0),
@@ -332,10 +336,7 @@ class _ParametrePageState extends State<ParametrePage> {
                 ));
           } else if (index == 2) {
             authServices.signOut();
-          } else if (index == 1) {
-            Navigator.of(context).pop();
           }
-
           return widget;
         });
   }
@@ -347,4 +348,3 @@ class _ParametrePageState extends State<ParametrePage> {
     });
   }
 }
-
