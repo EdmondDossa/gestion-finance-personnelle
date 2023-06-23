@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/Hive%20Models/rubriques.dart';
+import 'package:gestion_finance/Hive_Models/allModels.dart';
 import 'package:gestion_finance/models/rubriques.dart';
 import 'package:gestion_finance/models/transaction.dart';
 import 'package:gestion_finance/utilities/colors.dart';
@@ -20,11 +20,11 @@ class _AllRubriquesState extends State<AllRubriques> {
   TextEditingController _description = TextEditingController();
   final _rubriquesBox = Hive.box<HRubriques>('Rubriques');
   List<GFRubriques> _rubriquesListe = [];
-  
+
   @override
   void initState() {
     super.initState();
-    _initRubriquesList();
+    _refreshList();
   }
 
   @override
@@ -67,22 +67,22 @@ class _AllRubriquesState extends State<AllRubriques> {
             Container(
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.88,
-              child: ListView(physics: BouncingScrollPhysics(), children: [
-                ...List.generate(_rubriquesListe.length, (index) {
-                  return GestureDetector(
-                    onTap: () {
-                      _selectRubrique(_rubriquesListe[index]);
-                    },
-                    child: WTransaction(
-                      icon: Icon(Icons.money),
-                      title: _rubriquesListe[index].nomRubrique,
-                      description: _rubriquesListe[index].description,
-                      amount: 0,
-                      amountColor: white,
-                    ),
-                  );
-                })
-              ]),
+              child: ListView.builder(
+                  itemCount: _rubriquesListe.length,
+                  itemBuilder: (_, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        _selectRubrique(_rubriquesListe[index]);
+                      },
+                      child: WTransaction(
+                        icon: Icon(Icons.category_outlined),
+                        title: _rubriquesListe[index].nomRubrique,
+                        description: _rubriquesListe[index].description,
+                        amount: 0,
+                        amountColor: white,
+                      ),
+                    );
+                  }),
             )
           ],
         ),
@@ -245,23 +245,11 @@ class _AllRubriquesState extends State<AllRubriques> {
   void _refreshList() {
     final data = _rubriquesBox.keys.map((key) {
       final item = _rubriquesBox.get(key);
-      print(key);
-      return GFRubriques(item!.nomRubrique, item.description, item.userUid,
-          uid: key.toString());
+      print(item!.nomRubrique);
+      return GFRubriques(item.nomRubrique, item.description, item.userUid,
+          uid: key);
     }).toList();
 
-    setState(() {
-      _rubriquesListe = data;
-    });
-  }
-
-  void _initRubriquesList() {
-    var data = _rubriquesBox.keys.map((key) {
-      final item = _rubriquesBox.get(key);
-      print(key);
-      return GFRubriques(item!.nomRubrique, item.description, item.userUid,
-          uid: key.toString());
-    }).toList();
     setState(() {
       _rubriquesListe = data;
     });
@@ -402,8 +390,8 @@ class _AllRubriquesState extends State<AllRubriques> {
     Navigator.of(context).pop();
   }
 
-  _updateRubrique(key, HRubriques r) async {
-    await _rubriquesBox.put(key, r);
+  _updateRubrique(int? key, HRubriques r) async {
+    await _rubriquesBox.putAt(key!, r);
     _nomRubrique.text = "";
     _description.text = "";
     _refreshList();

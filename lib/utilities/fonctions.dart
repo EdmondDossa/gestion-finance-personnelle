@@ -1,4 +1,3 @@
-import 'package:gestion_finance/Hive%20Models/lignes_previsions.dart';
 import 'package:hive/hive.dart';
 
 //fonction pour enrégistrer les informations dans n'importe quel box
@@ -16,10 +15,10 @@ List<dynamic> allData(Box box) {
   return box.values.toList();
 }
 
-List<HLignesPrevision> allHMonthLignePrevision(
+/* List<HLignesPrevisions> allHMonthLignePrevision(
     Box<HLignesPrevision> box, String month, String annee) {
   return box.values.toList();
-}
+} */
 
 String capitalizeFirstLetter(String input) {
   if (input.isEmpty) {

@@ -1,5 +1,5 @@
 class GFRubriques {
-  String? uid;
+  int? uid;
   String nomRubrique = "";
   String description = "";
   String userUid = "";
