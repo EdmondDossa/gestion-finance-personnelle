@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/all_rubriques.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
+import 'package:gestion_finance/utilities/db_services.dart';
 
 import '../utilities/colors.dart';
 
@@ -49,51 +50,71 @@ class _ParametrePageState extends State<ParametrePage> {
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 30),
                           child: Row(
-                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Icon(
-                                Icons.settings_outlined,
-                                color: white,
+                              Row(
+                                children: [
+                                  Icon(
+                                    Icons.settings_outlined,
+                                    color: white,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Text(
+                                    "Paramètres",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.w300,
+                                        color: white),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                "Paramètres",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w300,
-                                    color: white),
-                                textAlign: TextAlign.center,
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 100),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Arlette",
-                                      style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w300,
-                                          color: white),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    Container(
-                                      width: 30,
-                                      height: 30,
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(30),
-                                          border: Border.all(color: white)),
-                                      child: Icon(Icons.person_outlined,
-                                          color: white),
-                                    )
-                                  ],
-                                ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  StreamBuilder(
+                                    stream: dbServies.getUser(),
+                                    builder: (_, s) {
+                                      if (s.hasData) {
+                                        final user = s.data![0];
+                                        return Text(
+                                          user.username.toString(),
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w300,
+                                            fontSize: 15,
+                                            color: white,
+                                          ),
+                                        );
+                                      } else {
+                                        return Text(
+                                          "",
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                            color: white,
+                                          ),
+                                        );
+                                      }
+                                    }),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(30),
+                                        border: Border.all(color: white)),
+                                    child: Icon(Icons.person_outlined,
+                                        color: white),
+                                  )
+                                ],
                               )
                             ],
                           ),
