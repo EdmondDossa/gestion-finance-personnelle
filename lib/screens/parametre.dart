@@ -26,7 +26,6 @@ class _ParametrePageState extends State<ParametrePage> {
   var _dette;
   var _pret;
   bool isModalOpen = false;
-  
 
   _getConfig() async {
     final dataAvoirs = avoirsBox.keys.map((key) {
@@ -99,6 +98,7 @@ class _ParametrePageState extends State<ParametrePage> {
                       ),
                     ),
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(
@@ -185,7 +185,59 @@ class _ParametrePageState extends State<ParametrePage> {
                               ),
                               Text(
                                 _avoir != null
-                                    ? _avoir!.montantTotal.toString() + " FCFA"
+                                    ? _avoir!.capital.toString() + " FCFA"
+                                    : "0 FCFA",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: white),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Dettes: ",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: white),
+                              ),
+                              Text(
+                                _dette != null
+                                    ? _dette!.montantTotal.toString() + " FCFA"
+                                    : "0 FCFA",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: white),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: [
+                              Text(
+                                "Prêts: ",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: white),
+                              ),
+                              Text(
+                                _pret != null
+                                    ? _pret!.montantTotal.toString() + " FCFA"
                                     : "0 FCFA",
                                 style: TextStyle(
                                     fontSize: 18,
@@ -259,7 +311,6 @@ class _ParametrePageState extends State<ParametrePage> {
                           ),
                         ),
                       ),
-                      
                     ],
                   )
                 ],

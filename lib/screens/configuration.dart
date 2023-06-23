@@ -16,11 +16,13 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   TextEditingController _avoirs = TextEditingController(text: "0");
   TextEditingController _dettes = TextEditingController(text: "0");
   TextEditingController _prets = TextEditingController(text: "0");
-  
+
   _saveConfig() async {
-    avoirsBox.add(HAvoirs(double.parse(_avoirs.text != "" ?_avoirs.text : "0")));
-    dettesBox.add(HDettes(double.parse(_dettes.text != "" ?_dettes.text : "0")));
-    pretsBox.add(HPrets(double.parse(_prets.text != "" ?_prets.text : "0")));
+    avoirsBox
+        .add(HAvoirs(double.parse(_avoirs.text != "" ? _avoirs.text : "0")));
+    dettesBox
+        .add(HDettes(double.parse(_dettes.text != "" ? _dettes.text : "0")));
+    pretsBox.add(HPrets(double.parse(_prets.text != "" ? _prets.text : "0")));
 
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -28,11 +30,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-    avoirsBox.close();
-    dettesBox.close();
-    pretsBox.close();
   }
 
   @override
