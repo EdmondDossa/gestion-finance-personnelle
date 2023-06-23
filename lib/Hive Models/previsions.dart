@@ -13,4 +13,5 @@ class HPrevision extends HiveObject{
   late double montant;
   @HiveField(3)
   late String userUid = authServices.currentUser.uid;
+  HPrevision(this.mois, this.annee, this.montant);
 }

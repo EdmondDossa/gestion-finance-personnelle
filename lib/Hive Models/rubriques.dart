@@ -4,12 +4,13 @@ import 'package:hive/hive.dart';
 part 'rubriques.g.dart';
 
 @HiveType(typeId: 6)
-class GFRubriques extends HiveObject{
+class HRubriques extends HiveObject {
   @HiveField(0)
-  late String nomRubrique = "";
+  String nomRubrique;
   @HiveField(1)
-  late String description = "";
+  String description;
   @HiveField(2)
-  late String userUid = authServices.currentUser.uid;
-  
+  String userUid;
+
+  HRubriques(this.nomRubrique, this.description, this.userUid, [String? uid]);
 }

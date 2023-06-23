@@ -16,9 +16,9 @@ class HAvoirsAdapter extends TypeAdapter<HAvoirs> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HAvoirs()
-      ..capital = fields[0] as double
-      ..userUid = fields[1] as String;
+    return HAvoirs(
+      fields[0] as double,
+    )..userUid = fields[1] as String;
   }
 
   @override

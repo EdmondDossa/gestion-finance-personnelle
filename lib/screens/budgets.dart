@@ -17,7 +17,7 @@ class _CreateBudgetPageState extends State<CreateBudgetPage> {
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
-      initialDate: _date ?? DateTime.now(),
+      initialDate: _date,
       firstDate: DateTime(1900),
       lastDate: DateTime(2100),
     );

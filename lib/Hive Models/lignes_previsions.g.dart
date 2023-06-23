@@ -16,11 +16,12 @@ class HLignesPrevisionAdapter extends TypeAdapter<HLignesPrevision> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return HLignesPrevision()
-      ..type = fields[0] as String
-      ..montant = fields[1] as double
-      ..uidRubrique = fields[2] as String
-      ..uidPrevision = fields[3] as String;
+    return HLignesPrevision(
+      fields[0] as String,
+      fields[1] as double,
+      fields[3] as String,
+      fields[2] as String,
+    );
   }
 
   @override

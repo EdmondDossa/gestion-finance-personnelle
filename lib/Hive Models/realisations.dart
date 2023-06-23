@@ -4,16 +4,16 @@ import 'package:hive/hive.dart';
 part 'realisations.g.dart';
 
 @HiveType(typeId: 5)
-class GFRealisation extends HiveObject{
+class HRealisation extends HiveObject {
   @HiveField(0)
-  late String type;
+  String type;
   @HiveField(1)
-  late String mois;
+  String mois;
   @HiveField(2)
-  late String annee;
+  String annee;
   @HiveField(3)
-  late String rubriquesUid;
+  String rubriquesUid;
   @HiveField(4)
-  late String userUid = authServices.currentUser.uid;
-
+  String userUid = authServices.currentUser.uid;
+  HRealisation(this.type, this.mois, this.annee, this.rubriquesUid);
 }

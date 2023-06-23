@@ -6,26 +6,26 @@ part of 'realisations.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class GFRealisationAdapter extends TypeAdapter<GFRealisation> {
+class HRealisationAdapter extends TypeAdapter<HRealisation> {
   @override
   final int typeId = 5;
 
   @override
-  GFRealisation read(BinaryReader reader) {
+  HRealisation read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return GFRealisation()
-      ..type = fields[0] as String
-      ..mois = fields[1] as String
-      ..annee = fields[2] as String
-      ..rubriquesUid = fields[3] as String
-      ..userUid = fields[4] as String;
+    return HRealisation(
+      fields[0] as String,
+      fields[1] as String,
+      fields[2] as String,
+      fields[3] as String,
+    )..userUid = fields[4] as String;
   }
 
   @override
-  void write(BinaryWriter writer, GFRealisation obj) {
+  void write(BinaryWriter writer, HRealisation obj) {
     writer
       ..writeByte(5)
       ..writeByte(0)
@@ -46,7 +46,7 @@ class GFRealisationAdapter extends TypeAdapter<GFRealisation> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is GFRealisationAdapter &&
+      other is HRealisationAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

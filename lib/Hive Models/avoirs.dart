@@ -9,4 +9,5 @@ class HAvoirs extends HiveObject {
   late double capital = 0;
   @HiveField(1)
   late String userUid = authServices.currentUser.uid;
+  HAvoirs(this.capital);
 }

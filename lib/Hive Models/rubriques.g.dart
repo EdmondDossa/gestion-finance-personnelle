@@ -6,24 +6,25 @@ part of 'rubriques.dart';
 // TypeAdapterGenerator
 // **************************************************************************
 
-class GFRubriquesAdapter extends TypeAdapter<GFRubriques> {
+class HRubriquesAdapter extends TypeAdapter<HRubriques> {
   @override
   final int typeId = 6;
 
   @override
-  GFRubriques read(BinaryReader reader) {
+  HRubriques read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return GFRubriques()
-      ..nomRubrique = fields[0] as String
-      ..description = fields[1] as String
-      ..userUid = fields[2] as String;
+    return HRubriques(
+      fields[0] as String,
+      fields[1] as String,
+      fields[2] as String,
+    );
   }
 
   @override
-  void write(BinaryWriter writer, GFRubriques obj) {
+  void write(BinaryWriter writer, HRubriques obj) {
     writer
       ..writeByte(3)
       ..writeByte(0)
@@ -40,7 +41,7 @@ class GFRubriquesAdapter extends TypeAdapter<GFRubriques> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is GFRubriquesAdapter &&
+      other is HRubriquesAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

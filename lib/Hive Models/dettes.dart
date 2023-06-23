@@ -4,11 +4,13 @@ import 'package:hive/hive.dart';
 part 'dettes.g.dart';
 
 @HiveType(typeId: 1)
-class HDettes extends HiveObject{
+class HDettes extends HiveObject {
   @HiveField(0)
-  late double montant; 
+  late double montant;
   @HiveField(1)
   late String date;
   @HiveField(2)
   late String userUid = authServices.currentUser.uid;
+
+  HDettes(this.montant,this.date);
 }

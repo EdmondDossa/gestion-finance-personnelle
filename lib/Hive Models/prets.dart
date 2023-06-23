@@ -4,11 +4,12 @@ import 'package:hive/hive.dart';
 part 'prets.g.dart';
 
 @HiveType(typeId: 3)
-class GFPrets extends HiveObject{
+class HPrets extends HiveObject {
   @HiveField(0)
-  late double montant; 
+  double montant;
   @HiveField(1)
-  late String date;
+  String date;
   @HiveField(2)
-  late String userUid = authServices.currentUser.uid;
+  String userUid = authServices.currentUser.uid;
+  HPrets(this.montant, this.date);
 }

@@ -4,7 +4,7 @@ class GFRubriques {
   String description = "";
   String userUid = "";
 
-  GFRubriques(this.nomRubrique, this.description,this.userUid);
+  GFRubriques(this.nomRubrique, this.description,this.userUid, {this.uid});
 
   GFRubriques.fromJson(Map<String, dynamic> json) {
     nomRubrique = json["nomRubrique"];
