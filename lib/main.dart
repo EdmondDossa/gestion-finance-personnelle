@@ -14,7 +14,7 @@ void main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   await initDatabase();
-  initializeDateFormatting('fr_FR', null).then((_) {
+  initializeDateFormatting('fr_FR', null).then((_) async{
     runApp(MyApp());
   });
 }

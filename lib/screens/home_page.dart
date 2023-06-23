@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/models/transaction.dart';
+import 'package:gestion_finance/screens/login.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:gestion_finance/utilities/db_services.dart';
@@ -117,26 +118,6 @@ class _StartPageState extends State<StartPage> {
                         ),
                         child: Stack(
                           children: [
-                            Positioned(
-                                top: 30,
-                                right: 15,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(7),
-                                  child: GestureDetector(
-                                    onTap: () async => {
-                                      await AuthServices().signOut()
-                                    },
-                                    child: Container(
-                                      height: 40,
-                                      width: 40,
-                                      child: Icon(
-                                        Icons.logout,
-                                        size: 25,
-                                        color: white,
-                                      ),
-                                    ),
-                                  ),
-                                )),
                             Positioned(
                                 top: 35,
                                 right: 60,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/Hive_Models/allModels.dart';
+import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:hive/hive.dart';
@@ -15,13 +16,11 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   TextEditingController _avoirs = TextEditingController(text: "0");
   TextEditingController _dettes = TextEditingController(text: "0");
   TextEditingController _prets = TextEditingController(text: "0");
-  var _avoirBox = Hive.box<HAvoirs>("Avoirs");
-  var _detteBox = Hive.box<HDettes>("Dettes");
-  var _pretBox = Hive.box<HPrets>("Prets");
+  
   _saveConfig() async {
-    _avoirBox.add(HAvoirs(double.parse(_avoirs.text != "" ?_avoirs.text : "0")));
-    _detteBox.add(HDettes(double.parse(_dettes.text != "" ?_dettes.text : "0")));
-    _pretBox.add(HPrets(double.parse(_prets.text != "" ?_prets.text : "0")));
+    avoirsBox.add(HAvoirs(double.parse(_avoirs.text != "" ?_avoirs.text : "0")));
+    dettesBox.add(HDettes(double.parse(_dettes.text != "" ?_dettes.text : "0")));
+    pretsBox.add(HPrets(double.parse(_prets.text != "" ?_prets.text : "0")));
 
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => HomePage()));
@@ -31,9 +30,9 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-    _avoirBox.close();
-    _detteBox.close();
-    _pretBox.close();
+    avoirsBox.close();
+    dettesBox.close();
+    pretsBox.close();
   }
 
   @override

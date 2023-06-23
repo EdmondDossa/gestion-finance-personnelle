@@ -28,7 +28,7 @@ class AuthServices {
     }
   }
 
-  Future<bool> signOut() async {
+  signOut() async {
     try {
       await _auth.signOut();
       return true;

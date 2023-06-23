@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/Hive_Models/allModels.dart';
+import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/models/avoirs.dart';
 import 'package:gestion_finance/models/dettes.dart';
 import 'package:gestion_finance/models/prets.dart';
 import 'package:gestion_finance/screens/all_rubriques.dart';
+import 'package:gestion_finance/screens/login.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/db_services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -24,25 +26,23 @@ class _ParametrePageState extends State<ParametrePage> {
   var _dette;
   var _pret;
   bool isModalOpen = false;
-  var _avoirBox = Hive.box<HAvoirs>("Avoirs");
-  var _detteBox = Hive.box<HDettes>("Dettes");
-  var _pretBox = Hive.box<HPrets>("Prets");
+  
 
   _getConfig() async {
-    final dataAvoirs = _avoirBox.keys.map((key) {
-      final item = _avoirBox.get(key);
+    final dataAvoirs = avoirsBox.keys.map((key) {
+      final item = avoirsBox.get(key);
 
       return GFAvoirs(item!.capital);
     }).toList();
 
-    final dataDettes = _detteBox.keys.map((key) {
-      final item = _detteBox.get(key);
+    final dataDettes = dettesBox.keys.map((key) {
+      final item = dettesBox.get(key);
 
       return GFDettes(montantTotal: item!.montant);
     }).toList();
 
-    final dataPrets = _pretBox.keys.map((key) {
-      final item = _pretBox.get(key);
+    final dataPrets = pretsBox.keys.map((key) {
+      final item = pretsBox.get(key);
 
       return GFPrets(montantTotal: item!.montant);
     }).toList();
@@ -62,16 +62,11 @@ class _ParametrePageState extends State<ParametrePage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-    _avoirBox.close();
-    _detteBox.close();
-    _pretBox.close();
   }
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _getConfig();
   }
@@ -264,29 +259,7 @@ class _ParametrePageState extends State<ParametrePage> {
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () async{
-                          await AuthServices().signOut();
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Icon(
-                                Icons.logout_outlined,
-                                color: buttonColor,
-                              ),
-                              Text(
-                                "Déconnection",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w200,
-                                    color: black),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                      
                     ],
                   )
                 ],

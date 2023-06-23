@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/Hive_Models/allModels.dart';
+import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/models/rubriques.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:gestion_finance/widgets/transaction-widget.dart';
 import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart';
 
 class AllRubriques extends StatefulWidget {
   const AllRubriques({super.key});
@@ -15,7 +17,8 @@ class AllRubriques extends StatefulWidget {
 class _AllRubriquesState extends State<AllRubriques> {
   TextEditingController _nomRubrique = TextEditingController();
   TextEditingController _description = TextEditingController();
-  final _rubriquesBox = Hive.box<HRubriques>('Rubriques');
+
+  
   List<GFRubriques> _rubriquesListe = [];
 
   @override
@@ -24,15 +27,15 @@ class _AllRubriquesState extends State<AllRubriques> {
     _refreshList();
   }
 
+
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-    _rubriquesBox.close();
   }
 
   @override
   Widget build(BuildContext context) {
+    Hive.openBox<HRubriques>("Rubriques");
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -245,8 +248,8 @@ class _AllRubriquesState extends State<AllRubriques> {
   }
 
   void _refreshList() {
-    final data = _rubriquesBox.keys.map((key) {
-      final item = _rubriquesBox.get(key);
+    final data = rubriquesBox.keys.map((key) {
+      final item = rubriquesBox.get(key);
       print(item!.nomRubrique);
       return GFRubriques(item.nomRubrique, item.description, item.userUid,
           uid: key);
@@ -384,7 +387,7 @@ class _AllRubriquesState extends State<AllRubriques> {
   }
 
   _createRubrique(HRubriques r) async {
-    await _rubriquesBox.add(r);
+    await rubriquesBox.add(r);
     _nomRubrique.text = "";
     _description.text = "";
     _refreshList();
@@ -392,7 +395,7 @@ class _AllRubriquesState extends State<AllRubriques> {
   }
 
   _updateRubrique(int? key, HRubriques r) async {
-    await _rubriquesBox.putAt(key!, r);
+    await rubriquesBox.putAt(key!, r);
     _nomRubrique.text = "";
     _description.text = "";
     _refreshList();
