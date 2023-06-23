@@ -173,7 +173,7 @@ class _HomePageState extends State<HomePage> {
                                 horizontal: 20, vertical: 10),
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
-                                color: Colors.orange),
+                                color: Colors.red[600]),
                             child: Text(
                               "Prévisions",
                               style: TextStyle(
