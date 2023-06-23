@@ -3,7 +3,6 @@ import 'package:gestion_finance/models/users.dart';
 import 'package:gestion_finance/utilities/db_services.dart';
 
 class AuthServices {
-  
   final _auth = FirebaseAuth.instance;
   User get currentUser => FirebaseAuth.instance.currentUser!;
   Stream<User?> get onChangeUser => _auth.authStateChanges();
@@ -20,15 +19,16 @@ class AuthServices {
   Future<bool> signUp(String email, String password, String username) async {
     try {
       await _auth.createUserWithEmailAndPassword(
-        email: email, password: password);
-        dbServies.saveUser(GFUsers(email: email, username: username, uid: currentUser.uid));
+          email: email, password: password);
+      dbServies.saveUser(
+          GFUsers(email: email, username: username, uid: currentUser.uid));
       return true;
     } on FirebaseException {
       return false;
     }
   }
 
-  signOut() async {
+  Future<bool> signOut() async {
     try {
       await _auth.signOut();
       return true;
@@ -37,4 +37,5 @@ class AuthServices {
     }
   }
 }
+
 AuthServices authServices = AuthServices();

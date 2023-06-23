@@ -123,7 +123,9 @@ class _StartPageState extends State<StartPage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(7),
                                   child: GestureDetector(
-                                    onTap: () => authServices.signOut(),
+                                    onTap: () async => {
+                                      await AuthServices().signOut()
+                                    },
                                     child: Container(
                                       height: 40,
                                       width: 40,

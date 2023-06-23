@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         fontFamily: GoogleFonts.aBeeZee().fontFamily,
       ),
       home: StreamBuilder(
-          stream: authServices.onChangeUser,
+          stream: AuthServices().onChangeUser,
           builder: (context, snapshot) {
             return snapshot.data == null ? LoginPage() : HomePage();
           }),

@@ -24,11 +24,11 @@ class _ParametrePageState extends State<ParametrePage> {
   var _dette;
   var _pret;
   bool isModalOpen = false;
+  var _avoirBox = Hive.box<HAvoirs>("Avoirs");
+  var _detteBox = Hive.box<HDettes>("Dettes");
+  var _pretBox = Hive.box<HPrets>("Prets");
 
   _getConfig() async {
-    var _avoirBox = Hive.box<HAvoirs>("Avoirs");
-    var _detteBox = Hive.box<HDettes>("Dettes");
-    var _pretBox = Hive.box<HPrets>("Prets");
     final dataAvoirs = _avoirBox.keys.map((key) {
       final item = _avoirBox.get(key);
 
@@ -46,22 +46,27 @@ class _ParametrePageState extends State<ParametrePage> {
 
       return GFPrets(montantTotal: item!.montant);
     }).toList();
-   _avoirBox.close();
-    _detteBox.close();
-    _pretBox.close();
+
     setState(() {
-      if (dataAvoirs.length!=0){
+      if (dataAvoirs.length != 0) {
         _avoir = dataAvoirs[0];
       }
-      if (dataDettes.length!=0){
+      if (dataDettes.length != 0) {
         _dette = dataDettes[0];
       }
-      if (dataPrets.length!=0){
+      if (dataPrets.length != 0) {
         _pret = dataPrets[0];
       }
-      
-      
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _avoirBox.close();
+    _detteBox.close();
+    _pretBox.close();
   }
 
   @override
@@ -71,7 +76,7 @@ class _ParametrePageState extends State<ParametrePage> {
     _getConfig();
   }
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return getBody();
   }
@@ -184,7 +189,9 @@ class _ParametrePageState extends State<ParametrePage> {
                                     color: white),
                               ),
                               Text(
-                                _avoir != null ? _avoir!.montantTotal.toString() + " FCFA" : "0 FCFA",
+                                _avoir != null
+                                    ? _avoir!.montantTotal.toString() + " FCFA"
+                                    : "0 FCFA",
                                 style: TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
@@ -258,8 +265,8 @@ class _ParametrePageState extends State<ParametrePage> {
                         ),
                       ),
                       GestureDetector(
-                        onTap: () {
-                          setTabs(2);
+                        onTap: () async{
+                          await AuthServices().signOut();
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8.0),
@@ -427,8 +434,6 @@ class _ParametrePageState extends State<ParametrePage> {
                     ),
                   ],
                 ));
-          } else if (index == 2) {
-            authServices.signOut();
           }
           return widget;
         });

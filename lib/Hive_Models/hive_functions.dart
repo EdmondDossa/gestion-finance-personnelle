@@ -1,16 +1,7 @@
-
 import 'package:gestion_finance/Hive_Models/allModels.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 initDatabase() async {
-  
-
-  Hive.registerAdapter(HRubriquesAdapter());
-  await Hive.openBox<HRubriques>("Rubriques");
-
-  Hive.registerAdapter(HPrevisionsAdapter());
-  await Hive.openBox<HPrevisions>("Previsions");
-
   Hive.registerAdapter(HAvoirsAdapter());
   await Hive.openBox<HAvoirs>("Avoirs");
 
@@ -26,4 +17,9 @@ initDatabase() async {
   Hive.registerAdapter(HPretsAdapter());
   await Hive.openBox<HPrets>("Prets");
 
+  Hive.registerAdapter(HRubriquesAdapter());
+  await Hive.openBox<HRubriques>("Rubriques");
+
+  Hive.registerAdapter(HPrevisionsAdapter());
+  await Hive.openBox<HPrevisions>("Previsions");
 }

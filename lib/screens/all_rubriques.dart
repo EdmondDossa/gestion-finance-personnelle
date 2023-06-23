@@ -25,6 +25,13 @@ class _AllRubriquesState extends State<AllRubriques> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _rubriquesBox.close();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
