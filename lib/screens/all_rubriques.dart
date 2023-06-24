@@ -250,8 +250,7 @@ class _AllRubriquesState extends State<AllRubriques> {
   void _refreshList() {
     final data = rubriquesBox.keys.map((key) {
       final item = rubriquesBox.get(key);
-      print(item!.nomRubrique);
-      return GFRubriques(item.nomRubrique, item.description, item.userUid,
+      return GFRubriques(item!.nomRubrique, item.description, item.userUid,
           uid: key);
     }).toList();
 

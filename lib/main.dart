@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/Hive_Models/hive_functions.dart';
-import 'package:gestion_finance/screens/configuration.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/screens/login.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
@@ -31,7 +30,11 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: primary,
         fontFamily: GoogleFonts.aBeeZee().fontFamily,
       ),
-      home: ConfigurationPage(),
+      home: StreamBuilder(
+          stream: authServices.onChangeUser,
+          builder: (context, snapshot) {
+            return snapshot.data == null ? LoginPage() : HomePage();
+          }),
     );
   }
 }

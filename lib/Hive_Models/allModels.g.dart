@@ -89,10 +89,10 @@ class HLignesPrevisionsAdapter extends TypeAdapter<HLignesPrevisions> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return HLignesPrevisions(
-      fields[0] as String,
-      fields[1] as double,
-      fields[3] as String,
-      fields[2] as String,
+      fields[0] as String?,
+      fields[1] as double?,
+      fields[3] as int?,
+      fields[2] as int?,
     );
   }
 
@@ -105,9 +105,9 @@ class HLignesPrevisionsAdapter extends TypeAdapter<HLignesPrevisions> {
       ..writeByte(1)
       ..write(obj.montant)
       ..writeByte(2)
-      ..write(obj.uidRubrique)
+      ..write(obj.rubrique)
       ..writeByte(3)
-      ..write(obj.uidPrevision);
+      ..write(obj.prevision);
   }
 
   @override
@@ -170,20 +170,17 @@ class HPrevisionsAdapter extends TypeAdapter<HPrevisions> {
     return HPrevisions(
       fields[0] as String,
       fields[1] as String,
-      fields[2] as double,
     )..userUid = fields[3] as String;
   }
 
   @override
   void write(BinaryWriter writer, HPrevisions obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.mois)
       ..writeByte(1)
       ..write(obj.annee)
-      ..writeByte(2)
-      ..write(obj.montant)
       ..writeByte(3)
       ..write(obj.userUid);
   }
@@ -213,7 +210,7 @@ class HRealisationsAdapter extends TypeAdapter<HRealisations> {
       fields[0] as String,
       fields[1] as String,
       fields[2] as String,
-      fields[3] as String,
+      fields[3] as GFRubriques,
     )..userUid = fields[4] as String;
   }
 
@@ -228,7 +225,7 @@ class HRealisationsAdapter extends TypeAdapter<HRealisations> {
       ..writeByte(2)
       ..write(obj.annee)
       ..writeByte(3)
-      ..write(obj.rubriquesUid)
+      ..write(obj.rubrique)
       ..writeByte(4)
       ..write(obj.userUid);
   }

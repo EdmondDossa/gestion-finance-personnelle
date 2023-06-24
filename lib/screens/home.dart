@@ -4,12 +4,12 @@ import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.da
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/add_rubriques.dart';
-import 'package:gestion_finance/screens/expense.dart';
+import 'package:gestion_finance/screens/realisations.dart';
 import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/parametre.dart';
-import 'package:gestion_finance/screens/revenus.dart';
+import 'package:gestion_finance/screens/previsions.dart';
 import 'package:gestion_finance/screens/statistics.dart';
-import 'package:gestion_finance/screens/realisation.dart';
+import 'package:gestion_finance/screens/transactions.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -78,16 +78,6 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          floatingActionButton: SafeArea(
-              child: FloatingActionButton(
-            backgroundColor: buttonColor,
-            onPressed: () {
-              showModal(pageIndex);
-            },
-            child: const Icon(Icons.add, size: 20),
-          )),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
         ),
         onWillPop: () async {
           if (pageIndex != 0) {
@@ -132,83 +122,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  showModal(int index) {
-    showModalBottomSheet(
-        context: context,
-        backgroundColor: white.withOpacity(0.4),
-        elevation: 5,
-        isScrollControlled: true,
-        builder: (_) {
-          if (index == 0 || index == 1 || index == 2) {
-            return Container(
-              height: 150,
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-                top: 15,
-                left: 15,
-                right: 15,
-              ),
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreateIncomePage()),
-                          );
-                        },
-                        child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Colors.red[600]),
-                            child: Text(
-                              "Prévisions",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: white),
-                            )),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreateExpansePage()),
-                          );
-                        },
-                        child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: green),
-                            child: Text(
-                              "Réalisation",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: white),
-                            )),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
-          }
-          
-          return widget;
-        });
-  }
-
+  
   setTabs(index) {
     setState(() {
       pageIndex = index;
