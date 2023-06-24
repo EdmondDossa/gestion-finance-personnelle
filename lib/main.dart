@@ -15,7 +15,7 @@ void main() async {
   await Firebase.initializeApp();
   await Hive.initFlutter();
   await initDatabase();
-  initializeDateFormatting('fr_FR', null).then((_) async{
+  initializeDateFormatting('fr_FR', null).then((_) async {
     runApp(MyApp());
   });
 }
@@ -31,7 +31,12 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: primary,
         fontFamily: GoogleFonts.aBeeZee().fontFamily,
       ),
-      home: ConfigurationPage(),
+      home: StreamBuilder(
+        stream: authServices.onChangeUser,
+        builder: ((context, snapshot) {
+          return snapshot.data == null ? LoginPage() : HomePage();
+        }),
+      ),
     );
   }
 }

@@ -6,6 +6,7 @@ import 'package:gestion_finance/models/dettes.dart';
 import 'package:gestion_finance/models/prets.dart';
 import 'package:gestion_finance/screens/all_rubriques.dart';
 import 'package:gestion_finance/screens/login.dart';
+import 'package:gestion_finance/screens/notification.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/db_services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -89,7 +90,7 @@ class _ParametrePageState extends State<ParametrePage> {
                 children: [
                   Container(
                     width: double.infinity,
-                    height: 200,
+                    height: 250,
                     decoration: BoxDecoration(
                       color: buttonColor.withOpacity(0.9),
                       borderRadius: BorderRadius.only(
@@ -285,6 +286,32 @@ class _ParametrePageState extends State<ParametrePage> {
                           ),
                         ),
                       ),
+                      /*  GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => NotificationPage()));
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.notification_add_outlined,
+                                color: buttonColor,
+                              ),
+                              Text(
+                                "Notification",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w200,
+                                    color: black),
+                              )
+                            ],
+                          ),
+                        ),
+                      ), */
                       GestureDetector(
                         onTap: () {
                           Navigator.push(

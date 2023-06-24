@@ -1,8 +1,9 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
-
 
 class StattisticsPage extends StatefulWidget {
   const StattisticsPage({super.key});
@@ -12,10 +13,40 @@ class StattisticsPage extends StatefulWidget {
 }
 
 class _StattisticsPageState extends State<StattisticsPage> {
-   final double income = 5000;
-  final double expenses = 3000;
-  //StatisticsPage({required this.income, required this.expenses});
-  List days = ["Jour","Semaine","Mois","Annee"];
+  double? realisation;
+  double? prevision;
+  double? percent;
+  double? prorata;
+  double? reste_prevision;
+  int year = DateTime.now().year;
+  int month = DateTime.now().month;
+  int? numberOfDays;
+  int jour_utiliser = DateTime.now().day;
+  double? point;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    numberOfDays = getNumberOfDaysInMonth(year, month);
+    prevision = 3000;
+    realisation = 1500;
+    //percent = (realisation! * 100) / prevision!;
+    reste_prevision = prevision! - realisation!;
+    prorata = (prevision! / numberOfDays!) * jour_utiliser;
+    point = prorata! - realisation!;
+  }
+
+  int getNumberOfDaysInMonth(int year, int month) {
+    // Créez une instance de DateTime pour le premier jour du mois suivant avec l'année et le mois spécifiés.
+    DateTime firstDayOfNextMonth = DateTime(year, month + 1, 1);
+    // Soustrayez un jour de la date du premier jour du mois suivant pour obtenir le dernier jour du mois actuel.
+    DateTime lastDayOfMonth = firstDayOfNextMonth.subtract(Duration(days: 1));
+    // Renvoie le jour du mois pour le dernier jour du mois actuel.
+    return lastDayOfMonth.day;
+  }
+
+  //StatisticsPage({required this.realisation, required this.prevision});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,7 +59,7 @@ class _StattisticsPageState extends State<StattisticsPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Text(
-              "Statistiques",
+              "Statistiques du mois",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,
@@ -42,78 +73,126 @@ class _StattisticsPageState extends State<StattisticsPage> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ...List.generate(4, (index) {
-                return Container(
-                  height: 40,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: buttonColor,
-                  ),
-                  alignment: Alignment.center,
-                  child: Text(
-                      days[index],
-                      style: TextStyle(
-                        color: white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
-                  ),
-                );
-              }),
-            ],
+            children: [],
           ),
           SizedBox(
             height: 20,
           ),
           Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            AspectRatio(
-              aspectRatio: 1.7,
-              child: PieChart(
-                PieChartData(
-                  sections: [
-                    PieChartSectionData(
-                      color: Colors.green,
-                      value: income,
-                      title: 'Revenus',
-                      radius: 70,
-                    ),
-                    PieChartSectionData(
-                      color: Colors.red,
-                      value: expenses,
-                      title: 'Dépenses',
-                      radius: 70,
-                    ),
-                  ],
-                  sectionsSpace: 0,
-                  centerSpaceRadius: 40,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AspectRatio(
+                aspectRatio: 1.5,
+                child: PieChart(
+                  PieChartData(
+                    sections: [
+                      if (reste_prevision! > 0)
+                        PieChartSectionData(
+                          color: Colors.green,
+                          value: reste_prevision,
+                          title: '',
+                          radius: 70,
+                        ),
+                      PieChartSectionData(
+                        color: Colors.red,
+                        value: realisation,
+                        title: '',
+                        radius: 70,
+                      ),
+                    ],
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 40,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Revenus du mois: ${income.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Dépenses du mois: ${expenses.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 18),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Solde: ${(income - expenses).toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(
+                      Icons.square,
+                      color: red,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Réalisations réalisés: ${realisation!.toStringAsFixed(2)}',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(
+                      Icons.square,
+                      color: green,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Prévisions prévus: ${prevision!.toStringAsFixed(2)}',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Text(
+                'Marge restant : ${(prevision! - realisation!).toStringAsFixed(2)}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    "Avis :",
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: black),
+                  ),
+                  if (point! < 0)
+                    Text(
+                      "Attention!! Vous êtes en déficit",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: red),
+                    )
+                  else if (point! == 0)
+                    Text(
+                      "Vous avez atteint votre seuil pour ce mois",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.yellow),
+                    )
+                  else if (point! > 0)
+                    Text(
+                      "Courage vous êtes en bonne voie!",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: green),
+                    )
+                ],
+              )
+            ],
+          ),
         ],
       ),
     ));
   }
 }
-
-
