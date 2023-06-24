@@ -1,4 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/screens/previsions.dart';
+import 'package:gestion_finance/screens/realisations.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:gestion_finance/utilities/fonctions.dart';
 import 'package:gestion_finance/widgets/transaction-widget.dart';
@@ -14,7 +18,7 @@ class TransactionPage extends StatefulWidget {
 class _TransactionPageState extends State<TransactionPage> {
   String _month =
       capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
-  String? _year = DateFormat("yyyy").format(DateTime.now());
+  String _year = DateFormat("yyyy").format(DateTime.now());
   int _index = 0;
   @override
   Widget build(BuildContext context) {
@@ -25,8 +29,8 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   Widget getBody() {
-    return SafeArea(
-      child: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Column(
           children: [
             Container(
@@ -372,6 +376,16 @@ class _TransactionPageState extends State<TransactionPage> {
           ],
         ),
       ),
+      floatingActionButton: SafeArea(
+          child: FloatingActionButton(
+        backgroundColor: buttonColor.withOpacity(0.80),
+        onPressed: () {
+          showModal();
+        },
+        child: const Icon(Icons.add, size: 20),
+      )),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      
     );
   }
 
@@ -471,6 +485,78 @@ class _TransactionPageState extends State<TransactionPage> {
         ],
       ),
     );
+  }
+  showModal() {
+    showModalBottomSheet(
+        context: context,
+        backgroundColor: white.withOpacity(0.4),
+        elevation: 5,
+        isScrollControlled: true,
+        builder: (_) {
+            return Container(
+              height: 150,
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom,
+                top: 15,
+                left: 15,
+                right: 15,
+              ),
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreatePrevisionPage(month: _month,year: _year,)),
+                          );
+                        },
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: Colors.red[600]),
+                            child: Text(
+                              "Prévisions",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: white),
+                            )),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreateRealisationPage()),
+                          );
+                        },
+                        child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25),
+                                color: green),
+                            child: Text(
+                              "Réalisation",
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: white),
+                            )),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            );
+        });
   }
 
   _showModal() {

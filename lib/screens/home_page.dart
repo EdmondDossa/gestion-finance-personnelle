@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/models/transaction.dart';
+import 'package:gestion_finance/screens/realisations.dart';
 import 'package:gestion_finance/screens/login.dart';
+import 'package:gestion_finance/screens/previsions.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:gestion_finance/utilities/db_services.dart';
@@ -20,7 +22,7 @@ class _StartPageState extends State<StartPage> {
   //String _selectedMonth = DateFormat("MMMM, yyyy").format(DateTime.now());
   String _month =
       capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
-  String? _year = DateFormat("yyyy").format(DateTime.now());
+  String _year = DateFormat("yyyy").format(DateTime.now());
   List transactionsList = [
     Transaction(
       icon: Icon(
@@ -124,7 +126,7 @@ class _StartPageState extends State<StartPage> {
                                 width: 200,
                                 height: 40,
                                 child: GestureDetector(
-                                  onTap: () => _showModal(),
+                                  onTap: () => _showMonthModal(),
                                   child: Container(
                                     padding: EdgeInsets.symmetric(
                                         horizontal: 5, vertical: 7),
@@ -504,9 +506,10 @@ class _StartPageState extends State<StartPage> {
           ],
         ),
       ),
+      
     );
   }
-
+  
   _showSelectedMonthModal() {
     final List<String> months = [
       "Janvier",
@@ -605,7 +608,8 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
-  _showModal() {
+  
+  _showMonthModal() {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(

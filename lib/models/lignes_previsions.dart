@@ -1,25 +1,25 @@
-class LignesPrevision {
-  String? uid="";
-  String type="";
-  double montant=0;
-  String uidRubrique ="";
-  String uidPrevision ="";
+class GFLignesPrevisions {
+  int? uid;
+  String? type;
+  double? montant;
+  int? rubrique;
+  int? prevision;
 
-  LignesPrevision(this.type,this.montant,this.uidRubrique,this.uidPrevision);
-  LignesPrevision.fromJson(Map<String, dynamic> json) {
+  GFLignesPrevisions({this.type, this.montant, this.rubrique, this.prevision,this.uid});
+  GFLignesPrevisions.fromJson(Map<String, dynamic> json) {
     uid = json["uid"];
     type = json["type"];
     montant = json["montant"];
-    uidRubrique = json["uidRubrique"];
-    uidPrevision = json["uidPrevision ="""];
+    rubrique = json["rubrique"];
+    prevision = json["prevision"];
   }
   Map<String, dynamic> toJson() {
     return {
-      "uid" : uid,
-      "type" : type,
-      "montant" : montant,
-      "uidRubrique" : uidRubrique,
-      "uidPrevision =""" : uidPrevision ="",
+      "uid": uid,
+      "type": type,
+      "montant": montant,
+      "rubrique": rubrique,
+      "prevision": prevision,
     };
   }
 }
