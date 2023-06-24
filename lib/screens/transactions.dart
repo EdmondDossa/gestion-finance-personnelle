@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/models/transaction.dart';
 import 'package:gestion_finance/screens/previsions.dart';
 import 'package:gestion_finance/screens/realisations.dart';
 import 'package:gestion_finance/utilities/colors.dart';
@@ -20,6 +21,78 @@ class _TransactionPageState extends State<TransactionPage> {
       capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
   String _year = DateFormat("yyyy").format(DateTime.now());
   int _index = 0;
+  List transactionsList = [
+    Transaction(
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Loyer",
+      description: "",
+      amount: 400,
+      amountColor: red,
+    ),
+    Transaction(
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Manger",
+      description: "",
+      amount: 400,
+      amountColor: red,
+    ),
+    Transaction(
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Transport",
+      description: "",
+      amount: 400,
+      amountColor: red,
+    ),
+    Transaction(
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Shopping",
+      description: "Montant pour mon habillement",
+      amount: 400,
+      amountColor: red,
+    ),
+    Transaction(
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Payment",
+      description: "Payment from Andrea",
+      amount: 400,
+      amountColor: red,
+    ),
+    Transaction(
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Sante",
+      description: "La santé avant tout",
+      amount: 400,
+      amountColor: red,
+    ),
+    Transaction(
+      icon: Icon(
+        Icons.payment,
+        color: mainFontColor,
+      ),
+      title: "Dettes",
+      description: "Mes dettes envers Arlette",
+      amount: 400,
+      amountColor: red,
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,8 +107,10 @@ class _TransactionPageState extends State<TransactionPage> {
         child: Column(
           children: [
             Container(
+              padding: EdgeInsets.only(top: 10),
               decoration: BoxDecoration(
-                color: white.withOpacity(0.85),
+                color: buttonColor,
+                borderRadius: BorderRadius.circular(25),
                 boxShadow: [
                   BoxShadow(
                       color: grey.withOpacity(0.01),
@@ -54,7 +129,9 @@ class _TransactionPageState extends State<TransactionPage> {
                       child: Text(
                         "20000 FCFA",
                         style: TextStyle(
-                            fontSize: 17, fontWeight: FontWeight.w600),
+                            fontSize: 17,
+                            fontWeight: FontWeight.w600,
+                            color: white),
                       ),
                     ),
                     GestureDetector(
@@ -64,7 +141,7 @@ class _TransactionPageState extends State<TransactionPage> {
                         padding:
                             EdgeInsets.symmetric(horizontal: 5, vertical: 7),
                         decoration: BoxDecoration(
-                            color: buttonColor,
+                            color: white.withOpacity(0.5),
                             borderRadius: BorderRadius.circular(50)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -74,7 +151,7 @@ class _TransactionPageState extends State<TransactionPage> {
                               style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.w500,
-                                color: white.withOpacity(0.65),
+                                color: white,
                               ),
                             ),
                             RotatedBox(
@@ -100,26 +177,49 @@ class _TransactionPageState extends State<TransactionPage> {
               ),
             ),
             SizedBox(
-              height: 5,
+              height: 20,
             ),
             Padding(
               padding: EdgeInsets.only(right: 25, left: 25, bottom: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text("Mes réalisations",
-                      style: TextStyle(
-                          fontSize: 20,
-                          color: mainFontColor,
-                          fontWeight: FontWeight.bold)),
-                  Text("Tout voir",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: mainFontColor,
-                        fontWeight: FontWeight.w600,
-                      )),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 5),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(color: buttonColor, width: 2))),
+                      child: Text("Prévisions",
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: mainFontColor,
+                              fontWeight: FontWeight.bold)),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: EdgeInsets.only(bottom: 5),
+                      decoration: BoxDecoration(
+                          border: Border(
+                              bottom:
+                                  BorderSide(color: buttonColor, width: 2))),
+                      child: Text("Réalisations",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: mainFontColor,
+                            fontWeight: FontWeight.bold,
+                          )),
+                    ),
+                  ),
                 ],
               ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             Padding(
               padding: EdgeInsets.only(top: 5, bottom: 20, left: 25, right: 25),
@@ -219,159 +319,23 @@ class _TransactionPageState extends State<TransactionPage> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          changeIndex(3);
-                        },
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                          margin: EdgeInsets.symmetric(horizontal: 5),
-                          decoration: BoxDecoration(
-                              color: _index == 3 ? buttonColor : white,
-                              borderRadius: BorderRadius.circular(25)),
-                          child: Center(
-                            child: Text(
-                              "Dettes",
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: _index == 3
-                                    ? white
-                                    : black.withOpacity(0.5),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          changeIndex(4);
-                        },
-                        child: Container(
-                          padding:
-                              EdgeInsets.symmetric(vertical: 5, horizontal: 20),
-                          margin: EdgeInsets.symmetric(horizontal: 5),
-                          decoration: BoxDecoration(
-                              color: _index == 4 ? buttonColor : white,
-                              borderRadius: BorderRadius.circular(25),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: grey.withOpacity(0.03),
-                                  spreadRadius: 10,
-                                  blurRadius: 3,
-                                )
-                              ]),
-                          child: Center(
-                            child: Text(
-                              "Prêts",
-                              style: TextStyle(
-                                fontSize: 13,
-                                color: _index == 4
-                                    ? white
-                                    : black.withOpacity(0.5),
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
                 ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Aujourd'hui",
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: mainFontColor,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  )
-                ],
-              ),
-            ),
-            WTransaction(
-              icon: Icon(
-                Icons.payment,
-                color: mainFontColor,
-              ),
-              title: "Loyer",
-              description: "",
-              amount: 400,
-              amountColor: red,
-            ),
-            WTransaction(
-              icon: Icon(
-                Icons.payment,
-                color: mainFontColor,
-              ),
-              title: "Manger",
-              description: "",
-              amount: 400,
-              amountColor: red,
-            ),
-            WTransaction(
-              icon: Icon(
-                Icons.payment,
-                color: mainFontColor,
-              ),
-              title: "Transport",
-              description: "",
-              amount: 400,
-              amountColor: red,
-            ),
-            WTransaction(
-              icon: Icon(
-                Icons.payment,
-                color: mainFontColor,
-              ),
-              title: "Shopping",
-              description: "Montant pour mon habillement",
-              amount: 400,
-              amountColor: red,
-            ),
-            WTransaction(
-              icon: Icon(
-                Icons.payment,
-                color: mainFontColor,
-              ),
-              title: "Payment",
-              description: "Payment from Andrea",
-              amount: 400,
-              amountColor: red,
-            ),
-            WTransaction(
-              icon: Icon(
-                Icons.payment,
-                color: mainFontColor,
-              ),
-              title: "Sante",
-              description: "La santé avant tout",
-              amount: 400,
-              amountColor: red,
-            ),
-            WTransaction(
-              icon: Icon(
-                Icons.payment,
-                color: mainFontColor,
-              ),
-              title: "Dettes",
-              description: "Mes dettes envers Arlette",
-              amount: 400,
-              amountColor: red,
+            Container(
+              height: MediaQuery.of(context).size.height * 0.6,
+              padding: EdgeInsets.symmetric(horizontal: 10),
+              child: ListView(physics: BouncingScrollPhysics(), children: [
+                ...List.generate(transactionsList.length, (index) {
+                  return WTransaction(
+                    icon: transactionsList[index].icon,
+                    title: transactionsList[index].title,
+                    description: transactionsList[index].description,
+                    amount: transactionsList[index].amount,
+                    amountColor: transactionsList[index].amountColor,
+                  );
+                })
+              ]),
             ),
           ],
         ),
@@ -385,7 +349,6 @@ class _TransactionPageState extends State<TransactionPage> {
         child: const Icon(Icons.add, size: 20),
       )),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      
     );
   }
 
@@ -486,6 +449,7 @@ class _TransactionPageState extends State<TransactionPage> {
       ),
     );
   }
+
   showModal() {
     showModalBottomSheet(
         context: context,
@@ -493,69 +457,72 @@ class _TransactionPageState extends State<TransactionPage> {
         elevation: 5,
         isScrollControlled: true,
         builder: (_) {
-            return Container(
-              height: 150,
-              padding: EdgeInsets.only(
-                bottom: MediaQuery.of(context).viewInsets.bottom,
-                top: 15,
-                left: 15,
-                right: 15,
-              ),
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreatePrevisionPage(month: _month,year: _year,)),
-                          );
-                        },
-                        child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: Colors.red[600]),
-                            child: Text(
-                              "Prévisions",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: white),
-                            )),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CreateRealisationPage()),
-                          );
-                        },
-                        child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25),
-                                color: green),
-                            child: Text(
-                              "Réalisation",
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: white),
-                            )),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
+          return Container(
+            height: 150,
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              top: 15,
+              left: 15,
+              right: 15,
+            ),
+            alignment: Alignment.center,
+            child: Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CreatePrevisionPage(
+                                    month: _month,
+                                    year: _year,
+                                  )),
+                        );
+                      },
+                      child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: Colors.red[600]),
+                          child: Text(
+                            "Prévisions",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: white),
+                          )),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CreateRealisationPage()),
+                        );
+                      },
+                      child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(25),
+                              color: green),
+                          child: Text(
+                            "Réalisation",
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w400,
+                                color: white),
+                          )),
+                    ),
+                  ],
+                )
+              ],
+            ),
+          );
         });
   }
 
