@@ -1,20 +1,15 @@
-import 'dart:ui';
-
-import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/screens/add_rubriques.dart';
-import 'package:gestion_finance/screens/realisations.dart';
 import 'package:gestion_finance/screens/home_page.dart';
 import 'package:gestion_finance/screens/parametre.dart';
-import 'package:gestion_finance/screens/previsions.dart';
 import 'package:gestion_finance/screens/statistics.dart';
 import 'package:gestion_finance/screens/transactions.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, this.indexPage});
 
+  final int? indexPage;
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -27,57 +22,24 @@ class _HomePageState extends State<HomePage> {
     const StattisticsPage(),
     const ParametrePage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.indexPage == null) {
+      pageIndex = 0;
+    } else {
+      pageIndex = widget.indexPage!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
         child: Scaffold(
           backgroundColor: primary,
           body: getBody(),
-          bottomNavigationBar: Container(
-            height: 80,
-            decoration: BoxDecoration(color: buttonColor),
-            child: Column(
-              children: [
-                getFooter(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Accueil",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: pageIndex == 0 ? blue : white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        "Réalisations",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: pageIndex == 1 ? blue : white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        "Statistiques",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: pageIndex == 2 ? blue : white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                      Text(
-                        "Paramètres",
-                        style: TextStyle(
-                            fontSize: 14,
-                            color: pageIndex == 3 ? blue : white,
-                            fontWeight: FontWeight.w500),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+          bottomNavigationBar: getFooter(),
         ),
         onWillPop: () async {
           if (pageIndex != 0) {
@@ -97,7 +59,100 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget getFooter() {
-    List<IconData> iconItems = [
+    return Container(
+      height: 70,
+      width: double.infinity,
+      decoration: BoxDecoration(
+          color: buttonColor,
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(25),
+            topRight: Radius.circular(25),
+          )),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 20.0,right: 20, top: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: () {
+                setTabs(0);
+              },
+              child: Column(
+                children: [
+                  Icon(
+                    CupertinoIcons.home,
+                    size: 25,
+                    color: pageIndex == 0 ? blue : white,
+                  ),
+                  Text(
+                    "Accueil",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: pageIndex == 0 ? blue : white,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setTabs(1);
+              },
+              child: Column(
+                children: [
+                  Icon(CupertinoIcons.creditcard,size: 25,
+                    color: pageIndex == 1 ? blue : white,),
+                  Text(
+                    "Réalisations",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: pageIndex == 1 ? blue : white,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setTabs(2);
+              },
+              child: Column(
+                children: [
+                  Icon(Icons.stadium,size: 25,
+                    color: pageIndex == 2 ? blue : white,),
+                  Text(
+                    "Statistiques",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: pageIndex == 2 ? blue : white,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+            GestureDetector(
+              onTap: () {
+                setTabs(3);
+              },
+              child: Column(
+                children: [
+                  Icon(CupertinoIcons.settings,size: 25,
+                    color: pageIndex == 3 ? blue : white,),
+                  Text(
+                    "Paramètres",
+                    style: TextStyle(
+                        fontSize: 14,
+                        color: pageIndex == 3 ? blue : white,
+                        fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+    /*List<IconData> iconItems = [
       CupertinoIcons.home,
       CupertinoIcons.creditcard,
       Icons.stadium,
@@ -111,7 +166,7 @@ class _HomePageState extends State<HomePage> {
       icons: iconItems,
       splashColor: white,
       inactiveColor: white,
-      gapLocation: GapLocation.center,
+      gapLocation: GapLocation.none,
       activeIndex: pageIndex,
       notchSmoothness: NotchSmoothness.softEdge,
       leftCornerRadius: 18,
@@ -119,10 +174,9 @@ class _HomePageState extends State<HomePage> {
       iconSize: 25,
       activeColor: blue,
       elevation: 0,
-    );
+    );*/
   }
 
-  
   setTabs(index) {
     setState(() {
       pageIndex = index;

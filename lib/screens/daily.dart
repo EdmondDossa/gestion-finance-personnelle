@@ -210,29 +210,7 @@ class _DailyPageState extends State<DailyPage> {
               padding: EdgeInsets.all(8),
               child: Column(
                 children: [
-                  WTransaction(
-                    icon: Icon(Icons.arrow_upward_rounded), 
-                    title: "Sent", 
-                    description: "Sending Payment to Clients", 
-                    amount: 148,
-                    amountColor: red,
-                  ),
-                  SizedBox(height: 5,),
-                  WTransaction(
-                    icon: Icon(Icons.arrow_downward_rounded), 
-                    title: "Receive", 
-                    description: "Receiving payment from company", 
-                    amount: 158,
-                    amountColor: green,
-                  ),
-                  SizedBox(height: 5,),
-                  WTransaction(
-                    icon: Icon(CupertinoIcons.money_dollar), 
-                    title: "Loan", 
-                    description: "Loan for card", 
-                    amount: 400,
-                    amountColor: red,
-                  ),
+                  
                 ],
               ),
             ),

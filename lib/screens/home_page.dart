@@ -1,6 +1,4 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/models/transaction.dart';
 import 'package:gestion_finance/screens/realisations.dart';
 import 'package:gestion_finance/screens/login.dart';
 import 'package:gestion_finance/screens/previsions.dart';
@@ -13,7 +11,6 @@ import 'package:intl/intl.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
-
   @override
   State<StartPage> createState() => _StartPageState();
 }
@@ -23,7 +20,7 @@ class _StartPageState extends State<StartPage> {
   String _month =
       capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
   String _year = DateFormat("yyyy").format(DateTime.now());
-  List transactionsList = [
+  /* List transactionsList = [
     Transaction(
       icon: Icon(
         Icons.payment,
@@ -94,7 +91,7 @@ class _StartPageState extends State<StartPage> {
       amount: 400,
       amountColor: red,
     ),
-  ];
+  ]; */
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -103,7 +100,7 @@ class _StartPageState extends State<StartPage> {
           children: [
             Container(
               width: double.infinity,
-              height: 400,
+              height: 370,
               child: Stack(
                 children: [
                   Column(
@@ -492,24 +489,27 @@ class _StartPageState extends State<StartPage> {
               width: double.infinity,
               height: MediaQuery.of(context).size.height * 0.45,
               child: ListView(physics: BouncingScrollPhysics(), children: [
-                ...List.generate(transactionsList.length, (index) {
-                  return WTransaction(
+                /* ...List.generate(transactionsList.length, (index) {
+                  /* return WTransaction(
                     icon: transactionsList[index].icon,
                     title: transactionsList[index].title,
                     description: transactionsList[index].description,
                     amount: transactionsList[index].amount,
                     amountColor: transactionsList[index].amountColor,
-                  );
-                })
+                  ); */
+                  return Container();
+                }), */
+                SizedBox(
+                  height: 50,
+                ),
               ]),
             )
           ],
         ),
       ),
-      
     );
   }
-  
+
   _showSelectedMonthModal() {
     final List<String> months = [
       "Janvier",
@@ -608,7 +608,6 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
-  
   _showMonthModal() {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(

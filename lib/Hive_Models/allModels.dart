@@ -35,8 +35,10 @@ class HLignesPrevisions extends HiveObject {
   int? rubrique;
   @HiveField(3)
   int? prevision;
+  @HiveField(4)
+  String? description;
   HLignesPrevisions(
-      this.type, this.montant, this.prevision, this.rubrique);
+      this.type, this.montant, this.prevision, this.description,this.rubrique);
 }
 
 @HiveType(typeId: 3)

@@ -8,17 +8,74 @@ import 'package:gestion_finance/models/rubriques.dart';
 
 List<GFRubriques> getAllRubriques() {
   return rubriquesBox.keys.map((key) {
-    final item = rubriquesBox.get(key);
+    final item = rubriquesBox.getAt(key);
     return GFRubriques(item!.nomRubrique, item.description, item.userUid,
         uid: key);
   }).toList();
 }
 
-//Fonction pour sauvegarder une prévision
+Iterable<GFRubriques?> getAllRubriquesRecettes(int id) {
+  final lignesPrevisions = getAllLignesPrevisions(id);
+  final previsionRecette = lignesPrevisions.where((lp) => lp.type == "Recette");
+  final rubriques = getAllRubriques();
 
-bool savePrevision(month, year) {
+  final recetteRubriques = rubriques.map((ru) {
+    /* final result =[]; */
+    for (var l in previsionRecette) {
+      if (l.source == ru.uid) {
+        return ru;
+      }
+    }
+  });
+
+  return recetteRubriques;
+}
+
+GFRubriques getRubrique(int index) {
+  final item = rubriquesBox.getAt(index);
+  return GFRubriques(item!.nomRubrique, item.description, item.userUid,
+      uid: index);
+}
+
+GFLignesPrevisions getLignesPrevisions(index) {
+  final item = lignesPrevisionsBox.getAt(index);
+  return GFLignesPrevisions(
+      type: item!.type,
+      montant: item.montant,
+      rubrique: item.rubrique,
+      prevision: item.prevision);
+}
+
+List<GFLignesPrevisions> getAllPrevisionsRecettes(){
+  final ligne = lignesPrevisionsBox.keys.map((key) {
+    final item = lignesPrevisionsBox.getAt(key);
+    return GFLignesPrevisions(
+        type: item!.type,
+        montant: item.montant,
+        rubrique: item.rubrique,
+        description: item.description,
+        prevision: item.prevision);
+  }).toList();
+  return ligne.where((lp) => lp.type == "Recette").toList();
+}
+
+List<GFLignesPrevisions> getAllPrevisionsDepense(){
+  final ligne = lignesPrevisionsBox.keys.map((key) {
+    final item = lignesPrevisionsBox.getAt(key);
+    return GFLignesPrevisions(
+        type: item!.type,
+        montant: item.montant,
+        rubrique: item.rubrique,
+        description: item.description,
+        prevision: item.prevision);
+  }).toList();
+  return ligne.where((lp) => lp.type == "Depense").toList();
+}
+
+//Fonction pour sauvegarder une prévision
+Future<bool> savePrevision(month, year) async {
   try {
-    previsionsBox.add(HPrevisions(month, year));
+    await previsionsBox.add(HPrevisions(month, year));
     return true;
   } catch (e) {
     return false;
@@ -34,29 +91,43 @@ List<GFPrevisions> getAllPrevisions() {
 }
 
 //Fonction pour récupérer l'identifiant d'une prevision si celui ci existe
-int? getPrevisionKey(month, year) {
-  final listPrevisions = getAllPrevisions();
+int getPrevisionKey(month, year) {
+  final listPrevisions = previsionsBox.keys.map((key) {
+    final item = previsionsBox.getAt(key);
+    return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
+  }).toList();
+
   final filteredPrevision = listPrevisions
       .where((prevision) => prevision.mois == month && prevision.annee == year)
       .toList();
-  if (filteredPrevision == []) {
+
+  if (filteredPrevision.length == 0) {
     return -1;
   } else {
-    return filteredPrevision[0].uid;
+    return filteredPrevision[0].uid!;
   }
 }
 
-
-List<GFLignesPrevisions> getAllLignesPrevisions() {
-  return lignesPrevisionsBox.keys.map((key) {
+List<GFLignesPrevisions> getAllLignesPrevisions(int? idprevision) {
+  final ligne = lignesPrevisionsBox.keys.map((key) {
     final item = lignesPrevisionsBox.getAt(key);
-    return GFLignesPrevisions(type: item!.type,montant: item.montant, rubrique: item.rubrique, prevision: item.prevision);
+    return GFLignesPrevisions(
+        type: item!.type,
+        montant: item.montant,
+        rubrique: item.rubrique,
+        prevision: item.prevision);
   }).toList();
+  return ligne.where((lp) => lp.prevision == idprevision).toList();
 }
 
-bool saveLignesPrevisions(GFLignesPrevisions lignesPrevisions) {
+Future<bool> saveLignesPrevisions(GFLignesPrevisions lignesPrevisions) async {
   try {
-    lignesPrevisionsBox.add(HLignesPrevisions(lignesPrevisions.type, lignesPrevisions.montant,lignesPrevisions.prevision, lignesPrevisions.rubrique));
+    await lignesPrevisionsBox.add(HLignesPrevisions(
+        lignesPrevisions.type,
+        lignesPrevisions.montant,
+        lignesPrevisions.prevision,
+        lignesPrevisions.description,
+        lignesPrevisions.rubrique));
     return true;
   } catch (e) {
     return false;

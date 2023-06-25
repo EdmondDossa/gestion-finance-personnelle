@@ -92,6 +92,7 @@ class HLignesPrevisionsAdapter extends TypeAdapter<HLignesPrevisions> {
       fields[0] as String?,
       fields[1] as double?,
       fields[3] as int?,
+      fields[4] as String?,
       fields[2] as int?,
     );
   }
@@ -99,7 +100,7 @@ class HLignesPrevisionsAdapter extends TypeAdapter<HLignesPrevisions> {
   @override
   void write(BinaryWriter writer, HLignesPrevisions obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.type)
       ..writeByte(1)
@@ -107,7 +108,9 @@ class HLignesPrevisionsAdapter extends TypeAdapter<HLignesPrevisions> {
       ..writeByte(2)
       ..write(obj.rubrique)
       ..writeByte(3)
-      ..write(obj.prevision);
+      ..write(obj.prevision)
+      ..writeByte(4)
+      ..write(obj.description);
   }
 
   @override

@@ -1,7 +1,11 @@
 import 'dart:ui';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/models/transaction.dart';
+import 'package:gestion_finance/Hive_Models/box.dart';
+import 'package:gestion_finance/models/lignes_previsions.dart';
+import 'package:gestion_finance/models/previsions.dart';
+import 'package:gestion_finance/models/rubriques.dart';
 import 'package:gestion_finance/screens/previsions.dart';
 import 'package:gestion_finance/screens/realisations.dart';
 import 'package:gestion_finance/utilities/colors.dart';
@@ -20,79 +24,41 @@ class _TransactionPageState extends State<TransactionPage> {
   String _month =
       capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
   String _year = DateFormat("yyyy").format(DateTime.now());
+
+  List<GFLignesPrevisions> _transactionsList = [];
   int _index = 0;
-  List transactionsList = [
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Loyer",
-      description: "",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Manger",
-      description: "",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Transport",
-      description: "",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Shopping",
-      description: "Montant pour mon habillement",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Payment",
-      description: "Payment from Andrea",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Sante",
-      description: "La santé avant tout",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Dettes",
-      description: "Mes dettes envers Arlette",
-      amount: 400,
-      amountColor: red,
-    ),
-  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _refresh();
+  }
+
+  _refresh() {
+    final listPrevisions = previsionsBox.keys.map((key) {
+      final item = previsionsBox.getAt(key);
+      return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
+    }).toList();
+
+    if (listPrevisions.length != 0) {
+      var prevision = listPrevisions[0].uid;
+      final ligne = lignesPrevisionsBox.keys.map((key) {
+        final item = lignesPrevisionsBox.getAt(key);
+        return GFLignesPrevisions(
+            type: item!.type,
+            montant: item.montant,
+            rubrique: item.rubrique,
+            description: item.description,
+            prevision: item.prevision);
+      }).toList();
+      ligne.where((lp) => lp.prevision == prevision).toList();
+      setState(() {
+        _transactionsList = ligne;
+        print(_transactionsList[0].description);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,7 +103,6 @@ class _TransactionPageState extends State<TransactionPage> {
                     GestureDetector(
                       onTap: () => _showModal(),
                       child: Container(
-                        width: 150,
                         padding:
                             EdgeInsets.symmetric(horizontal: 5, vertical: 7),
                         decoration: BoxDecoration(
@@ -231,6 +196,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       GestureDetector(
                         onTap: () {
                           changeIndex(0);
+                          _refresh();
                         },
                         child: Container(
                           padding:
@@ -256,6 +222,9 @@ class _TransactionPageState extends State<TransactionPage> {
                       GestureDetector(
                         onTap: () {
                           changeIndex(1);
+                          setState(() {
+                            _transactionsList = getAllPrevisionsRecettes();
+                          });
                         },
                         child: Container(
                           padding:
@@ -288,6 +257,9 @@ class _TransactionPageState extends State<TransactionPage> {
                       GestureDetector(
                         onTap: () {
                           changeIndex(2);
+                          setState(() {
+                            _transactionsList = getAllPrevisionsDepense();
+                          });
                         },
                         child: Container(
                           padding:
@@ -326,15 +298,46 @@ class _TransactionPageState extends State<TransactionPage> {
               height: MediaQuery.of(context).size.height * 0.6,
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: ListView(physics: BouncingScrollPhysics(), children: [
-                ...List.generate(transactionsList.length, (index) {
+                ...List.generate(_transactionsList.length, (index) {
+                  var rubrique = getRubrique(index);
+                  var source;
+                  var description;
+                  if (_transactionsList[index].source != null) {
+                    source = getRubrique(_transactionsList[index].source!);
+                  } else {
+                    source = GFRubriques("", "", "");
+                  }
+                  if (_transactionsList[index].description != null) {
+                    description = _transactionsList[index].description;
+                  } else {
+                    description = "";
+                  }
+                  //var lignesTransactions = getLignesPrevisions(index);
                   return WTransaction(
-                    icon: transactionsList[index].icon,
-                    title: transactionsList[index].title,
-                    description: transactionsList[index].description,
-                    amount: transactionsList[index].amount,
-                    amountColor: transactionsList[index].amountColor,
+                    icon: Icon(Icons.payment),
+                    rubrique: rubrique,
+                    description: description,
+                    amount: _transactionsList[index].montant,
+                    amountColor: _transactionsList[index].type == "Depense"
+                        ? red
+                        : green,
+                    source: source,
+                    operation: _transactionsList[index].type == "Depense"
+                        ? Icon(
+                            Icons.arrow_upward_outlined,
+                            color: red,
+                            size: 18,
+                          )
+                        : Icon(
+                            Icons.arrow_downward_outlined,
+                            color: green,
+                            size: 18,
+                          ),
                   );
-                })
+                }),
+                SizedBox(
+                  height: 30,
+                ),
               ]),
             ),
           ],
@@ -501,7 +504,10 @@ class _TransactionPageState extends State<TransactionPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CreateRealisationPage()),
+                              builder: (context) => CreateRealisationPage(
+                                    month: _month,
+                                    year: _year,
+                                  )),
                         );
                       },
                       child: Container(

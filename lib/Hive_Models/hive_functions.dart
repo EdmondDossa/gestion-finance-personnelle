@@ -25,3 +25,7 @@ initDatabase() async {
   previsionsBox = await Hive.openBox<HPrevisions>("Previsions");
 }
 
+Future<void> deleteAllBoxes() async {
+  Hive.deleteFromDisk();
+}
+

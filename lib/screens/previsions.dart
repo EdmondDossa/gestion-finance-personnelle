@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/Hive_Models/allModels.dart';
+import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/models/lignes_previsions.dart';
+import 'package:gestion_finance/models/previsions.dart';
 import 'package:gestion_finance/models/rubriques.dart';
+import 'package:gestion_finance/screens/home.dart';
+import 'package:gestion_finance/screens/transactions.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/fonctions.dart';
 import 'package:intl/intl.dart';
@@ -18,7 +23,7 @@ class CreatePrevisionPage extends StatefulWidget {
 
 class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
   TextEditingController _nameEspense = TextEditingController();
-  TextEditingController _description = TextEditingController();
+  TextEditingController _description = TextEditingController(text: "");
   TextEditingController _amount = TextEditingController();
   GFRubriques _selectRubriques =
       GFRubriques("", "", authServices.currentUser.uid);
@@ -290,8 +295,8 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {
-                        _savePrevision();
+                      onTap: () async {
+                        await _savePrevision();
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -383,19 +388,16 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
     );
   }
 
-  _savePrevision() {
-    int? previsonId = getPrevisionKey(widget.month, widget.year);
-    if (previsonId == -1) {
-      savePrevision(widget.month, widget.year);
+  _savePrevision() async {
+    final listPrevisions = previsionsBox.keys.map((key) {
+      final item = previsionsBox.getAt(key);
+      return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
+    }).toList();
+    if (listPrevisions.length != 0) {
+      var prevision = listPrevisions[0];
+      await _saveData(prevision.uid!);
     } else {
-      bool isOk = saveLignesPrevisions(GFLignesPrevisions(
-          type: _selectedType,
-          montant: double.parse(_amount.text),
-          rubrique: _selectRubriques.uid,
-          prevision: previsonId));
-      if (isOk) {
-        Navigator.pop(context);
-      }
+      await _saveData(-1);
     }
   }
 
@@ -409,5 +411,41 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
         return _showSelectedMonthModal();
       },
     );
+  }
+
+  _saveData(int index) async {
+    if (index == -1) {
+      var prevision =
+          await previsionsBox.add(HPrevisions(widget.month!, widget.year!));
+      await lignesPrevisionsBox.add(HLignesPrevisions(
+        _selectedType,
+        double.parse(_amount.text),
+        prevision,
+        _description.text,
+        _selectRubriques.uid,
+      ));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                    indexPage: 1,
+                  )),
+          (route) => false);
+    } else {
+      await lignesPrevisionsBox.add(HLignesPrevisions(
+        _selectedType,
+        double.parse(_amount.text),
+        index,
+        _description.text,
+        _selectRubriques.uid,
+      ));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                    indexPage: 1,
+                  )),
+          (route) => false);
+    }
   }
 }

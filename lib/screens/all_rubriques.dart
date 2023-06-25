@@ -3,6 +3,7 @@ import 'package:gestion_finance/Hive_Models/allModels.dart';
 import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/models/rubriques.dart';
 import 'package:gestion_finance/utilities/colors.dart';
+import 'package:gestion_finance/widgets/categorie_widget.dart';
 import 'package:gestion_finance/widgets/transaction-widget.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
@@ -81,12 +82,10 @@ class _AllRubriquesState extends State<AllRubriques> {
                       onTap: () {
                         _selectRubrique(_rubriquesListe[index]);
                       },
-                      child: WTransaction(
+                      child: WCategorie(
                         icon: Icon(Icons.category_outlined),
-                        title: _rubriquesListe[index].nomRubrique,
-                        description: _rubriquesListe[index].description,
-                        amount: 0,
-                        amountColor: white,
+                        rubrique: _rubriquesListe[index].nomRubrique,
+                        description: _rubriquesListe[index].description
                       ),
                     );
                   }),
