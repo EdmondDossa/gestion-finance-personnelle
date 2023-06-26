@@ -1,4 +1,3 @@
-
 import 'package:gestion_finance/models/previsions.dart';
 import 'package:gestion_finance/models/rubriques.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
@@ -38,7 +37,7 @@ class HLignesPrevisions extends HiveObject {
   @HiveField(4)
   String? description;
   HLignesPrevisions(
-      this.type, this.montant, this.prevision, this.description,this.rubrique);
+      this.type, this.montant, this.prevision, this.description, this.rubrique);
 }
 
 @HiveType(typeId: 3)
@@ -51,7 +50,7 @@ class HPrets extends HiveObject {
 }
 
 @HiveType(typeId: 4)
-class HPrevisions extends HiveObject{
+class HPrevisions extends HiveObject {
   @HiveField(0)
   String mois;
   @HiveField(1)
@@ -66,14 +65,18 @@ class HRealisations extends HiveObject {
   @HiveField(0)
   String type;
   @HiveField(1)
-  String mois;
+  DateTime date;
   @HiveField(2)
-  String annee;
+  double montant;
   @HiveField(3)
-  late GFRubriques rubrique;
+  int rubrique;
   @HiveField(4)
+  int? source;
+  @HiveField(5)
+  String? description;
+  @HiveField(6)
   String userUid = authServices.currentUser.uid;
-  HRealisations(this.type, this.mois, this.annee, this.rubrique);
+  HRealisations({required this.type, required this.date, required this.montant,required this.rubrique,this.source,this.description});
 }
 
 @HiveType(typeId: 6)
@@ -83,7 +86,7 @@ class HRubriques extends HiveObject {
   @HiveField(1)
   String description;
   @HiveField(2)
-  String userUid =authServices.currentUser.uid;
+  String userUid = authServices.currentUser.uid;
 
   HRubriques(this.nomRubrique, this.description);
 }

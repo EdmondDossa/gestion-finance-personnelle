@@ -1,34 +1,12 @@
 class GFRealisation {
-  String? uid;
-  String type="";
-  String mois="";
-  String annee ="";
-  String rubriquesUid ="";
-  String userUid="";
-
+  int? uid;
+  String? type;
+  DateTime? date;
+  double? montant;
+  int? rubriquesUid;
+  int? source;
+  String? description;
+  String? userUid;
   GFRealisation(
-    this.type,
-    this.mois,
-    this.annee,
-    this.rubriquesUid,
-    this.userUid
-  );
-  GFRealisation.fromJson(Map<String, dynamic> json) {
-    this.uid = json["uid"];
-    this.type = json["type"];
-    this.mois = json["mois"];
-    this.annee = json["annee"];
-    this.rubriquesUid = json["rubriquesUid"];
-    this.userUid = json["userUid"];
-  }
-  Map<String, dynamic> toJson() {
-    return {
-      "uid": uid,
-      "type": type,
-      "mois": mois,
-      "annee": annee,
-      "rubriquesUid": rubriquesUid,
-      "userUid": userUid,
-    };
-  }
+      {this.type, this.source,this.montant,this.date,this.rubriquesUid,this.description, this.userUid,this.uid});
 }

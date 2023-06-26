@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/models/lignes_previsions.dart';
 import 'package:gestion_finance/models/previsions.dart';
+import 'package:gestion_finance/models/realisations.dart';
 import 'package:gestion_finance/models/rubriques.dart';
 import 'package:gestion_finance/screens/previsions.dart';
 import 'package:gestion_finance/screens/realisations.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:gestion_finance/utilities/fonctions.dart';
-import 'package:gestion_finance/widgets/transaction-widget.dart';
+import 'package:gestion_finance/widgets/prevision-widget.dart';
+import 'package:gestion_finance/widgets/realisation-widget.dart';
 import 'package:intl/intl.dart';
 
 class TransactionPage extends StatefulWidget {
@@ -24,8 +26,9 @@ class _TransactionPageState extends State<TransactionPage> {
   String _month =
       capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
   String _year = DateFormat("yyyy").format(DateTime.now());
-
+  int _tab = 0;
   List<GFLignesPrevisions> _transactionsList = [];
+  List<GFRealisation?> _realisationsList = [];
   int _index = 0;
 
   @override
@@ -35,26 +38,31 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   _refresh() {
-    final listPrevisions = previsionsBox.keys.map((key) {
-      final item = previsionsBox.getAt(key);
-      return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
-    }).toList();
-
-    if (listPrevisions.length != 0) {
-      var prevision = listPrevisions[0].uid;
-      final ligne = lignesPrevisionsBox.keys.map((key) {
-        final item = lignesPrevisionsBox.getAt(key);
-        return GFLignesPrevisions(
-            type: item!.type,
-            montant: item.montant,
-            rubrique: item.rubrique,
-            description: item.description,
-            prevision: item.prevision);
+    if (_tab == 0) {
+      final listPrevisions = previsionsBox.keys.map((key) {
+        final item = previsionsBox.getAt(key);
+        return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
       }).toList();
-      ligne.where((lp) => lp.prevision == prevision).toList();
+
+      if (listPrevisions.length != 0) {
+        var prevision = listPrevisions[0].uid;
+        final ligne = lignesPrevisionsBox.keys.map((key) {
+          final item = lignesPrevisionsBox.getAt(key);
+          return GFLignesPrevisions(
+              type: item!.type,
+              montant: item.montant,
+              rubrique: item.rubrique,
+              description: item.description,
+              prevision: item.prevision);
+        }).toList();
+        ligne.where((lp) => lp.prevision == prevision).toList();
+        setState(() {
+          _transactionsList = ligne;
+        });
+      }
+    } else {
       setState(() {
-        _transactionsList = ligne;
-        print(_transactionsList[0].description);
+        _realisationsList = getAllMonthRealiation(_month, int.parse(_year));
       });
     }
   }
@@ -150,32 +158,42 @@ class _TransactionPageState extends State<TransactionPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      setState(() {
+                        _tab = 0;
+                      });
+                    },
                     child: Container(
                       padding: EdgeInsets.only(bottom: 5),
                       decoration: BoxDecoration(
                           border: Border(
-                              bottom:
-                                  BorderSide(color: buttonColor, width: 2))),
+                              bottom: BorderSide(
+                                  color: _tab == 0 ? buttonColor : primary,
+                                  width: 2))),
                       child: Text("Prévisions",
                           style: TextStyle(
                               fontSize: 20,
-                              color: mainFontColor,
+                              color: _tab == 0 ? mainFontColor : black,
                               fontWeight: FontWeight.bold)),
                     ),
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      setState(() {
+                        _tab = 1;
+                      });
+                    },
                     child: Container(
                       padding: EdgeInsets.only(bottom: 5),
                       decoration: BoxDecoration(
                           border: Border(
-                              bottom:
-                                  BorderSide(color: buttonColor, width: 2))),
+                              bottom: BorderSide(
+                                  color: _tab == 1 ? buttonColor : white,
+                                  width: 2))),
                       child: Text("Réalisations",
                           style: TextStyle(
                             fontSize: 20,
-                            color: mainFontColor,
+                            color: _tab == 1 ? mainFontColor : black,
                             fontWeight: FontWeight.bold,
                           )),
                     ),
@@ -223,7 +241,12 @@ class _TransactionPageState extends State<TransactionPage> {
                         onTap: () {
                           changeIndex(1);
                           setState(() {
-                            _transactionsList = getAllPrevisionsRecettes();
+                            if (_tab == 0) {
+                              _transactionsList = getAllPrevisionsRecettes();
+                            }else {
+                              _realisationsList = getAllRealisationRecettes(
+                                  _month, int.parse(_year));
+                            }
                           });
                         },
                         child: Container(
@@ -258,7 +281,12 @@ class _TransactionPageState extends State<TransactionPage> {
                         onTap: () {
                           changeIndex(2);
                           setState(() {
-                            _transactionsList = getAllPrevisionsDepense();
+                            if (_tab == 0) {
+                              _transactionsList = getAllPrevisionsDepense();
+                            } else {
+                              _realisationsList = getAllRealisationDepense(
+                                  _month, int.parse(_year));
+                            }
                           });
                         },
                         child: Container(
@@ -298,43 +326,68 @@ class _TransactionPageState extends State<TransactionPage> {
               height: MediaQuery.of(context).size.height * 0.6,
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: ListView(physics: BouncingScrollPhysics(), children: [
-                ...List.generate(_transactionsList.length, (index) {
-                  var rubrique = getRubrique(index);
-                  var source;
-                  var description;
-                  if (_transactionsList[index].source != null) {
-                    source = getRubrique(_transactionsList[index].source!);
-                  } else {
-                    source = GFRubriques("", "", "");
-                  }
-                  if (_transactionsList[index].description != null) {
-                    description = _transactionsList[index].description;
-                  } else {
-                    description = "";
-                  }
-                  //var lignesTransactions = getLignesPrevisions(index);
-                  return WTransaction(
-                    icon: Icon(Icons.payment),
-                    rubrique: rubrique,
-                    description: description,
-                    amount: _transactionsList[index].montant,
-                    amountColor: _transactionsList[index].type == "Depense"
-                        ? red
-                        : green,
-                    source: source,
-                    operation: _transactionsList[index].type == "Depense"
-                        ? Icon(
-                            Icons.arrow_upward_outlined,
-                            color: red,
-                            size: 18,
-                          )
-                        : Icon(
-                            Icons.arrow_downward_outlined,
-                            color: green,
-                            size: 18,
-                          ),
-                  );
-                }),
+                if (_tab == 0)
+                  ...List.generate(_transactionsList.length, (index) {
+                    var rubrique = getRubrique(index);
+                    var description;
+                    if (_transactionsList[index].description != null) {
+                      description = _transactionsList[index].description;
+                    } else {
+                      description = "";
+                    }
+                    return WPrevision(
+                      icon: Icon(Icons.payment),
+                      rubrique: rubrique,
+                      description: description,
+                      amount: _transactionsList[index].montant,
+                      amountColor: _transactionsList[index].type == "Depense"
+                          ? red
+                          : green,
+                      operation: _transactionsList[index].type == "Depense"
+                          ? Icon(
+                              Icons.arrow_upward_outlined,
+                              color: red,
+                              size: 18,
+                            )
+                          : Icon(
+                              Icons.arrow_downward_outlined,
+                              color: green,
+                              size: 18,
+                            ),
+                    );
+                  }),
+                if (_tab == 1)
+                  ...List.generate(_realisationsList.length, (index) {
+                    var rubrique = getRubrique(index);
+                    var source;
+                    if (_transactionsList[index].source != null) {
+                      source = getRubrique(_transactionsList[index].source!);
+                    } else {
+                      source = GFRubriques("", "", "");
+                    }
+                    return WRealisation(
+                      icon: Icon(Icons.payment),
+                      rubrique: rubrique,
+                      description: _transactionsList[index].description!,
+                      amount: _realisationsList[index]?.montant,
+                      date: _realisationsList[index]?.date,
+                      amountColor: _realisationsList[index]?.type == "Depense"
+                          ? red
+                          : green,
+                      source: source,
+                      operation: _realisationsList[index]?.type == "Depense"
+                          ? Icon(
+                              Icons.arrow_upward_outlined,
+                              color: red,
+                              size: 18,
+                            )
+                          : Icon(
+                              Icons.arrow_downward_outlined,
+                              color: green,
+                              size: 18,
+                            ),
+                    );
+                  }),
                 SizedBox(
                   height: 30,
                 ),

@@ -2,7 +2,9 @@ import 'package:gestion_finance/Hive_Models/allModels.dart';
 import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/models/lignes_previsions.dart';
 import 'package:gestion_finance/models/previsions.dart';
+import 'package:gestion_finance/models/realisations.dart';
 import 'package:gestion_finance/models/rubriques.dart';
+import 'package:intl/intl.dart';
 
 //Fonction pour récupérer toutes les rubriques
 
@@ -46,7 +48,7 @@ GFLignesPrevisions getLignesPrevisions(index) {
       prevision: item.prevision);
 }
 
-List<GFLignesPrevisions> getAllPrevisionsRecettes(){
+List<GFLignesPrevisions> getAllPrevisionsRecettes() {
   final ligne = lignesPrevisionsBox.keys.map((key) {
     final item = lignesPrevisionsBox.getAt(key);
     return GFLignesPrevisions(
@@ -59,7 +61,7 @@ List<GFLignesPrevisions> getAllPrevisionsRecettes(){
   return ligne.where((lp) => lp.type == "Recette").toList();
 }
 
-List<GFLignesPrevisions> getAllPrevisionsDepense(){
+List<GFLignesPrevisions> getAllPrevisionsDepense() {
   final ligne = lignesPrevisionsBox.keys.map((key) {
     final item = lignesPrevisionsBox.getAt(key);
     return GFLignesPrevisions(
@@ -143,4 +145,36 @@ String capitalizeFirstLetter(String input) {
   final restOfString = input.substring(1).toLowerCase();
 
   return '$firstLetter$restOfString';
+}
+
+List<GFRealisation?> getAllMonthRealiation(String month, int year) {
+  final realisation = realisationsBox.keys.map((key) {
+    final item = realisationsBox.getAt(key);
+    return GFRealisation(
+        type: item!.type,
+        source: item.source,
+        montant: item.montant,
+        date: item.date,
+        description: item.description,
+        rubriquesUid: item.rubrique,
+        uid: key);
+  }).toList();
+  final r = realisation.map((realisation) {
+    String _month = DateFormat.MMMM("fr_FR").format(realisation.date!);
+    int _year = realisation.date!.year;
+    if (_month == month && _year == year) {
+      return realisation;
+    }
+  }).toList();
+  return r;
+}
+
+List<GFRealisation?> getAllRealisationRecettes(String month, int year) {
+  final ligne = getAllMonthRealiation(month, year);
+  return ligne.where((lp) => lp?.type == "Recette").toList();
+}
+
+List<GFRealisation?> getAllRealisationDepense(String month, int year) {
+  final ligne = getAllMonthRealiation(month, year);
+  return ligne.where((lp) => lp?.type == "Depense").toList();
 }

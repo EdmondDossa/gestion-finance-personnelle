@@ -2,29 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:gestion_finance/models/rubriques.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
-class WTransaction extends StatefulWidget {
-  const WTransaction(
+class WPrevision extends StatefulWidget {
+  const WPrevision(
       {super.key,
       this.icon,
       required this.rubrique,
       required this.description,
       this.amount,
       this.amountColor,
-      required this.source,
       this.operation});
 
   final Icon? icon;
   final GFRubriques rubrique;
   final String description;
-  final GFRubriques source;
   final double? amount;
   final Color? amountColor;
   final Icon? operation;
   @override
-  State<WTransaction> createState() => _WTransactionState();
+  State<WPrevision> createState() => _WPrevisionState();
 }
 
-class _WTransactionState extends State<WTransaction> {
+class _WPrevisionState extends State<WPrevision> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -87,23 +85,6 @@ class _WTransactionState extends State<WTransaction> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
-                                if (widget.source.nomRubrique != "")
-                                  Container(
-                                    padding: EdgeInsets.all(3),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: grey.withOpacity(0.85),
-                                            width: 1),
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    child: Text(
-                                      widget.source.nomRubrique,
-                                      style: TextStyle(
-                                          fontSize: 12,
-                                          color: black,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
                               ],
                             ),
                             SizedBox(

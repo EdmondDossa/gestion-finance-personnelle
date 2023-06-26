@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:gestion_finance/widgets/transaction-widget.dart';
+import 'package:gestion_finance/widgets/prevision-widget.dart';
 import 'package:icon_badge/icon_badge.dart';
 
 import '../utilities/colors.dart';

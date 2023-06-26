@@ -4,7 +4,7 @@ import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/models/rubriques.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:gestion_finance/widgets/categorie_widget.dart';
-import 'package:gestion_finance/widgets/transaction-widget.dart';
+import 'package:gestion_finance/widgets/prevision-widget.dart';
 import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 

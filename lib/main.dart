@@ -15,6 +15,7 @@ void main() async {
   await Hive.initFlutter();
   await initDatabase();
   /* await deleteAllBoxes(); */
+  /* await Hive.deleteBoxFromDisk("Realisations"); */
   initializeDateFormatting('fr_FR', null).then((_) async {
     runApp(MyApp());
   });

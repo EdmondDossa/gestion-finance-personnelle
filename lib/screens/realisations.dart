@@ -27,9 +27,25 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
   TextEditingController _amount = TextEditingController();
   GFRubriques _selectRubriques =
       GFRubriques("", "", authServices.currentUser.uid);
-  GFRubriques _selectSource =
-      GFRubriques("", "", authServices.currentUser.uid);
+  GFRubriques _selectSource = GFRubriques("", "", authServices.currentUser.uid);
   String _selectedType = "Recette";
+
+  DateTime _date = DateTime.now();
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _date,
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null) {
+      setState(() {
+        _date = pickedDate;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,20 +88,20 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                       vertical: 8.0,
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.orange,
+                        color: Colors.redAccent,
                         borderRadius: BorderRadius.circular(20.0),
                         border: Border.all(
-                          color: Colors.orange,
+                          color: Colors.red,
                           width: 1,
                         )),
                     child: Row(
                       children: [
                         Icon(
-                          Icons.trending_up_outlined,
+                          Icons.outbond_sharp,
                           color: white,
                         ),
                         Text(
-                          "Prévision",
+                          "Realisation",
                           style: TextStyle(color: white),
                         ),
                       ],
@@ -114,7 +130,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "Faites une prévision pour ce mois",
+                  "Enrégistrer votre opération",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
@@ -211,48 +227,94 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            if (_selectedType == "Depense")
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 15.0,
+                    vertical: 10.0,
+                  ),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(
+                        color: Color.fromARGB(255, 146, 146, 146),
+                        width: 1,
+                      )),
+                  child: Row(
+                    children: [
+                      Icon(Icons.category_outlined),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          _showModal();
+                        },
+                        child: Container(
+                          padding: EdgeInsets.symmetric(vertical: 12),
+                          decoration: BoxDecoration(),
+                          width: 250,
+                          child: _selectSource.nomRubrique == ""
+                              ? Text("Choisir la source de cette dépense",
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                    color: grey.withOpacity(0.8),
+                                  ))
+                              : Text(_selectSource.nomRubrique,
+                                  style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.normal,
+                                    color: black,
+                                  )),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            SizedBox(
+              height: 15,
+            ),
+            GestureDetector(
+              onTap: () => _selectDate(context),
               child: Container(
-                width: double.infinity,
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 15.0,
-                  vertical: 10.0,
+                  horizontal: 30.0,
+                  vertical: 20.0,
                 ),
                 decoration: BoxDecoration(
-                    color: Colors.white,
+                    color: white,
                     borderRadius: BorderRadius.circular(20.0),
                     border: Border.all(
                       color: Color.fromARGB(255, 146, 146, 146),
                       width: 1,
                     )),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.category_outlined),
-                    SizedBox(
-                      width: 5,
+                    Row(
+                      children: [
+                        Icon(Icons.calendar_month_outlined),
+                        Text(
+                          "Enrégistrer le",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.normal,
+                            color: grey.withOpacity(0.5),
+                          ),
+                        ),
+                      ],
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        _showModal();
-                      },
-                      child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 12),
-                        decoration: BoxDecoration(),
-                        width: 250,
-                        child: _selectRubriques.nomRubrique == ""
-                            ? Text("Choisir la source de cette dépense",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
-                                  color: grey.withOpacity(0.8),
-                                ))
-                            : Text(_selectRubriques.nomRubrique,
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.normal,
-                                  color: black,
-                                )),
+                    Text(
+                      DateFormat.yMMMMd("fr_FR").format(_date),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: black.withOpacity(0.5),
                       ),
                     ),
                   ],
@@ -346,7 +408,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        await _savePrevision();
+                        await _saveRealisation();
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -437,6 +499,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
       ),
     );
   }
+
   _showSelectedSourceModal() {
     return Container(
       padding: EdgeInsets.all(20),
@@ -451,7 +514,9 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.vertical,
-              itemCount: getAllRubriquesRecettes(getPrevisionKey(widget.month, widget.year)).length,
+              itemCount: getAllRubriquesRecettes(
+                      getPrevisionKey(widget.month, widget.year))
+                  .length,
               itemBuilder: (context, index) {
                 var rubriques = getAllRubriques();
                 GFRubriques month = rubriques[index];
@@ -459,7 +524,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                   onTap: () {
                     Navigator.of(context).pop();
                     setState(() {
-                      _selectRubriques = month;
+                      _selectSource = month;
                     });
                   },
                   child: Container(
@@ -487,16 +552,29 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
     );
   }
 
-  _savePrevision() async {
-    final listPrevisions = previsionsBox.keys.map((key) {
-      final item = previsionsBox.getAt(key);
-      return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
-    }).toList();
-    if (listPrevisions.length != 0) {
-      var prevision = listPrevisions[0];
-      await _saveData(prevision.uid!);
+  _saveRealisation() async {
+    if (_selectSource.nomRubrique == "") {
+      await realisationsBox.add(HRealisations(
+          type: _selectedType,
+          date: _date,
+          montant: double.parse(_amount.text),
+          rubrique: _selectRubriques.uid!,
+          description: _description.text));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                    indexPage: 1,
+                  )),
+          (route) => false);
     } else {
-      await _saveData(-1);
+      await realisationsBox.add(HRealisations(
+          type: _selectedType,
+          date: _date,
+          montant: double.parse(_amount.text),
+          rubrique: _selectRubriques.uid!,
+          source: _selectSource.uid,
+          description: _description.text));
     }
   }
 
@@ -512,7 +590,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
     );
   }
 
-  _showSourceModal(){
+  _showSourceModal() {
     showModalBottomSheet(
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -522,41 +600,5 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
         return _showSelectedSourceModal();
       },
     );
-  }
-
-  _saveData(int index) async {
-    if (index == -1) {
-      var prevision =
-          await previsionsBox.add(HPrevisions(widget.month!, widget.year!));
-      await lignesPrevisionsBox.add(HLignesPrevisions(
-        _selectedType,
-        double.parse(_amount.text),
-        prevision,
-        _description.text,
-        _selectRubriques.uid,
-      ));
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (context) => HomePage(
-                    indexPage: 1,
-                  )),
-          (route) => false);
-    } else {
-      await lignesPrevisionsBox.add(HLignesPrevisions(
-        _selectedType,
-        double.parse(_amount.text),
-        index,
-        _description.text,
-        _selectRubriques.uid,
-      ));
-      Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-              builder: (context) => HomePage(
-                    indexPage: 1,
-                  )),
-          (route) => false);
-    }
   }
 }
