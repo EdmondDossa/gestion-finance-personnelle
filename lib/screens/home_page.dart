@@ -20,78 +20,20 @@ class _StartPageState extends State<StartPage> {
   String _month =
       capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
   String _year = DateFormat("yyyy").format(DateTime.now());
-  /* List transactionsList = [
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Loyer",
-      description: "",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Manger",
-      description: "",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Transport",
-      description: "",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Shopping",
-      description: "Montant pour mon habillement",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Payment",
-      description: "Payment from Andrea",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Sante",
-      description: "La santé avant tout",
-      amount: 400,
-      amountColor: red,
-    ),
-    Transaction(
-      icon: Icon(
-        Icons.payment,
-        color: mainFontColor,
-      ),
-      title: "Dettes",
-      description: "Mes dettes envers Arlette",
-      amount: 400,
-      amountColor: red,
-    ),
-  ]; */
+ double _recettePrevision = 0;
+  double _depensePrevision = 0;
+  double _recetteRealisation = 0;
+  double _depenseRealisation = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _recettePrevision = totalRecettePrevision();
+    _depensePrevision = totalDepensePrevision();
+   
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -312,7 +254,7 @@ class _StartPageState extends State<StartPage> {
                                       padding: EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 15),
                                       child: Text(
-                                        "\$2000000",
+                                        "${_recettePrevision} FCFA",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,
@@ -324,7 +266,7 @@ class _StartPageState extends State<StartPage> {
                                       padding: EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 15),
                                       child: Text(
-                                        "\$0",
+                                        "${_depensePrevision} FCFA",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,
@@ -428,7 +370,7 @@ class _StartPageState extends State<StartPage> {
                                       padding: EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 15),
                                       child: Text(
-                                        "\$2000000",
+                                        "${_recetteRealisation} FCFA",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,
@@ -440,7 +382,7 @@ class _StartPageState extends State<StartPage> {
                                       padding: EdgeInsets.symmetric(
                                           vertical: 5, horizontal: 15),
                                       child: Text(
-                                        "\$0",
+                                        "${_depenseRealisation} FCFA",
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,

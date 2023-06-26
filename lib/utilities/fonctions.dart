@@ -147,8 +147,8 @@ String capitalizeFirstLetter(String input) {
   return '$firstLetter$restOfString';
 }
 
-List<GFRealisation?> getAllMonthRealiation(String month, int year) {
-  final realisation = realisationsBox.keys.map((key) {
+List<GFRealisation> getAllMonthRealiation(String month, int year) {
+  return realisationsBox.keys.map((key) {
     final item = realisationsBox.getAt(key);
     return GFRealisation(
         type: item!.type,
@@ -159,22 +159,32 @@ List<GFRealisation?> getAllMonthRealiation(String month, int year) {
         rubriquesUid: item.rubrique,
         uid: key);
   }).toList();
-  final r = realisation.map((realisation) {
-    String _month = DateFormat.MMMM("fr_FR").format(realisation.date!);
-    int _year = realisation.date!.year;
-    if (_month == month && _year == year) {
-      return realisation;
-    }
-  }).toList();
-  return r;
+  
 }
 
 List<GFRealisation?> getAllRealisationRecettes(String month, int year) {
   final ligne = getAllMonthRealiation(month, year);
-  return ligne.where((lp) => lp?.type == "Recette").toList();
+  return ligne.where((lp) => lp.type == "Recette").toList();
 }
 
 List<GFRealisation?> getAllRealisationDepense(String month, int year) {
   final ligne = getAllMonthRealiation(month, year);
-  return ligne.where((lp) => lp?.type == "Depense").toList();
+  return ligne.where((lp) => lp.type == "Depense").toList();
+}
+
+double totalRecettePrevision() {
+  var list = getAllPrevisionsRecettes();
+  double montant = 0;
+  for (var l in list) {
+    montant = montant + l.montant!;
+  }
+  return montant;
+}
+double totalDepensePrevision(){
+  var list = getAllPrevisionsDepense();
+  double montant = 0;
+  for (var l in list) {
+    montant = montant + l.montant!;
+  }
+  return montant;
 }
