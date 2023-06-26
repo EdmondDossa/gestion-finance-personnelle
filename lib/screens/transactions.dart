@@ -62,7 +62,7 @@ class _TransactionPageState extends State<TransactionPage> {
       }
     } else {
       setState(() {
-        _realisationsList = getAllMonthRealiation(_month, int.parse(_year));
+        _realisationsList = getAllMonthRealiation();
       });
     }
   }
@@ -244,8 +244,7 @@ class _TransactionPageState extends State<TransactionPage> {
                             if (_tab == 0) {
                               _transactionsList = getAllPrevisionsRecettes();
                             }else {
-                              _realisationsList = getAllRealisationRecettes(
-                                  _month, int.parse(_year));
+                              _realisationsList = getAllRealisationRecettes();
                             }
                           });
                         },
@@ -284,8 +283,7 @@ class _TransactionPageState extends State<TransactionPage> {
                             if (_tab == 0) {
                               _transactionsList = getAllPrevisionsDepense();
                             } else {
-                              _realisationsList = getAllRealisationDepense(
-                                  _month, int.parse(_year));
+                              _realisationsList = getAllRealisationDepense();
                             }
                           });
                         },

@@ -16,7 +16,7 @@ List<GFRubriques> getAllRubriques() {
   }).toList();
 }
 
-Iterable<GFRubriques?> getAllRubriquesRecettes(int id) {
+List<GFRubriques?> getAllRubriquesRecettes(int id) {
   final lignesPrevisions = getAllLignesPrevisions(id);
   final previsionRecette = lignesPrevisions.where((lp) => lp.type == "Recette");
   final rubriques = getAllRubriques();
@@ -30,7 +30,7 @@ Iterable<GFRubriques?> getAllRubriquesRecettes(int id) {
     }
   });
 
-  return recetteRubriques;
+  return recetteRubriques.toList();
 }
 
 GFRubriques getRubrique(int index) {
@@ -147,7 +147,7 @@ String capitalizeFirstLetter(String input) {
   return '$firstLetter$restOfString';
 }
 
-List<GFRealisation> getAllMonthRealiation(String month, int year) {
+List<GFRealisation> getAllMonthRealiation() {
   return realisationsBox.keys.map((key) {
     final item = realisationsBox.getAt(key);
     return GFRealisation(
@@ -159,16 +159,15 @@ List<GFRealisation> getAllMonthRealiation(String month, int year) {
         rubriquesUid: item.rubrique,
         uid: key);
   }).toList();
-  
 }
 
-List<GFRealisation?> getAllRealisationRecettes(String month, int year) {
-  final ligne = getAllMonthRealiation(month, year);
+List<GFRealisation?> getAllRealisationRecettes() {
+  final ligne = getAllMonthRealiation();
   return ligne.where((lp) => lp.type == "Recette").toList();
 }
 
-List<GFRealisation?> getAllRealisationDepense(String month, int year) {
-  final ligne = getAllMonthRealiation(month, year);
+List<GFRealisation?> getAllRealisationDepense() {
+  final ligne = getAllMonthRealiation();
   return ligne.where((lp) => lp.type == "Depense").toList();
 }
 
@@ -180,7 +179,13 @@ double totalRecettePrevision() {
   }
   return montant;
 }
-double totalDepensePrevision(){
+
+double totalDepenseRealisation() {
+  getAllRealisationDepense();
+  return 0;
+}
+
+double totalDepensePrevision() {
   var list = getAllPrevisionsDepense();
   double montant = 0;
   for (var l in list) {

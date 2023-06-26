@@ -472,7 +472,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                   onTap: () {
                     Navigator.of(context).pop();
                     setState(() {
-                      _selectRubriques = month;
+                      _selectSource = month;
                     });
                   },
                   child: Container(
@@ -481,7 +481,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                     height: 50,
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                        color: _selectRubriques.nomRubrique == month.nomRubrique
+                        color: _selectSource.nomRubrique == month.nomRubrique
                             ? blue
                             : white,
                         border: Border.all(color: grey),
