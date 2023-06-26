@@ -161,12 +161,12 @@ List<GFRealisation> getAllMonthRealiation() {
   }).toList();
 }
 
-List<GFRealisation?> getAllRealisationRecettes() {
+List<GFRealisation> getAllRealisationRecettes() {
   final ligne = getAllMonthRealiation();
   return ligne.where((lp) => lp.type == "Recette").toList();
 }
 
-List<GFRealisation?> getAllRealisationDepense() {
+List<GFRealisation> getAllRealisationDepense() {
   final ligne = getAllMonthRealiation();
   return ligne.where((lp) => lp.type == "Depense").toList();
 }
@@ -181,8 +181,21 @@ double totalRecettePrevision() {
 }
 
 double totalDepenseRealisation() {
-  getAllRealisationDepense();
-  return 0;
+  var list = getAllRealisationDepense();
+  double montant = 0;
+  for (var l in list) {
+    montant = montant + l.montant!;
+  }
+  return montant;
+}
+
+double totalRecettesRealisation() {
+  var list = getAllRealisationRecettes();
+  double montant = 0;
+  for (var l in list) {
+    montant = montant + l.montant!;
+  }
+  return montant;
 }
 
 double totalDepensePrevision() {

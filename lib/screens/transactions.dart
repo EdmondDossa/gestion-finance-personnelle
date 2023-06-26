@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/Hive_Models/box.dart';
@@ -30,10 +31,11 @@ class _TransactionPageState extends State<TransactionPage> {
   List<GFLignesPrevisions> _transactionsList = [];
   List<GFRealisation?> _realisationsList = [];
   int _index = 0;
-
+  double _marge = 0;
   @override
   void initState() {
     super.initState();
+    _marge = totalDepensePrevision() - totalDepenseRealisation();
     _refresh();
   }
 
@@ -101,7 +103,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       padding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                       child: Text(
-                        "20000 FCFA",
+                        _marge > 0 ? "$_marge FCFA" : "0 FCFA",
                         style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
@@ -161,6 +163,15 @@ class _TransactionPageState extends State<TransactionPage> {
                     onTap: () {
                       setState(() {
                         _tab = 0;
+                        if(_index==0){
+                        _refresh();
+                        }
+                        if(_index == 1){
+                          _transactionsList = getAllPrevisionsRecettes();
+                        }
+                        if(_index==2){
+                          _transactionsList = getAllPrevisionsDepense();
+                        }
                       });
                     },
                     child: Container(
@@ -181,6 +192,15 @@ class _TransactionPageState extends State<TransactionPage> {
                     onTap: () {
                       setState(() {
                         _tab = 1;
+                        if(_index==0){
+                        _refresh();
+                        }
+                        if(_index == 1){
+                          _realisationsList = getAllRealisationRecettes();
+                        }
+                        if(_index==2){
+                          _realisationsList = getAllRealisationDepense();
+                        }
                       });
                     },
                     child: Container(
@@ -243,7 +263,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           setState(() {
                             if (_tab == 0) {
                               _transactionsList = getAllPrevisionsRecettes();
-                            }else {
+                            } else {
                               _realisationsList = getAllRealisationRecettes();
                             }
                           });
@@ -358,10 +378,12 @@ class _TransactionPageState extends State<TransactionPage> {
                   ...List.generate(_realisationsList.length, (index) {
                     var rubrique = getRubrique(index);
                     var source;
-                    if (_transactionsList[index].source != null) {
-                      source = getRubrique(_transactionsList[index].source!);
+                    if (_realisationsList[index]?.source != null) {
+                      source = getRubrique(_realisationsList[index]!.source!);
+                      
                     } else {
                       source = GFRubriques("", "", "");
+                      
                     }
                     return WRealisation(
                       icon: Icon(Icons.payment),

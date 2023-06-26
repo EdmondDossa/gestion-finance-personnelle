@@ -37,15 +37,20 @@ class _WRealisationState extends State<WRealisation> {
         children: [
           Row(
             children: [
-              Text(DateFormat.yMMMMd("fr_FR").format(widget.date != null ? widget.date! : DateTime.now()),textAlign: TextAlign.left,style: TextStyle(fontWeight: FontWeight.w700),),
+              Text(
+                DateFormat.yMMMMd("fr_FR").format(
+                    widget.date != null ? widget.date! : DateTime.now()),
+                textAlign: TextAlign.left,
+                style: TextStyle(fontWeight: FontWeight.w700),
+              ),
             ],
           ),
-          SizedBox(height: 5,)
-          ,
+          SizedBox(
+            height: 5,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              
               Container(
                 width: 300,
                 padding: EdgeInsets.only(top: 10, left: 10, right: 10),
@@ -92,7 +97,8 @@ class _WRealisationState extends State<WRealisation> {
                                             border: Border.all(
                                                 color: grey.withOpacity(0.85),
                                                 width: 1),
-                                            borderRadius: BorderRadius.circular(20)),
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
                                         child: Text(
                                           widget.rubrique.nomRubrique,
                                           style: TextStyle(
@@ -100,6 +106,9 @@ class _WRealisationState extends State<WRealisation> {
                                               color: black,
                                               fontWeight: FontWeight.bold),
                                         ),
+                                      ),
+                                      SizedBox(
+                                        width: 10,
                                       ),
                                       if (widget.source.nomRubrique != "")
                                         Container(
@@ -131,7 +140,8 @@ class _WRealisationState extends State<WRealisation> {
                                       ),
                                       Container(
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
                                           children: [
                                             Text(
                                               "XOF ${widget.amount}",

@@ -31,6 +31,8 @@ class _StartPageState extends State<StartPage> {
     super.initState();
     _recettePrevision = totalRecettePrevision();
     _depensePrevision = totalDepensePrevision();
+    _recetteRealisation = totalRecettesRealisation();
+    _depenseRealisation = totalDepenseRealisation();
    
   }
 

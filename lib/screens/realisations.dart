@@ -251,7 +251,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          _showModal();
+                          _showSourceModal();
                         },
                         child: Container(
                           padding: EdgeInsets.symmetric(vertical: 12),
@@ -472,7 +472,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                   onTap: () {
                     Navigator.of(context).pop();
                     setState(() {
-                      _selectSource = month;
+                      _selectRubriques = month;
                     });
                   },
                   child: Container(
@@ -481,7 +481,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                     height: 50,
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                        color: _selectSource.nomRubrique == month.nomRubrique
+                        color: _selectRubriques.nomRubrique == month.nomRubrique
                             ? blue
                             : white,
                         border: Border.all(color: grey),
@@ -533,7 +533,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                     height: 50,
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                        color: _selectRubriques.nomRubrique == month.nomRubrique
+                        color: _selectSource.nomRubrique == month.nomRubrique
                             ? blue
                             : white,
                         border: Border.all(color: grey),
@@ -575,6 +575,13 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
           rubrique: _selectRubriques.uid!,
           source: _selectSource.uid,
           description: _description.text));
+          Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                    indexPage: 1,
+                  )),
+          (route) => false);
     }
   }
 
