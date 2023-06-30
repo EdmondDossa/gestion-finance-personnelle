@@ -13,14 +13,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 
 import '../utilities/colors.dart';
 
-class ParametrePage extends StatefulWidget {
-  const ParametrePage({super.key});
+class ProfilPage extends StatefulWidget {
+  const ProfilPage({super.key});
 
   @override
-  State<ParametrePage> createState() => _ParametrePageState();
+  State<ProfilPage> createState() => _ProfilPageState();
 }
 
-class _ParametrePageState extends State<ParametrePage> {
+class _ProfilPageState extends State<ProfilPage> {
   TextEditingController _email = TextEditingController();
   TextEditingController _username = TextEditingController();
   var _avoir;

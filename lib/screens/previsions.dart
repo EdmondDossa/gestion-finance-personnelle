@@ -391,7 +391,7 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
   _savePrevision() async {
     final listPrevisions = previsionsBox.keys.map((key) {
       final item = previsionsBox.getAt(key);
-      return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
+      return GFPrevisions(mois:item!.mois, annee:item.annee, uid: key);
     }).toList();
     if (listPrevisions.length != 0) {
       var prevision = listPrevisions[0];
@@ -416,7 +416,7 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
   _saveData(int index) async {
     if (index == -1) {
       var prevision =
-          await previsionsBox.add(HPrevisions(widget.month!, widget.year!));
+      await previsionsBox.add(HPrevisions(widget.month!, widget.year!));
       await lignesPrevisionsBox.add(HLignesPrevisions(
         _selectedType,
         double.parse(_amount.text),

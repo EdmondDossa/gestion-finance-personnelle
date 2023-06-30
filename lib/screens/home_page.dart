@@ -20,20 +20,21 @@ class _StartPageState extends State<StartPage> {
   String _month =
       capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
   String _year = DateFormat("yyyy").format(DateTime.now());
- double _recettePrevision = 0;
+  double _recettePrevision = 0;
   double _depensePrevision = 0;
   double _recetteRealisation = 0;
   double _depenseRealisation = 0;
+  int? _prevision;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _recettePrevision = totalRecettePrevision();
-    _depensePrevision = totalDepensePrevision();
-    _recetteRealisation = totalRecettesRealisation();
-    _depenseRealisation = totalDepenseRealisation();
-   
+    _prevision = getPrevisionKey(_month, _year);
+    _recettePrevision = totalRecettePrevision(_prevision);
+    _depensePrevision = totalDepensePrevision(_prevision);
+    _recetteRealisation = totalRecettesRealisation(_month,_year);
+    _depenseRealisation = totalDepenseRealisation(_month,_year);
   }
 
   @override

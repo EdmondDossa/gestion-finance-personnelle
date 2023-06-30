@@ -16,21 +16,20 @@ List<GFRubriques> getAllRubriques() {
   }).toList();
 }
 
-List<GFRubriques?> getAllRubriquesRecettes(int id) {
+List<GFRubriques> getAllRubriquesRecettes(int? id) {
   final lignesPrevisions = getAllLignesPrevisions(id);
-  final previsionRecette = lignesPrevisions.where((lp) => lp.type == "Recette");
+  final previsionRecette = lignesPrevisions.map((e) {
+    if (e.type == "Recette") {
+      return e.rubrique;
+    } else {
+      return -1;
+    }
+  }).toList();
+  print("les indices $previsionRecette");
+  //lignesPrevisions.where((lp) => lp.type == "Recette").toList();
   final rubriques = getAllRubriques();
 
-  final recetteRubriques = rubriques.map((ru) {
-    /* final result =[]; */
-    for (var l in previsionRecette) {
-      if (l.source == ru.uid) {
-        return ru;
-      }
-    }
-  });
-
-  return recetteRubriques.toList();
+  return rubriques.where((ru) => previsionRecette.contains(ru.uid)).toList();
 }
 
 GFRubriques getRubrique(int index) {
@@ -48,7 +47,7 @@ GFLignesPrevisions getLignesPrevisions(index) {
       prevision: item.prevision);
 }
 
-List<GFLignesPrevisions> getAllPrevisionsRecettes() {
+List<GFLignesPrevisions> getAllPrevisionsRecettes(int? previson) {
   final ligne = lignesPrevisionsBox.keys.map((key) {
     final item = lignesPrevisionsBox.getAt(key);
     return GFLignesPrevisions(
@@ -58,10 +57,10 @@ List<GFLignesPrevisions> getAllPrevisionsRecettes() {
         description: item.description,
         prevision: item.prevision);
   }).toList();
-  return ligne.where((lp) => lp.type == "Recette").toList();
+  return ligne.where((lp) => lp.type == "Recette" && lp.prevision == previson).toList();
 }
 
-List<GFLignesPrevisions> getAllPrevisionsDepense() {
+List<GFLignesPrevisions> getAllPrevisionsDepense(int? prevision) {
   final ligne = lignesPrevisionsBox.keys.map((key) {
     final item = lignesPrevisionsBox.getAt(key);
     return GFLignesPrevisions(
@@ -71,7 +70,7 @@ List<GFLignesPrevisions> getAllPrevisionsDepense() {
         description: item.description,
         prevision: item.prevision);
   }).toList();
-  return ligne.where((lp) => lp.type == "Depense").toList();
+  return ligne.where((lp) => lp.type == "Depense" && lp.prevision == prevision).toList();
 }
 
 //Fonction pour sauvegarder une prévision
@@ -88,7 +87,7 @@ Future<bool> savePrevision(month, year) async {
 List<GFPrevisions> getAllPrevisions() {
   return previsionsBox.keys.map((key) {
     final item = previsionsBox.getAt(key);
-    return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
+    return GFPrevisions(mois: item!.mois, annee: item.annee, uid: key);
   }).toList();
 }
 
@@ -96,9 +95,8 @@ List<GFPrevisions> getAllPrevisions() {
 int getPrevisionKey(month, year) {
   final listPrevisions = previsionsBox.keys.map((key) {
     final item = previsionsBox.getAt(key);
-    return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
+    return GFPrevisions(mois: item!.mois, annee: item.annee, uid: key);
   }).toList();
-
   final filteredPrevision = listPrevisions
       .where((prevision) => prevision.mois == month && prevision.annee == year)
       .toList();
@@ -117,7 +115,8 @@ List<GFLignesPrevisions> getAllLignesPrevisions(int? idprevision) {
         type: item!.type,
         montant: item.montant,
         rubrique: item.rubrique,
-        prevision: item.prevision);
+        prevision: item.prevision,
+        description: item.description);
   }).toList();
   return ligne.where((lp) => lp.prevision == idprevision).toList();
 }
@@ -147,8 +146,8 @@ String capitalizeFirstLetter(String input) {
   return '$firstLetter$restOfString';
 }
 
-List<GFRealisation> getAllMonthRealiation() {
-  return realisationsBox.keys.map((key) {
+List<GFRealisation> getAllMonthRealiation(String month, String year) {
+  final realisation = realisationsBox.keys.map((key) {
     final item = realisationsBox.getAt(key);
     return GFRealisation(
         type: item!.type,
@@ -159,20 +158,21 @@ List<GFRealisation> getAllMonthRealiation() {
         rubriquesUid: item.rubrique,
         uid: key);
   }).toList();
+  return realisation.where((r) =>capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(r.date!))==month && DateFormat("yyyy").format(r.date!)==year).toList();
 }
 
-List<GFRealisation> getAllRealisationRecettes() {
-  final ligne = getAllMonthRealiation();
-  return ligne.where((lp) => lp.type == "Recette").toList();
+List<GFRealisation> getAllRealisationRecettes(String month, String year) {
+  final ligne = getAllMonthRealiation(month,year);
+  return ligne.where((lp) => lp.type == "Recette" ).toList();
 }
 
-List<GFRealisation> getAllRealisationDepense() {
-  final ligne = getAllMonthRealiation();
+List<GFRealisation> getAllRealisationDepense(String month,String year) {
+  final ligne = getAllMonthRealiation(month,year);
   return ligne.where((lp) => lp.type == "Depense").toList();
 }
 
-double totalRecettePrevision() {
-  var list = getAllPrevisionsRecettes();
+double totalRecettePrevision(int? previson) {
+  var list = getAllPrevisionsRecettes(previson);
   double montant = 0;
   for (var l in list) {
     montant = montant + l.montant!;
@@ -180,8 +180,8 @@ double totalRecettePrevision() {
   return montant;
 }
 
-double totalDepenseRealisation() {
-  var list = getAllRealisationDepense();
+double totalDepenseRealisation(String month,String year) {
+  var list = getAllRealisationDepense(month,year);
   double montant = 0;
   for (var l in list) {
     montant = montant + l.montant!;
@@ -189,8 +189,8 @@ double totalDepenseRealisation() {
   return montant;
 }
 
-double totalRecettesRealisation() {
-  var list = getAllRealisationRecettes();
+double totalRecettesRealisation(String month, String year) {
+  var list = getAllRealisationRecettes(month,year);
   double montant = 0;
   for (var l in list) {
     montant = montant + l.montant!;
@@ -198,8 +198,8 @@ double totalRecettesRealisation() {
   return montant;
 }
 
-double totalDepensePrevision() {
-  var list = getAllPrevisionsDepense();
+double totalDepensePrevision(int? previson) {
+  var list = getAllPrevisionsDepense(previson);
   double montant = 0;
   for (var l in list) {
     montant = montant + l.montant!;

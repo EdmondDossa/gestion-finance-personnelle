@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/screens/home_page.dart';
-import 'package:gestion_finance/screens/parametre.dart';
+import 'package:gestion_finance/screens/profil.dart';
 import 'package:gestion_finance/screens/statistics.dart';
 import 'package:gestion_finance/screens/transactions.dart';
 import 'package:gestion_finance/utilities/colors.dart';
@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
     const StartPage(),
     const TransactionPage(),
     const StattisticsPage(),
-    const ParametrePage(),
+    const ProfilPage(),
   ];
 
   @override
@@ -136,10 +136,10 @@ class _HomePageState extends State<HomePage> {
               },
               child: Column(
                 children: [
-                  Icon(CupertinoIcons.settings,size: 25,
+                  Icon(CupertinoIcons.person,size: 25,
                     color: pageIndex == 3 ? blue : white,),
                   Text(
-                    "Paramètres",
+                    "Profil",
                     style: TextStyle(
                         fontSize: 14,
                         color: pageIndex == 3 ? blue : white,

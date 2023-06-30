@@ -31,6 +31,14 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
   String _selectedType = "Recette";
 
   DateTime _date = DateTime.now();
+  int? _prevision;
+  List<GFRubriques?> _recetteRubriques = [];
+  @override
+  void initState() {
+    super.initState();
+    _prevision = getPrevisionKey(widget.month, widget.year);
+    _recetteRubriques = getAllRubriquesRecettes(_prevision!);
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
@@ -514,12 +522,9 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.vertical,
-              itemCount: getAllRubriquesRecettes(
-                      getPrevisionKey(widget.month, widget.year))
-                  .length,
+              itemCount: _recetteRubriques.length,
               itemBuilder: (context, index) {
-                var rubriques = getAllRubriques();
-                GFRubriques month = rubriques[index];
+                var month = _recetteRubriques[index];
                 return GestureDetector(
                   onTap: () {
                     Navigator.of(context).pop();
@@ -533,13 +538,13 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                     height: 50,
                     padding: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                        color: _selectSource.nomRubrique == month.nomRubrique
+                        color: _selectSource.nomRubrique == month?.nomRubrique
                             ? blue
                             : white,
                         border: Border.all(color: grey),
                         borderRadius: BorderRadius.circular(25)),
                     child: Text(
-                      month.nomRubrique,
+                      month!.nomRubrique,
                       style: TextStyle(fontSize: 18, color: black),
                     ),
                   ),
@@ -575,7 +580,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
           rubrique: _selectRubriques.uid!,
           source: _selectSource.uid,
           description: _description.text));
-          Navigator.pushAndRemoveUntil(
+        Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
               builder: (context) => HomePage(
