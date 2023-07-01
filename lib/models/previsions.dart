@@ -5,7 +5,7 @@ class GFPrevisions {
   String mois = "";
   String annee = "";
   String userUid = authServices.currentUser.uid;
-  GFPrevisions(this.mois, this.annee, year, {this.uid});
+  GFPrevisions({required this.mois, required this.annee, year, this.uid});
   GFPrevisions.fromJson(Map<String, dynamic> json) {
     uid = json["uid"];
     mois = json["mois"];

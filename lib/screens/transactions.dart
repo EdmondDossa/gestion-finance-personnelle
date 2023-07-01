@@ -30,41 +30,25 @@ class _TransactionPageState extends State<TransactionPage> {
   int _tab = 0;
   List<GFLignesPrevisions> _transactionsList = [];
   List<GFRealisation?> _realisationsList = [];
+  int? _previson;
   int _index = 0;
   double _marge = 0;
   @override
   void initState() {
     super.initState();
-    _marge = totalDepensePrevision() - totalDepenseRealisation();
+    _previson = getPrevisionKey(_month, _year);
+    _marge = totalDepensePrevision(_previson) - totalDepenseRealisation(_month,_year);
     _refresh();
   }
 
   _refresh() {
     if (_tab == 0) {
-      final listPrevisions = previsionsBox.keys.map((key) {
-        final item = previsionsBox.getAt(key);
-        return GFPrevisions(item!.userUid, item.mois, item.annee, uid: key);
-      }).toList();
-
-      if (listPrevisions.length != 0) {
-        var prevision = listPrevisions[0].uid;
-        final ligne = lignesPrevisionsBox.keys.map((key) {
-          final item = lignesPrevisionsBox.getAt(key);
-          return GFLignesPrevisions(
-              type: item!.type,
-              montant: item.montant,
-              rubrique: item.rubrique,
-              description: item.description,
-              prevision: item.prevision);
-        }).toList();
-        ligne.where((lp) => lp.prevision == prevision).toList();
-        setState(() {
-          _transactionsList = ligne;
-        });
-      }
+      setState(() {
+        _transactionsList = getAllLignesPrevisions(_previson);
+      });
     } else {
       setState(() {
-        _realisationsList = getAllMonthRealiation();
+        _realisationsList = getAllMonthRealiation(_month,_year);
       });
     }
   }
@@ -163,14 +147,16 @@ class _TransactionPageState extends State<TransactionPage> {
                     onTap: () {
                       setState(() {
                         _tab = 0;
-                        if(_index==0){
-                        _refresh();
+                        if (_index == 0) {
+                          _refresh();
                         }
-                        if(_index == 1){
-                          _transactionsList = getAllPrevisionsRecettes();
+                        if (_index == 1) {
+                          _transactionsList =
+                              getAllPrevisionsRecettes(_previson);
                         }
-                        if(_index==2){
-                          _transactionsList = getAllPrevisionsDepense();
+                        if (_index == 2) {
+                          _transactionsList =
+                              getAllPrevisionsDepense(_previson);
                         }
                       });
                     },
@@ -192,14 +178,14 @@ class _TransactionPageState extends State<TransactionPage> {
                     onTap: () {
                       setState(() {
                         _tab = 1;
-                        if(_index==0){
-                        _refresh();
+                        if (_index == 0) {
+                          _refresh();
                         }
-                        if(_index == 1){
-                          _realisationsList = getAllRealisationRecettes();
+                        if (_index == 1) {
+                          _realisationsList = getAllRealisationRecettes(_month,_year);
                         }
-                        if(_index==2){
-                          _realisationsList = getAllRealisationDepense();
+                        if (_index == 2) {
+                          _realisationsList = getAllRealisationDepense(_month,_year);
                         }
                       });
                     },
@@ -262,9 +248,10 @@ class _TransactionPageState extends State<TransactionPage> {
                           changeIndex(1);
                           setState(() {
                             if (_tab == 0) {
-                              _transactionsList = getAllPrevisionsRecettes();
+                              _transactionsList =
+                                  getAllPrevisionsRecettes(_previson);
                             } else {
-                              _realisationsList = getAllRealisationRecettes();
+                              _realisationsList = getAllRealisationRecettes(_month,_year);
                             }
                           });
                         },
@@ -301,9 +288,10 @@ class _TransactionPageState extends State<TransactionPage> {
                           changeIndex(2);
                           setState(() {
                             if (_tab == 0) {
-                              _transactionsList = getAllPrevisionsDepense();
+                              _transactionsList =
+                                  getAllPrevisionsDepense(_previson);
                             } else {
-                              _realisationsList = getAllRealisationDepense();
+                              _realisationsList = getAllRealisationDepense(_month,_year);
                             }
                           });
                         },
@@ -346,7 +334,8 @@ class _TransactionPageState extends State<TransactionPage> {
               child: ListView(physics: BouncingScrollPhysics(), children: [
                 if (_tab == 0)
                   ...List.generate(_transactionsList.length, (index) {
-                    var rubrique = getRubrique(index);
+                    var rubrique =
+                        getRubrique(_transactionsList[index].rubrique!);
                     var description;
                     if (_transactionsList[index].description != null) {
                       description = _transactionsList[index].description;
@@ -380,32 +369,33 @@ class _TransactionPageState extends State<TransactionPage> {
                     var source;
                     if (_realisationsList[index]?.source != null) {
                       source = getRubrique(_realisationsList[index]!.source!);
-                      
                     } else {
                       source = GFRubriques("", "", "");
-                      
                     }
-                    return WRealisation(
-                      icon: Icon(Icons.payment),
-                      rubrique: rubrique,
-                      description: _transactionsList[index].description!,
-                      amount: _realisationsList[index]?.montant,
-                      date: _realisationsList[index]?.date,
-                      amountColor: _realisationsList[index]?.type == "Depense"
-                          ? red
-                          : green,
-                      source: source,
-                      operation: _realisationsList[index]?.type == "Depense"
-                          ? Icon(
-                              Icons.arrow_upward_outlined,
-                              color: red,
-                              size: 18,
-                            )
-                          : Icon(
-                              Icons.arrow_downward_outlined,
-                              color: green,
-                              size: 18,
-                            ),
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom:10.0),
+                      child: WRealisation(
+                        icon: Icon(Icons.payment),
+                        rubrique: rubrique,
+                        description: _realisationsList[index]!.description!,
+                        amount: _realisationsList[index]?.montant,
+                        date: _realisationsList[index]?.date,
+                        amountColor: _realisationsList[index]?.type == "Depense"
+                            ? red
+                            : green,
+                        source: source,
+                        operation: _realisationsList[index]?.type == "Depense"
+                            ? Icon(
+                                Icons.arrow_upward_outlined,
+                                color: red,
+                                size: 18,
+                              )
+                            : Icon(
+                                Icons.arrow_downward_outlined,
+                                color: green,
+                                size: 18,
+                              ),
+                      ),
                     );
                   }),
                 SizedBox(
@@ -466,6 +456,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     Navigator.of(context).pop();
                     setState(() {
                       _month = month;
+                      _previson = getPrevisionKey(_month, _year);
                     });
                   },
                   child: Container(

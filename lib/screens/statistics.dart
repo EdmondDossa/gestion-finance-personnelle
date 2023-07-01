@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:gestion_finance/utilities/fonctions.dart';
+import 'package:intl/intl.dart';
 
 class StattisticsPage extends StatefulWidget {
   const StattisticsPage({super.key});
@@ -24,14 +25,15 @@ class _StattisticsPageState extends State<StattisticsPage> {
   int? numberOfDays;
   int jour_utiliser = DateTime.now().day;
   double? point;
-
+  int? _prevsion;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _prevsion = getPrevisionKey(capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now())), DateFormat("yyyy").format(DateTime.now()));
     numberOfDays = getNumberOfDaysInMonth(year, month);
-    prevision = totalDepensePrevision();
-    realisation = totalDepenseRealisation();
+    prevision = totalDepensePrevision(_prevsion);
+    realisation = totalDepenseRealisation(capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now())),DateFormat("yyyy").format(DateTime.now()));
     //percent = (realisation! * 100) / prevision!;
     reste_prevision = prevision! - realisation!;
     prorata = (prevision! / numberOfDays!) * jour_utiliser;

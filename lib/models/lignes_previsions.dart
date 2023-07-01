@@ -4,7 +4,6 @@ class GFLignesPrevisions {
   double? montant;
   int? rubrique;
   int? prevision;
-  int? source;
   String? description;
 
   GFLignesPrevisions(
@@ -13,8 +12,7 @@ class GFLignesPrevisions {
       this.rubrique,
       this.prevision,
       this.description,
-      this.uid,
-      this.source});
+      this.uid});
   GFLignesPrevisions.fromJson(Map<String, dynamic> json) {
     uid = json["uid"];
     type = json["type"];
@@ -22,7 +20,6 @@ class GFLignesPrevisions {
     rubrique = json["rubrique"];
     prevision = json["prevision"];
     description = json["description"];
-    source = json["source"];
   }
   Map<String, dynamic> toJson() {
     return {
@@ -32,7 +29,6 @@ class GFLignesPrevisions {
       "rubrique": rubrique,
       "prevision": prevision,
       "description": description,
-      "source": source,
     };
   }
 }
