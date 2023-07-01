@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                   Icon(CupertinoIcons.creditcard,size: 25,
                     color: pageIndex == 1 ? blue : white,),
                   Text(
-                    "Réalisations",
+                    "Transactions",
                     style: TextStyle(
                         fontSize: 14,
                         color: pageIndex == 1 ? blue : white,

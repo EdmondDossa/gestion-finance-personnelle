@@ -174,11 +174,11 @@ class _StattisticsPageState extends State<StattisticsPage> {
                     )
                   else if (point! == 0)
                     Text(
-                      "Vous avez atteint votre seuil pour ce mois",
+                      "Vous avez atteint votre seuil!",
                       style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          color: Colors.yellow),
+                          color: Color.fromARGB(255, 129, 117, 9)),
                     )
                   else if (point! > 0)
                     Text(
