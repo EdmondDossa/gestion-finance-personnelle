@@ -321,9 +321,9 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                     GestureDetector(
                       onTap: () async {
                         if (_edit) {
-                          await _savePrevision();
-                        } else {
                           await editData();
+                        } else {
+                          await _savePrevision();
                         }
                       },
                       child: Container(
@@ -418,11 +418,7 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
 
   _savePrevision() async {
     var prevision = getPrevisionKey(widget.month, widget.year);
-    if (prevision != -1) {
-      await _saveData(prevision);
-    } else {
-      await _saveData(-1);
-    }
+    await _saveData(prevision);
   }
 
   _showModal() {

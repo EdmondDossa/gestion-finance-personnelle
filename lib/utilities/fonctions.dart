@@ -44,7 +44,7 @@ GFLignesPrevisions getLignesPrevisions(index) {
       type: item!.type,
       montant: item.montant,
       rubrique: item.rubrique,
-      prevision: item.prevision);
+      prevision: item.prevision,uid: index);
 }
 
 List<GFLignesPrevisions> getAllPrevisionsRecettes(int? previson) {
@@ -55,7 +55,7 @@ List<GFLignesPrevisions> getAllPrevisionsRecettes(int? previson) {
         montant: item.montant,
         rubrique: item.rubrique,
         description: item.description,
-        prevision: item.prevision);
+        prevision: item.prevision,uid:key);
   }).toList();
   return ligne.where((lp) => lp.type == "Recette" && lp.prevision == previson).toList();
 }
@@ -68,7 +68,7 @@ List<GFLignesPrevisions> getAllPrevisionsDepense(int? prevision) {
         montant: item.montant,
         rubrique: item.rubrique,
         description: item.description,
-        prevision: item.prevision);
+        prevision: item.prevision,uid: key);
   }).toList();
   return ligne.where((lp) => lp.type == "Depense" && lp.prevision == prevision).toList();
 }
@@ -116,7 +116,7 @@ List<GFLignesPrevisions> getAllLignesPrevisions(int? idprevision) {
         montant: item.montant,
         rubrique: item.rubrique,
         prevision: item.prevision,
-        description: item.description);
+        description: item.description,uid: key);
   }).toList();
   return ligne.where((lp) => lp.prevision == idprevision).toList();
 }
