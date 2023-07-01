@@ -12,11 +12,16 @@ import 'package:intl/intl.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
 class CreatePrevisionPage extends StatefulWidget {
-  const CreatePrevisionPage(
-      {super.key, required this.month, required this.year});
+  const CreatePrevisionPage({
+    super.key,
+    required this.month,
+    required this.year,
+    this.ligneP,
+  });
 
   final String? month;
   final String? year;
+  final GFLignesPrevisions? ligneP;
   @override
   State<CreatePrevisionPage> createState() => _CreatePrevisionPageState();
 }
@@ -28,6 +33,19 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
   GFRubriques _selectRubriques =
       GFRubriques("", "", authServices.currentUser.uid);
   String _selectedType = "Recette";
+  bool _edit = false;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.ligneP != null) {
+      _edit = true;
+      _selectRubriques = getRubrique(widget.ligneP!.rubrique!);
+      _selectedType = widget.ligneP!.type!;
+      _amount.text = widget.ligneP!.montant!.toString();
+      _description.text = widget.ligneP!.description!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +66,13 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.of(context).pop(),
+                  onTap: () => Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomePage(
+                                indexPage: 1,
+                              )),
+                      (route) => false),
                   child: Container(
                     width: 50,
                     height: 50,
@@ -296,7 +320,11 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        await _savePrevision();
+                        if (_edit) {
+                          await _savePrevision();
+                        } else {
+                          await editData();
+                        }
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -304,7 +332,7 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                           vertical: 8.0,
                         ),
                         decoration: BoxDecoration(
-                            color: Colors.green,
+                            color: !_edit ? Colors.green : Colors.orange,
                             borderRadius: BorderRadius.circular(20.0),
                             border: Border.all(
                               color: Color.fromARGB(255, 146, 146, 146),
@@ -314,11 +342,11 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Icon(
-                              Icons.save,
+                              _edit ? Icons.edit_outlined : Icons.save,
                               color: white,
                             ),
                             Text(
-                              "Enregistrer",
+                              _edit ? "Modifier" : "Enregistrer",
                               style: TextStyle(
                                 color: white,
                                 fontWeight: FontWeight.w500,
@@ -389,13 +417,9 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
   }
 
   _savePrevision() async {
-    final listPrevisions = previsionsBox.keys.map((key) {
-      final item = previsionsBox.getAt(key);
-      return GFPrevisions(mois:item!.mois, annee:item.annee, uid: key);
-    }).toList();
-    if (listPrevisions.length != 0) {
-      var prevision = listPrevisions[0];
-      await _saveData(prevision.uid!);
+    var prevision = getPrevisionKey(widget.month, widget.year);
+    if (prevision != -1) {
+      await _saveData(prevision);
     } else {
       await _saveData(-1);
     }
@@ -416,7 +440,7 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
   _saveData(int index) async {
     if (index == -1) {
       var prevision =
-      await previsionsBox.add(HPrevisions(widget.month!, widget.year!));
+          await previsionsBox.add(HPrevisions(widget.month!, widget.year!));
       await lignesPrevisionsBox.add(HLignesPrevisions(
         _selectedType,
         double.parse(_amount.text),
@@ -447,5 +471,24 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                   )),
           (route) => false);
     }
+  }
+
+  editData() async {
+    await lignesPrevisionsBox.putAt(
+        widget.ligneP!.uid!,
+        HLignesPrevisions(
+          _selectedType,
+          double.parse(_amount.text),
+          widget.ligneP!.prevision!,
+          _description.text,
+          _selectRubriques.uid,
+        ));
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (context) => HomePage(
+                  indexPage: 1,
+                )),
+        (route) => false);
   }
 }

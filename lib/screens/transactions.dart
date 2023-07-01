@@ -406,25 +406,37 @@ class _TransactionPageState extends State<TransactionPage> {
                     } else {
                       description = "";
                     }
-                    return WPrevision(
-                      icon: Icon(Icons.payment),
-                      rubrique: rubrique,
-                      description: description,
-                      amount: _transactionsList[index].montant,
-                      amountColor: _transactionsList[index].type == "Depense"
-                          ? red
-                          : green,
-                      operation: _transactionsList[index].type == "Depense"
-                          ? Icon(
-                              Icons.arrow_upward_outlined,
-                              color: red,
-                              size: 18,
-                            )
-                          : Icon(
-                              Icons.arrow_downward_outlined,
-                              color: green,
-                              size: 18,
-                            ),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreatePrevisionPage(
+                                      month: _month,
+                                      year: _year,
+                                      ligneP: _transactionsList[index],
+                                    )));
+                      },
+                      child: WPrevision(
+                        icon: Icon(Icons.payment),
+                        rubrique: rubrique,
+                        description: description,
+                        amount: _transactionsList[index].montant,
+                        amountColor: _transactionsList[index].type == "Depense"
+                            ? red
+                            : green,
+                        operation: _transactionsList[index].type == "Depense"
+                            ? Icon(
+                                Icons.arrow_upward_outlined,
+                                color: red,
+                                size: 18,
+                              )
+                            : Icon(
+                                Icons.arrow_downward_outlined,
+                                color: green,
+                                size: 18,
+                              ),
+                      ),
                     );
                   }),
                 if (_tab == 1)
