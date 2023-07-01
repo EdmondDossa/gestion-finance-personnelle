@@ -30,25 +30,28 @@ class _TransactionPageState extends State<TransactionPage> {
   int _tab = 0;
   List<GFLignesPrevisions> _transactionsList = [];
   List<GFRealisation?> _realisationsList = [];
-  int? _previson;
+  int? _prevision;
   int _index = 0;
   double _marge = 0;
+  int _monthOrYear = 0;
   @override
   void initState() {
     super.initState();
-    _previson = getPrevisionKey(_month, _year);
-    _marge = totalDepensePrevision(_previson) - totalDepenseRealisation(_month,_year);
+
     _refresh();
   }
 
   _refresh() {
+    _prevision = getPrevisionKey(_month, _year);
+    _marge = totalDepensePrevision(_prevision) -
+        totalDepenseRealisation(_month, _year);
     if (_tab == 0) {
       setState(() {
-        _transactionsList = getAllLignesPrevisions(_previson);
+        _transactionsList = getAllLignesPrevisions(_prevision);
       });
     } else {
       setState(() {
-        _realisationsList = getAllMonthRealiation(_month,_year);
+        _realisationsList = getAllMonthRealiation(_month, _year);
       });
     }
   }
@@ -87,49 +90,106 @@ class _TransactionPageState extends State<TransactionPage> {
                       padding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 5),
                       child: Text(
-                        _marge > 0 ? "$_marge FCFA" : "0 FCFA",
+                        _marge != 0 ? "$_marge FCFA" : "0 FCFA",
                         style: TextStyle(
                             fontSize: 17,
                             fontWeight: FontWeight.w600,
                             color: white),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () => _showModal(),
-                      child: Container(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 5, vertical: 7),
-                        decoration: BoxDecoration(
-                            color: white.withOpacity(0.5),
-                            borderRadius: BorderRadius.circular(50)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Text(
-                              "$_month, $_year",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: white,
-                              ),
-                            ),
-                            RotatedBox(
-                              quarterTurns: 1,
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                    color: grey.withOpacity(0.3),
-                                    borderRadius: BorderRadius.circular(30)),
-                                child: Icon(
-                                  Icons.chevron_right,
-                                  color: white,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _monthOrYear = 0;
+                            });
+                            _showModal();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 7),
+                            decoration: BoxDecoration(
+                                color: white.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "$_month",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: white,
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                                RotatedBox(
+                                  quarterTurns: 1,
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        color: grey.withOpacity(0.3),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    child: Icon(
+                                      Icons.chevron_right,
+                                      color: white,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _monthOrYear = 1;
+                            });
+                            _showModal();
+                          },
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 5, vertical: 7),
+                            decoration: BoxDecoration(
+                                color: white.withOpacity(0.5),
+                                borderRadius: BorderRadius.circular(50)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  "$_year",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: white,
+                                  ),
+                                ),
+                                RotatedBox(
+                                  quarterTurns: 1,
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                        color: grey.withOpacity(0.3),
+                                        borderRadius:
+                                            BorderRadius.circular(30)),
+                                    child: Icon(
+                                      Icons.chevron_right,
+                                      color: white,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -152,11 +212,11 @@ class _TransactionPageState extends State<TransactionPage> {
                         }
                         if (_index == 1) {
                           _transactionsList =
-                              getAllPrevisionsRecettes(_previson);
+                              getAllPrevisionsRecettes(_prevision);
                         }
                         if (_index == 2) {
                           _transactionsList =
-                              getAllPrevisionsDepense(_previson);
+                              getAllPrevisionsDepense(_prevision);
                         }
                       });
                     },
@@ -182,10 +242,12 @@ class _TransactionPageState extends State<TransactionPage> {
                           _refresh();
                         }
                         if (_index == 1) {
-                          _realisationsList = getAllRealisationRecettes(_month,_year);
+                          _realisationsList =
+                              getAllRealisationRecettes(_month, _year);
                         }
                         if (_index == 2) {
-                          _realisationsList = getAllRealisationDepense(_month,_year);
+                          _realisationsList =
+                              getAllRealisationDepense(_month, _year);
                         }
                       });
                     },
@@ -249,9 +311,10 @@ class _TransactionPageState extends State<TransactionPage> {
                           setState(() {
                             if (_tab == 0) {
                               _transactionsList =
-                                  getAllPrevisionsRecettes(_previson);
+                                  getAllPrevisionsRecettes(_prevision);
                             } else {
-                              _realisationsList = getAllRealisationRecettes(_month,_year);
+                              _realisationsList =
+                                  getAllRealisationRecettes(_month, _year);
                             }
                           });
                         },
@@ -289,9 +352,10 @@ class _TransactionPageState extends State<TransactionPage> {
                           setState(() {
                             if (_tab == 0) {
                               _transactionsList =
-                                  getAllPrevisionsDepense(_previson);
+                                  getAllPrevisionsDepense(_prevision);
                             } else {
-                              _realisationsList = getAllRealisationDepense(_month,_year);
+                              _realisationsList =
+                                  getAllRealisationDepense(_month, _year);
                             }
                           });
                         },
@@ -373,7 +437,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       source = GFRubriques("", "", "");
                     }
                     return Padding(
-                      padding: const EdgeInsets.only(bottom:10.0),
+                      padding: const EdgeInsets.only(bottom: 10.0),
                       child: WRealisation(
                         icon: Icon(Icons.payment),
                         rubrique: rubrique,
@@ -418,6 +482,86 @@ class _TransactionPageState extends State<TransactionPage> {
     );
   }
 
+  _showSelectedYearModal() {
+    final List<String> years = [
+      '2022',
+      '2023',
+      '2024',
+      '2025',
+      '2026',
+      '2027',
+      '2028',
+      '2029',
+      '2030'
+    ];
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+      ),
+      height: 250,
+      child: Expanded(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: years.length,
+          itemBuilder: (BuildContext context, int index) {
+            String year = years[index];
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _year = year;
+                  _prevision = getPrevisionKey(_month, _year);
+                  _marge = totalDepensePrevision(_prevision) -
+                      totalDepenseRealisation(_month, _year);
+                  if (_tab == 0) {
+                    if (_index == 0) {
+                      _refresh();
+                    }
+                    if (_index == 1) {
+                      _transactionsList = getAllPrevisionsRecettes(_prevision);
+                    }
+                    if (_index == 2) {
+                      _transactionsList = getAllPrevisionsDepense(_prevision);
+                    }
+                  } else {
+                    if (_index == 0) {
+                      _refresh();
+                    }
+                    if (_index == 1) {
+                      _realisationsList =
+                          getAllRealisationRecettes(_month, _year);
+                    }
+                    if (_index == 2) {
+                      _realisationsList =
+                          getAllRealisationDepense(_month, _year);
+                    }
+                  }
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.only(bottom: 8),
+                alignment: Alignment.center,
+                height: 50,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                    color: year == _year ? blue : white,
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.circular(25)),
+                child: Text(
+                  year,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   _showSelectedMonthModal() {
     final List<String> months = [
       "Janvier",
@@ -433,8 +577,6 @@ class _TransactionPageState extends State<TransactionPage> {
       "Novembre",
       "Decembre"
     ];
-    final List<String> years = ['2022', '2023', '2024', '2025', '2026'];
-
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -442,77 +584,62 @@ class _TransactionPageState extends State<TransactionPage> {
             topLeft: Radius.circular(40), topRight: Radius.circular(40)),
       ),
       height: 250,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: months.length,
-              itemBuilder: (context, index) {
-                String month = months[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    setState(() {
-                      _month = month;
-                      _previson = getPrevisionKey(_month, _year);
-                    });
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 8),
-                    alignment: Alignment.center,
-                    height: 50,
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        color: _month == month ? blue : white,
-                        border: Border.all(color: grey),
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Text(
-                      month,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                );
+      child: Expanded(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: months.length,
+          itemBuilder: (context, index) {
+            String month = months[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _month = month;
+                  _prevision = getPrevisionKey(_month, _year);
+                  _marge = totalDepensePrevision(_prevision) -
+                      totalDepenseRealisation(_month, _year);
+                  if (_tab == 0) {
+                    if (_index == 0) {
+                      _refresh();
+                    }
+                    if (_index == 1) {
+                      _transactionsList = getAllPrevisionsRecettes(_prevision);
+                    }
+                    if (_index == 2) {
+                      _transactionsList = getAllPrevisionsDepense(_prevision);
+                    }
+                  } else {
+                    if (_index == 0) {
+                      _refresh();
+                    }
+                    if (_index == 1) {
+                      _realisationsList =
+                          getAllRealisationRecettes(_month, _year);
+                    }
+                    if (_index == 2) {
+                      _realisationsList =
+                          getAllRealisationDepense(_month, _year);
+                    }
+                  }
+                });
               },
-            ),
-          ),
-          SizedBox(
-            width: 30,
-          ),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: years.length,
-              itemBuilder: (BuildContext context, int index) {
-                String year = years[index];
-
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    setState(() {
-                      _year = year;
-                    });
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 8),
-                    alignment: Alignment.center,
-                    height: 50,
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        color: year == _year ? blue : white,
-                        border: Border.all(color: grey),
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Text(
-                      year,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+              child: Container(
+                margin: EdgeInsets.only(bottom: 8),
+                alignment: Alignment.center,
+                height: 50,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                    color: _month == month ? blue : white,
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.circular(25)),
+                child: Text(
+                  month,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -598,14 +725,15 @@ class _TransactionPageState extends State<TransactionPage> {
 
   _showModal() {
     showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-      context: context,
-      builder: (_) {
-        return _showSelectedMonthModal();
-      },
-    );
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        context: context,
+        builder: (_) {
+          return _monthOrYear == 0
+              ? _showSelectedMonthModal()
+              : _showSelectedYearModal();
+        });
   }
 
   changeIndex(index) {

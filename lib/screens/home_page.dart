@@ -25,16 +25,24 @@ class _StartPageState extends State<StartPage> {
   double _recetteRealisation = 0;
   double _depenseRealisation = 0;
   int? _prevision;
+  int _monthOrYear = 0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _prevision = getPrevisionKey(_month, _year);
-    _recettePrevision = totalRecettePrevision(_prevision);
-    _depensePrevision = totalDepensePrevision(_prevision);
-    _recetteRealisation = totalRecettesRealisation(_month,_year);
-    _depenseRealisation = totalDepenseRealisation(_month,_year);
+    
+    _refreshData();
+  }
+
+  _refreshData() {
+    setState(() {
+      _prevision = getPrevisionKey(_month, _year);
+      _recettePrevision = totalRecettePrevision(_prevision);
+      _depensePrevision = totalDepensePrevision(_prevision);
+      _recetteRealisation = totalRecettesRealisation(_month, _year);
+      _depenseRealisation = totalDepenseRealisation(_month, _year);
+    });
   }
 
   @override
@@ -64,51 +72,109 @@ class _StartPageState extends State<StartPage> {
                           children: [
                             Positioned(
                                 top: 35,
-                                right: 60,
-                                width: 200,
+                                right: 20,
                                 height: 40,
-                                child: GestureDetector(
-                                  onTap: () => _showMonthModal(),
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 5, vertical: 7),
-                                    decoration: BoxDecoration(
-                                        color: Colors.white38,
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Text(
-                                          "$_month, $_year",
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                            color: white.withOpacity(0.65),
-                                          ),
-                                        ),
-                                        RotatedBox(
-                                          quarterTurns: 1,
-                                          child: Container(
-                                            width: 30,
-                                            height: 30,
-                                            decoration: BoxDecoration(
-                                                color: grey.withOpacity(0.1),
-                                                borderRadius:
-                                                    BorderRadius.circular(30)),
-                                            child: Icon(
-                                              Icons.chevron_right,
-                                              color: black.withOpacity(0.4),
+                                child: Row(
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _monthOrYear = 0;
+                                        });
+                                        _showModal();
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5, vertical: 7),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white38,
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              "$_month",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                color: white.withOpacity(0.65),
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      ],
+                                            RotatedBox(
+                                              quarterTurns: 1,
+                                              child: Container(
+                                                width: 30,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        grey.withOpacity(0.1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30)),
+                                                child: Icon(
+                                                  Icons.chevron_right,
+                                                  color: black.withOpacity(0.4),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
                                     ),
-                                  ),
+                                    SizedBox(width: 5,),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          _monthOrYear = 1;
+                                        });
+                                        _showModal();
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 5, vertical: 7),
+                                        decoration: BoxDecoration(
+                                            color: Colors.white38,
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            Text(
+                                              "$_year",
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.w500,
+                                                color: white.withOpacity(0.65),
+                                              ),
+                                            ),
+                                            RotatedBox(
+                                              quarterTurns: 1,
+                                              child: Container(
+                                                width: 30,
+                                                height: 30,
+                                                decoration: BoxDecoration(
+                                                    color:
+                                                        grey.withOpacity(0.1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            30)),
+                                                child: Icon(
+                                                  Icons.chevron_right,
+                                                  color: black.withOpacity(0.4),
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 )),
                             Padding(
-                              padding: EdgeInsets.only(top: 30, left: 10),
+                              padding: EdgeInsets.only(top: 30, left: 25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -455,6 +521,51 @@ class _StartPageState extends State<StartPage> {
     );
   }
 
+  _showSelectedYearModal() {
+    final List<String> years = ['2022', '2023', '2024', '2025', '2026','2027','2028','2029','2030'];
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+      ),
+      height: 250,
+      child: Expanded(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: years.length,
+          itemBuilder: (BuildContext context, int index) {
+            String year = years[index];
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _year = year;
+                });
+                  _refreshData();
+              },
+              child: Container(
+                margin: EdgeInsets.only(bottom: 8),
+                alignment: Alignment.center,
+                height: 50,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                    color: year == _year ? blue : white,
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.circular(25)),
+                child: Text(
+                  year,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
   _showSelectedMonthModal() {
     final List<String> months = [
       "Janvier",
@@ -470,7 +581,6 @@ class _StartPageState extends State<StartPage> {
       "Novembre",
       "Decembre"
     ];
-    final List<String> years = ['2022', '2023', '2024', '2025', '2026'];
 
     return Container(
       padding: EdgeInsets.all(20),
@@ -479,89 +589,51 @@ class _StartPageState extends State<StartPage> {
             topLeft: Radius.circular(40), topRight: Radius.circular(40)),
       ),
       height: 250,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: months.length,
-              itemBuilder: (context, index) {
-                String month = months[index];
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    setState(() {
-                      _month = month;
-                    });
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 8),
-                    alignment: Alignment.center,
-                    height: 50,
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        color: _month == month ? blue : white,
-                        border: Border.all(color: grey),
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Text(
-                      month,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                );
+      child: Expanded(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: months.length,
+          itemBuilder: (context, index) {
+            String month = months[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _month = month;
+                });
+                  _refreshData();
               },
-            ),
-          ),
-          SizedBox(
-            width: 30,
-          ),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: years.length,
-              itemBuilder: (BuildContext context, int index) {
-                String year = years[index];
-
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    setState(() {
-                      _year = year;
-                    });
-                  },
-                  child: Container(
-                    margin: EdgeInsets.only(bottom: 8),
-                    alignment: Alignment.center,
-                    height: 50,
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                        color: year == _year ? blue : white,
-                        border: Border.all(color: grey),
-                        borderRadius: BorderRadius.circular(25)),
-                    child: Text(
-                      year,
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
+              child: Container(
+                margin: EdgeInsets.only(bottom: 8),
+                alignment: Alignment.center,
+                height: 50,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                    color: _month == month ? blue : white,
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.circular(25)),
+                child: Text(
+                  month,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
 
-  _showMonthModal() {
+  _showModal() {
     showModalBottomSheet(
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-      context: context,
-      builder: (_) {
-        return _showSelectedMonthModal();
-      },
-    );
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        context: context,
+        builder: (_) {
+          return _monthOrYear == 0
+              ? _showSelectedMonthModal()
+              : _showSelectedYearModal();
+        });
   }
 }
