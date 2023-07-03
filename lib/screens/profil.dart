@@ -464,7 +464,30 @@ class _ProfilPageState extends State<ProfilPage> {
                       height: 20,
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        if (_email.text.isEmpty) {
+                SnackBar snackBar1 = const SnackBar(
+                  content: Text("Le champ nom rubrique est vide!"),
+                  backgroundColor: red,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                return;
+              }
+
+              if (_username.text.isEmpty) {
+                SnackBar snackBar1 = const SnackBar(
+                  content: Text("Le champ description est vide!"),
+                  backgroundColor: red,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                return;
+              }
+              SnackBar snackBar1 = const SnackBar(
+                  content: Text("La rubrique a été créer avec succès!"),
+                  backgroundColor: green,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                      },
                       child: Container(
                         padding: const EdgeInsets.all(20),
                         margin: const EdgeInsets.symmetric(horizontal: 25),

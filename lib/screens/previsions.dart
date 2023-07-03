@@ -4,6 +4,7 @@ import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/models/lignes_previsions.dart';
 import 'package:gestion_finance/models/previsions.dart';
 import 'package:gestion_finance/models/rubriques.dart';
+import 'package:gestion_finance/screens/all_rubriques.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/screens/transactions.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
@@ -114,17 +115,22 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                     ),
                   ),
                 ),
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: white,
-                      border: Border.all(color: grey, width: 1),
-                      borderRadius: BorderRadius.circular(50)),
-                  child: Icon(
-                    Icons.delete,
-                    size: 25,
-                    color: red,
+                GestureDetector(
+                  onTap: () {
+                    
+                  },
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: white,
+                        border: Border.all(color: grey, width: 1),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Icon(
+                      Icons.delete,
+                      size: 25,
+                      color: red,
+                    ),
                   ),
                 ),
               ],
@@ -320,10 +326,48 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
+                        if (_amount.text.isEmpty) {
+                          SnackBar snackBar1 = const SnackBar(
+                            content: Text("Le montant n'a pas été renseigner!"),
+                            backgroundColor: red,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                          return;
+                        }
+
+                         if (_selectRubriques.nomRubrique.isEmpty) {
+                          SnackBar snackBar1 = const SnackBar(
+                            content: Text("Vous n'avez pas sélectionner de rubrique!"),
+                            backgroundColor: red,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                          return;
+                        }
+
+                        if (_description.text.isEmpty) {
+                          SnackBar snackBar1 = const SnackBar(
+                            content: Text("Le champ description est vide!"),
+                            backgroundColor: red,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                          return;
+                        }
                         if (_edit) {
                           await editData();
+                          SnackBar snackBar1 =  SnackBar(
+                          content: Text(
+                              "Votre modification a été enregistrée avec succès!"),
+                          backgroundColor: green,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar1);
                         } else {
                           await _savePrevision();
+                          SnackBar snackBar1 =  SnackBar(
+                          content: Text(
+                              "Votre prévision a été enregistrée avec succès!"),
+                          backgroundColor: green,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar1);
                         }
                       },
                       child: Container(
@@ -411,6 +455,44 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
               },
             ),
           ),
+          SizedBox(width: 20,),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AllRubriques()));
+            },
+            child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 20.0,
+                          vertical: 8.0,
+                        ),
+                        decoration: BoxDecoration(
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(20.0),
+                            border: Border.all(
+                              color: Color.fromARGB(255, 146, 146, 146),
+                              width: 1,
+                            )),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Icon(
+                              Icons.save,
+                              color: white,
+                            ),
+                            Text(
+                              "Ajouter Rubrique",
+                              style: TextStyle(
+                                color: white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+          )
         ],
       ),
     );

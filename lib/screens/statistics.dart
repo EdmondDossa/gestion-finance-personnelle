@@ -26,6 +26,11 @@ class _StattisticsPageState extends State<StattisticsPage> {
   int jour_utiliser = DateTime.now().day;
   double? point;
   int? _prevsion;
+  SnackBar snackBar1 = const SnackBar(
+                        content: Text("Le solde doit être défini"),
+                        backgroundColor: Colors.red,
+                      );
+                      //ScaffoldMessenger.of(context).showSnackBar(snackBar1);
   @override
   void initState() {
     // TODO: implement initState
@@ -149,11 +154,6 @@ class _StattisticsPageState extends State<StattisticsPage> {
                       ),
                     ],
                   ),
-                ),
-                SizedBox(height: 20),
-                Text(
-                  'Marge restant : ${(prevision! - realisation!).toStringAsFixed(2)}',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
                 SizedBox(
                   height: 20,
