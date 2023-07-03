@@ -19,7 +19,6 @@ class _AllRubriquesState extends State<AllRubriques> {
   TextEditingController _nomRubrique = TextEditingController();
   TextEditingController _description = TextEditingController();
 
-  
   List<GFRubriques> _rubriquesListe = [];
 
   @override
@@ -27,7 +26,6 @@ class _AllRubriquesState extends State<AllRubriques> {
     super.initState();
     _refreshList();
   }
-
 
   @override
   void dispose() {
@@ -83,10 +81,9 @@ class _AllRubriquesState extends State<AllRubriques> {
                         _selectRubrique(_rubriquesListe[index]);
                       },
                       child: WCategorie(
-                        icon: Icon(Icons.category_outlined),
-                        rubrique: _rubriquesListe[index].nomRubrique,
-                        description: _rubriquesListe[index].description
-                      ),
+                          icon: Icon(Icons.category_outlined),
+                          rubrique: _rubriquesListe[index].nomRubrique,
+                          description: _rubriquesListe[index].description),
                     );
                   }),
             )
@@ -218,8 +215,32 @@ class _AllRubriquesState extends State<AllRubriques> {
               ),
               GestureDetector(
                 onTap: () {
+                  if (_nomRubrique.text.isEmpty) {
+                SnackBar snackBar1 = const SnackBar(
+                  content: Text("Le champ nom rubrique est vide!"),
+                  backgroundColor: red,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                return;
+              }
+
+              if (_description.text.isEmpty) {
+                SnackBar snackBar1 = const SnackBar(
+                  content: Text("Le champ description est vide!"),
+                  backgroundColor: red,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                return;
+              }
                   _updateRubrique(rubrique.uid,
                       HRubriques(_nomRubrique.text, _description.text));
+
+              SnackBar snackBar1 = const SnackBar(
+                  content: Text("Modification réussie!"),
+                  backgroundColor: green,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+
                 },
                 child: Container(
                   padding: const EdgeInsets.all(20),
@@ -360,7 +381,30 @@ class _AllRubriquesState extends State<AllRubriques> {
           ),
           GestureDetector(
             onTap: () {
+              if (_nomRubrique.text.isEmpty) {
+                SnackBar snackBar1 = const SnackBar(
+                  content: Text("Le champ nom rubrique est vide!"),
+                  backgroundColor: red,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                return;
+              }
+
+              if (_description.text.isEmpty) {
+                SnackBar snackBar1 = const SnackBar(
+                  content: Text("Le champ description est vide!"),
+                  backgroundColor: red,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                return;
+              }
+
               _createRubrique(HRubriques(_nomRubrique.text, _description.text));
+              SnackBar snackBar1 = const SnackBar(
+                  content: Text("La rubrique a été créer avec succès!"),
+                  backgroundColor: green,
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
             },
             child: Container(
               padding: const EdgeInsets.all(20),
@@ -369,7 +413,7 @@ class _AllRubriquesState extends State<AllRubriques> {
                   color: buttonColor, borderRadius: BorderRadius.circular(25)),
               child: const Center(
                 child: Text(
-                  "Enrégistrer",
+                  "Enregistrer",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,

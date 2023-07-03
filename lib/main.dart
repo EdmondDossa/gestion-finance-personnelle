@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_timezone/flutter_native_timezone.dart';
 import 'package:gestion_finance/Hive_Models/hive_functions.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/screens/login.dart';

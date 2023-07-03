@@ -705,7 +705,7 @@ class _TransactionPageState extends State<TransactionPage> {
                               horizontal: 20, vertical: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
-                              color: Colors.red[600]),
+                              color: green),
                           child: Text(
                             "Prévisions",
                             style: TextStyle(
@@ -730,7 +730,7 @@ class _TransactionPageState extends State<TransactionPage> {
                               horizontal: 20, vertical: 10),
                           decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(25),
-                              color: green),
+                              color: Colors.red[600]),
                           child: Text(
                             "Réalisation",
                             style: TextStyle(

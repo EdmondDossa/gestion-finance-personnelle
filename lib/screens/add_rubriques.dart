@@ -12,6 +12,7 @@ class _AddRubriquePageState extends State<AddRubriquePage> {
   TextEditingController _nomRubrique = TextEditingController();
   TextEditingController _description = TextEditingController();
   bool isModalOpen = false;
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +124,7 @@ class _AddRubriquePageState extends State<AddRubriquePage> {
           GestureDetector(
             onTap: () {
 
+              
             },
             child: Container(
               padding: const EdgeInsets.all(20),
@@ -131,7 +133,7 @@ class _AddRubriquePageState extends State<AddRubriquePage> {
                   color: buttonColor, borderRadius: BorderRadius.circular(25)),
               child: const Center(
                 child: Text(
-                  "Enrégistrer",
+                  "Enregistrer",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 16,
