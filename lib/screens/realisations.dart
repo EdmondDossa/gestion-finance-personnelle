@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gestion_finance/Hive_Models/allModels.dart';
 import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/models/lignes_previsions.dart';
 import 'package:gestion_finance/models/previsions.dart';
 import 'package:gestion_finance/models/rubriques.dart';
+import 'package:gestion_finance/models/realisations.dart';
 import 'package:gestion_finance/screens/home.dart';
 import 'package:gestion_finance/screens/transactions.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
@@ -13,10 +15,14 @@ import 'package:gestion_finance/utilities/colors.dart';
 
 class CreateRealisationPage extends StatefulWidget {
   const CreateRealisationPage(
-      {super.key, required this.month, required this.year});
+      {super.key,
+      required this.month,
+      required this.year,
+      this.selectRealisation});
 
   final String? month;
   final String? year;
+  final GFRealisation? selectRealisation;
   @override
   State<CreateRealisationPage> createState() => _CreateRealisationPageState();
 }
@@ -29,7 +35,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
       GFRubriques("", "", authServices.currentUser.uid);
   GFRubriques _selectSource = GFRubriques("", "", authServices.currentUser.uid);
   String _selectedType = "Recette";
-
+  bool _edit = false;
   DateTime _date = DateTime.now();
   int? _prevision;
   List<GFRubriques?> _recetteRubriques = [];
@@ -38,6 +44,15 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
     super.initState();
     _prevision = getPrevisionKey(widget.month, widget.year);
     _recetteRubriques = getAllRubriquesRecettes(_prevision!);
+    if (widget.selectRealisation != null) {
+      _edit = true;
+      _selectRubriques = getRubrique(widget.selectRealisation!.rubriquesUid!);
+      if (widget.selectRealisation!.source != null) {
+        _selectSource = getRubrique(widget.selectRealisation!.source!);
+      }
+      _description.text = widget.selectRealisation!.description!;
+      _amount.text = widget.selectRealisation!.montant!.toString();
+    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
@@ -116,17 +131,24 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                     ),
                   ),
                 ),
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: white,
-                      border: Border.all(color: grey, width: 1),
-                      borderRadius: BorderRadius.circular(50)),
-                  child: Icon(
-                    Icons.delete,
-                    size: 25,
-                    color: red,
+                GestureDetector(
+                  onTap: () async {
+                    if (_edit) {
+                      _deletePopup();
+                    }
+                  },
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: white,
+                        border: Border.all(color: grey, width: 1),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Icon(
+                      Icons.delete,
+                      size: 25,
+                      color: red,
+                    ),
                   ),
                 ),
               ],
@@ -138,7 +160,9 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
-                  "Enrégistrer votre opération",
+                  !_edit
+                      ? "Enrégistrer votre opération"
+                      : "Modifier la réalisation",
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w900,
@@ -308,7 +332,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                       children: [
                         Icon(Icons.calendar_month_outlined),
                         Text(
-                          "Enrégistrer le",
+                          !_edit ? "Enrégistrer le" : "Modifier le",
                           style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.normal,
@@ -416,7 +440,10 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                     ),
                     GestureDetector(
                       onTap: () async {
-                        await _saveRealisation();
+                        if (!_edit)
+                          await _saveRealisation();
+                        else
+                          await _editRealisation();
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -424,7 +451,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                           vertical: 8.0,
                         ),
                         decoration: BoxDecoration(
-                            color: Colors.green,
+                            color: !_edit ? Colors.green : Colors.orange,
                             borderRadius: BorderRadius.circular(20.0),
                             border: Border.all(
                               color: Color.fromARGB(255, 146, 146, 146),
@@ -434,11 +461,11 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Icon(
-                              Icons.save,
+                              !_edit ? Icons.save : Icons.edit,
                               color: white,
                             ),
                             Text(
-                              "Enregistrer",
+                              !_edit ? "Enregistrer" : "Modifier",
                               style: TextStyle(
                                 color: white,
                                 fontWeight: FontWeight.w500,
@@ -580,7 +607,44 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
           rubrique: _selectRubriques.uid!,
           source: _selectSource.uid,
           description: _description.text));
-        Navigator.pushAndRemoveUntil(
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                    indexPage: 1,
+                  )),
+          (route) => false);
+    }
+  }
+
+  _editRealisation() async {
+    if (_selectSource.nomRubrique == "") {
+      await realisationsBox.putAt(
+          widget.selectRealisation!.uid!,
+          HRealisations(
+              type: _selectedType,
+              date: _date,
+              montant: double.parse(_amount.text),
+              rubrique: _selectRubriques.uid!,
+              description: _description.text));
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomePage(
+                    indexPage: 1,
+                  )),
+          (route) => false);
+    } else {
+      await realisationsBox.putAt(
+          widget.selectRealisation!.uid!,
+          HRealisations(
+              type: _selectedType,
+              date: _date,
+              montant: double.parse(_amount.text),
+              rubrique: _selectRubriques.uid!,
+              source: _selectSource.uid,
+              description: _description.text));
+      Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
               builder: (context) => HomePage(
@@ -612,5 +676,48 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
         return _showSelectedSourceModal();
       },
     );
+  }
+
+  _deletePopup() {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(
+              'Suprression',
+              textAlign: TextAlign.center,
+            ),
+            content:
+                Text('Êtes-vous sûr de vouloir supprimer cette réalisation ?'),
+            actions: [
+              GestureDetector(
+                onTap: () {},
+                child: TextButton(
+                  child: Text(
+                    'Annuler',
+                    style: TextStyle(fontWeight: FontWeight.w400),
+                  ),
+                  onPressed: () {
+                    // Action à effectuer lorsque l'utilisateur appuie sur "Annuler"
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              ElevatedButton(
+                child: Text('Supprimer',
+                    style: TextStyle(
+                        fontWeight: FontWeight.w400, color: white)),
+                onPressed: () async{
+                  // Action à effectuer lorsque l'utilisateur appuie sur "Valider"
+                  await realisationsBox.deleteAt(widget.selectRealisation!.uid!);
+                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                          builder: (context) => HomePage(
+                                indexPage: 1,
+                              )), (route) => false);
+                },
+              ),
+            ],
+          );
+        });
   }
 }

@@ -114,17 +114,24 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                     ),
                   ),
                 ),
-                Container(
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                      color: white,
-                      border: Border.all(color: grey, width: 1),
-                      borderRadius: BorderRadius.circular(50)),
-                  child: Icon(
-                    Icons.delete,
-                    size: 25,
-                    color: red,
+                GestureDetector(
+                  onTap: () {
+                    if (_edit) {
+                      _deletePopup();
+                    }
+                  },
+                  child: Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                        color: white,
+                        border: Border.all(color: grey, width: 1),
+                        borderRadius: BorderRadius.circular(50)),
+                    child: Icon(
+                      Icons.delete,
+                      size: 25,
+                      color: red,
+                    ),
                   ),
                 ),
               ],
@@ -486,5 +493,51 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                   indexPage: 1,
                 )),
         (route) => false);
+  }
+
+  _deletePopup() {
+    showDialog(
+        context: context,
+        builder: (_) {
+          return AlertDialog(
+            title: Text(
+              'Suprression',
+              textAlign: TextAlign.center,
+            ),
+            content:
+                Text('Êtes-vous sûr de vouloir supprimer cette prévision ?'),
+            actions: [
+              GestureDetector(
+                onTap: () {},
+                child: TextButton(
+                  child: Text(
+                    'Annuler',
+                    style: TextStyle(fontWeight: FontWeight.w400),
+                  ),
+                  onPressed: () {
+                    // Action à effectuer lorsque l'utilisateur appuie sur "Annuler"
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ),
+              ElevatedButton(
+                child: Text('Supprimer',
+                    style:
+                        TextStyle(fontWeight: FontWeight.w400, color: white)),
+                onPressed: () async {
+                  // Action à effectuer lorsque l'utilisateur appuie sur "Valider"
+                  await lignesPrevisionsBox.deleteAt(widget.ligneP!.uid!);
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomePage(
+                                indexPage: 1,
+                              )),
+                      (route) => false);
+                },
+              ),
+            ],
+          );
+        });
   }
 }

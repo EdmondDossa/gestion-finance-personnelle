@@ -441,36 +441,48 @@ class _TransactionPageState extends State<TransactionPage> {
                   }),
                 if (_tab == 1)
                   ...List.generate(_realisationsList.length, (index) {
-                    var rubrique = getRubrique(index);
+                    var rubrique = getRubrique(_realisationsList[index]!.rubriquesUid!);
                     var source;
                     if (_realisationsList[index]?.source != null) {
                       source = getRubrique(_realisationsList[index]!.source!);
                     } else {
                       source = GFRubriques("", "", "");
                     }
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
-                      child: WRealisation(
-                        icon: Icon(Icons.payment),
-                        rubrique: rubrique,
-                        description: _realisationsList[index]!.description!,
-                        amount: _realisationsList[index]?.montant,
-                        date: _realisationsList[index]?.date,
-                        amountColor: _realisationsList[index]?.type == "Depense"
-                            ? red
-                            : green,
-                        source: source,
-                        operation: _realisationsList[index]?.type == "Depense"
-                            ? Icon(
-                                Icons.arrow_upward_outlined,
-                                color: red,
-                                size: 18,
-                              )
-                            : Icon(
-                                Icons.arrow_downward_outlined,
-                                color: green,
-                                size: 18,
-                              ),
+                    return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreateRealisationPage(
+                                      month: _month,
+                                      year: _year,
+                                      selectRealisation: _realisationsList[index],
+                                    )));
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 10.0),
+                        child: WRealisation(
+                          icon: Icon(Icons.payment),
+                          rubrique: rubrique,
+                          description: _realisationsList[index]!.description!,
+                          amount: _realisationsList[index]?.montant,
+                          date: _realisationsList[index]?.date,
+                          amountColor: _realisationsList[index]?.type == "Depense"
+                              ? red
+                              : green,
+                          source: source,
+                          operation: _realisationsList[index]?.type == "Depense"
+                              ? Icon(
+                                  Icons.arrow_upward_outlined,
+                                  color: red,
+                                  size: 18,
+                                )
+                              : Icon(
+                                  Icons.arrow_downward_outlined,
+                                  color: green,
+                                  size: 18,
+                                ),
+                        ),
                       ),
                     );
                   }),
