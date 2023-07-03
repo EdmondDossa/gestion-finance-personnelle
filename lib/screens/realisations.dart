@@ -450,23 +450,26 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                           return;
                         }
 
-                         if (_selectRubriques.nomRubrique.isEmpty) {
+                        if (_selectRubriques.nomRubrique.isEmpty) {
                           SnackBar snackBar1 = const SnackBar(
-                            content: Text("Vous n'avez pas sélectionner de rubrique!"),
+                            content: Text(
+                                "Vous n'avez pas sélectionner de rubrique!"),
                             backgroundColor: red,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar1);
                           return;
                         }
 
-                        if(_selectedType == "Depense"){
+                        if (_selectedType == "Depense") {
                           if (_selectSource.nomRubrique.isEmpty) {
-                          SnackBar snackBar1 = const SnackBar(
-                            content: Text("Vous n'avez pas renseigner la source de la dépense!"),
-                            backgroundColor: red,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-                          return;
+                            SnackBar snackBar1 = const SnackBar(
+                              content: Text(
+                                  "Vous n'avez pas renseigner la source de la dépense!"),
+                              backgroundColor: red,
+                            );
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar1);
+                            return;
                           }
                         }
 
@@ -478,14 +481,18 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar1);
                           return;
                         }
-
-                        await _saveRealisation();
-                        SnackBar snackBar1 =  SnackBar(
-                          content: Text(
-                              "Votre ${_selectedType} a été enregistrée avec succès!"),
-                          backgroundColor: green,
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                        if (!_edit) {
+                          await _saveRealisation();
+                          SnackBar snackBar1 = SnackBar(
+                            content: Text(
+                                "Votre ${_selectedType} a été enregistrée avec succès!"),
+                            backgroundColor: green,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                        } else {
+                          _editRealisation();
+                        }
+                        
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -785,15 +792,19 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
               ),
               ElevatedButton(
                 child: Text('Supprimer',
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400, color: white)),
-                onPressed: () async{
+                    style:
+                        TextStyle(fontWeight: FontWeight.w400, color: white)),
+                onPressed: () async {
                   // Action à effectuer lorsque l'utilisateur appuie sur "Valider"
-                  await realisationsBox.deleteAt(widget.selectRealisation!.uid!);
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
+                  await realisationsBox
+                      .deleteAt(widget.selectRealisation!.uid!);
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
                           builder: (context) => HomePage(
                                 indexPage: 1,
-                              )), (route) => false);
+                              )),
+                      (route) => false);
                 },
               ),
             ],
