@@ -136,6 +136,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                   onTap: () async {
                     if (_edit) {
                       _deletePopup();
+                      print(widget.selectRealisation!.uid!);
                     }
                   },
                   child: Container(
@@ -492,7 +493,6 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                         } else {
                           _editRealisation();
                         }
-                        
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -771,7 +771,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
         builder: (_) {
           return AlertDialog(
             title: Text(
-              'Suprression',
+              'Supression',
               textAlign: TextAlign.center,
             ),
             content:
@@ -797,7 +797,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                 onPressed: () async {
                   // Action à effectuer lorsque l'utilisateur appuie sur "Valider"
                   await realisationsBox
-                      .deleteAt(widget.selectRealisation!.uid!);
+                      .delete(widget.selectRealisation!.uid!);
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

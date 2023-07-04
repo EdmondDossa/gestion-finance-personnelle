@@ -49,7 +49,7 @@ GFLignesPrevisions getLignesPrevisions(index) {
 
 List<GFLignesPrevisions> getAllPrevisionsRecettes(int? previson) {
   final ligne = lignesPrevisionsBox.keys.map((key) {
-    final item = lignesPrevisionsBox.getAt(key);
+    final item = lignesPrevisionsBox.get(key);
     return GFLignesPrevisions(
         type: item!.type,
         montant: item.montant,
@@ -62,7 +62,7 @@ List<GFLignesPrevisions> getAllPrevisionsRecettes(int? previson) {
 
 List<GFLignesPrevisions> getAllPrevisionsDepense(int? prevision) {
   final ligne = lignesPrevisionsBox.keys.map((key) {
-    final item = lignesPrevisionsBox.getAt(key);
+    final item = lignesPrevisionsBox.get(key);
     return GFLignesPrevisions(
         type: item!.type,
         montant: item.montant,
@@ -110,7 +110,7 @@ int getPrevisionKey(month, year) {
 
 List<GFLignesPrevisions> getAllLignesPrevisions(int? idprevision) {
   final ligne = lignesPrevisionsBox.keys.map((key) {
-    final item = lignesPrevisionsBox.getAt(key);
+    final item = lignesPrevisionsBox.get(key);
     return GFLignesPrevisions(
         type: item!.type,
         montant: item.montant,
@@ -148,7 +148,7 @@ String capitalizeFirstLetter(String input) {
 
 List<GFRealisation> getAllMonthRealiation(String month, String year) {
   final realisation = realisationsBox.keys.map((key) {
-    final item = realisationsBox.getAt(key);
+    final item = realisationsBox.get(key);
     return GFRealisation(
         type: item!.type,
         source: item.source,
