@@ -778,19 +778,23 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                 Text('Êtes-vous sûr de vouloir supprimer cette réalisation ?'),
             actions: [
               GestureDetector(
-                onTap: () {},
-                child: TextButton(
-                  child: Text(
-                    'Annuler',
-                    style: TextStyle(fontWeight: FontWeight.w400),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal:25,vertical:10),
+                  decoration:BoxDecoration(
+                    color: blue.withOpacity(0.7),
+                    borderRadius:BorderRadius.circular(5)
                   ),
-                  onPressed: () {
-                    // Action à effectuer lorsque l'utilisateur appuie sur "Annuler"
-                    Navigator.of(context).pop();
-                  },
-                ),
+                  child:Text(
+                    'Annuler',
+                    style: TextStyle(fontWeight: FontWeight.w400, color:white),
+                  ),
+                )
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                 child: Text('Supprimer',
                     style:
                         TextStyle(fontWeight: FontWeight.w400, color: white)),

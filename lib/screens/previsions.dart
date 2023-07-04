@@ -421,8 +421,8 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(40), topRight: Radius.circular(40)),
       ),
-      height: 250,
-      child: Row(
+      height: 450,
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
@@ -468,6 +468,7 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                   MaterialPageRoute(builder: (context) => AllRubriques()));
             },
             child: Container(
+              width: 200,
               padding: const EdgeInsets.symmetric(
                 horizontal: 20.0,
                 vertical: 8.0,
@@ -587,17 +588,20 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                 Text('Êtes-vous sûr de vouloir supprimer cette prévision ?'),
             actions: [
               GestureDetector(
-                onTap: () {},
-                child: TextButton(
-                  child: Text(
-                    'Annuler',
-                    style: TextStyle(fontWeight: FontWeight.w400),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal:25,vertical:10),
+                  decoration:BoxDecoration(
+                    color: blue.withOpacity(0.7),
+                    borderRadius:BorderRadius.circular(5)
                   ),
-                  onPressed: () {
-                    // Action à effectuer lorsque l'utilisateur appuie sur "Annuler"
-                    Navigator.of(context).pop();
-                  },
-                ),
+                  child:Text(
+                    'Annuler',
+                    style: TextStyle(fontWeight: FontWeight.w400, color:white),
+                  ),
+                )
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),

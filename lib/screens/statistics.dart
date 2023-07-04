@@ -23,12 +23,11 @@ class _StattisticsPageState extends State<StattisticsPage> {
   double? prevision;
   double? percent;
   double? prorata;
-  double? reste_prevision;
+  double reste_prevision = 0;
   /* int year = DateTime.now().year;
   int month = DateTime.now().month; */
-  String _month =
-      capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
-  String _year = DateFormat("yyyy").format(DateTime.now());
+  String _month = "";
+  String _year = "";
   int? numberOfDays;
   int jour_utiliser = DateTime.now().day;
   double? point;
@@ -43,19 +42,11 @@ class _StattisticsPageState extends State<StattisticsPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    //_refresh();
+    _month =
+      capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
+    _year = DateFormat("yyyy").format(DateTime.now());
     _refresh();
-    _prevision = getPrevisionKey(
-        capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now())),
-        DateFormat("yyyy").format(DateTime.now()));
-    numberOfDays = getNumberOfDaysInMonth(_month, _year);
-    prevision = totalDepensePrevision(_prevision);
-    realisation = totalDepenseRealisation(
-        capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now())),
-        DateFormat("yyyy").format(DateTime.now()));
-    //percent = (realisation! * 100) / prevision!;
-    reste_prevision = prevision! - realisation!;
-    prorata = (prevision! / numberOfDays!) * jour_utiliser;
-    point = prorata! - realisation!;
   }
 
   int getNumberOfDaysInMonth(String month, String year) {
@@ -70,18 +61,16 @@ class _StattisticsPageState extends State<StattisticsPage> {
   }
 
   _refresh() {
-    _prevision = getPrevisionKey(_month, _year);
-    _marge = totalDepensePrevision(_prevision) -
-        totalDepenseRealisation(_month, _year);
-    if (_tab == 0) {
-      setState(() {
-        _transactionsList = getAllLignesPrevisions(_prevision);
-      });
-    } else {
-      setState(() {
-        _realisationsList = getAllMonthRealiation(_month, _year);
-      });
-    }
+    setState((){
+      _prevision = getPrevisionKey(_month,_year);
+      numberOfDays = getNumberOfDaysInMonth(_month, _year);
+      prevision = totalDepensePrevision(_prevision);
+      realisation = totalDepenseRealisation(_month,_year);
+      //percent = (realisation! * 100) / prevision!;
+      reste_prevision = prevision! - realisation!;
+      prorata = (prevision! / numberOfDays!) * jour_utiliser;
+      point = prorata! - realisation!;
+    });
   }
 
   //StatisticsPage({required this.realisation, required this.prevision});
@@ -112,7 +101,7 @@ class _StattisticsPageState extends State<StattisticsPage> {
                   Container(
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 3),
                     child: Text(
-                      _marge != 0 ? "$_marge FCFA" : "0 FCFA",
+                      reste_prevision != 0 ? "$reste_prevision FCFA" : "0 FCFA",
                       style: TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -221,7 +210,7 @@ class _StattisticsPageState extends State<StattisticsPage> {
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: Text(
-              "Statistiques du mois",
+              "Statistiques",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: 20,
@@ -398,32 +387,7 @@ class _StattisticsPageState extends State<StattisticsPage> {
                 Navigator.of(context).pop();
                 setState(() {
                   _year = year;
-                  _prevision = getPrevisionKey(_month, _year);
-                  _marge = totalDepensePrevision(_prevision) -
-                      totalDepenseRealisation(_month, _year);
-                  if (_tab == 0) {
-                    if (_index == 0) {
-                      _refresh();
-                    }
-                    if (_index == 1) {
-                      _transactionsList = getAllPrevisionsRecettes(_prevision);
-                    }
-                    if (_index == 2) {
-                      _transactionsList = getAllPrevisionsDepense(_prevision);
-                    }
-                  } else {
-                    if (_index == 0) {
-                      _refresh();
-                    }
-                    if (_index == 1) {
-                      _realisationsList =
-                          getAllRealisationRecettes(_month, _year);
-                    }
-                    if (_index == 2) {
-                      _realisationsList =
-                          getAllRealisationDepense(_month, _year);
-                    }
-                  }
+                  _refresh();
                 });
               },
               child: Container(
@@ -480,32 +444,7 @@ class _StattisticsPageState extends State<StattisticsPage> {
                 Navigator.of(context).pop();
                 setState(() {
                   _month = month;
-                  _prevision = getPrevisionKey(_month, _year);
-                  _marge = totalDepensePrevision(_prevision) -
-                      totalDepenseRealisation(_month, _year);
-                  if (_tab == 0) {
-                    if (_index == 0) {
-                      _refresh();
-                    }
-                    if (_index == 1) {
-                      _transactionsList = getAllPrevisionsRecettes(_prevision);
-                    }
-                    if (_index == 2) {
-                      _transactionsList = getAllPrevisionsDepense(_prevision);
-                    }
-                  } else {
-                    if (_index == 0) {
-                      _refresh();
-                    }
-                    if (_index == 1) {
-                      _realisationsList =
-                          getAllRealisationRecettes(_month, _year);
-                    }
-                    if (_index == 2) {
-                      _realisationsList =
-                          getAllRealisationDepense(_month, _year);
-                    }
-                  }
+                  _refresh();
                 });
               },
               child: Container(
