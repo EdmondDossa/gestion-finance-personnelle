@@ -88,11 +88,11 @@ class _TransactionPageState extends State<TransactionPage> {
                   children: [
                     Container(
                       padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 3),
                       child: Text(
                         _marge != 0 ? "$_marge FCFA" : "0 FCFA",
                         style: TextStyle(
-                            fontSize: 17,
+                            fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: white),
                       ),
@@ -109,7 +109,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 7),
+                                horizontal: 3, vertical: 7),
                             decoration: BoxDecoration(
                                 color: white.withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(50)),
@@ -135,7 +135,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                             BorderRadius.circular(30)),
                                     child: Icon(
                                       Icons.chevron_right,
-                                      color: white,
+                                      color: black,
                                     ),
                                   ),
                                 )
@@ -155,7 +155,7 @@ class _TransactionPageState extends State<TransactionPage> {
                           },
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 5, vertical: 7),
+                                horizontal: 3, vertical: 7),
                             decoration: BoxDecoration(
                                 color: white.withOpacity(0.5),
                                 borderRadius: BorderRadius.circular(50)),
@@ -181,7 +181,7 @@ class _TransactionPageState extends State<TransactionPage> {
                                             BorderRadius.circular(30)),
                                     child: Icon(
                                       Icons.chevron_right,
-                                      color: white,
+                                      color: black,
                                     ),
                                   ),
                                 )
@@ -441,7 +441,8 @@ class _TransactionPageState extends State<TransactionPage> {
                   }),
                 if (_tab == 1)
                   ...List.generate(_realisationsList.length, (index) {
-                    var rubrique = getRubrique(_realisationsList[index]!.rubriquesUid!);
+                    var rubrique =
+                        getRubrique(_realisationsList[index]!.rubriquesUid!);
                     var source;
                     if (_realisationsList[index]?.source != null) {
                       source = getRubrique(_realisationsList[index]!.source!);
@@ -456,7 +457,8 @@ class _TransactionPageState extends State<TransactionPage> {
                                 builder: (context) => CreateRealisationPage(
                                       month: _month,
                                       year: _year,
-                                      selectRealisation: _realisationsList[index],
+                                      selectRealisation:
+                                          _realisationsList[index],
                                     )));
                       },
                       child: Padding(
@@ -467,9 +469,10 @@ class _TransactionPageState extends State<TransactionPage> {
                           description: _realisationsList[index]!.description!,
                           amount: _realisationsList[index]?.montant,
                           date: _realisationsList[index]?.date,
-                          amountColor: _realisationsList[index]?.type == "Depense"
-                              ? red
-                              : green,
+                          amountColor:
+                              _realisationsList[index]?.type == "Depense"
+                                  ? red
+                                  : green,
                           source: source,
                           operation: _realisationsList[index]?.type == "Depense"
                               ? Icon(

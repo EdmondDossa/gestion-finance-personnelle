@@ -2,6 +2,10 @@ import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/models/lignes_previsions.dart';
+import 'package:gestion_finance/models/realisations.dart';
+import 'package:gestion_finance/screens/previsions.dart';
+import 'package:gestion_finance/screens/realisations.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:gestion_finance/utilities/fonctions.dart';
@@ -19,39 +23,54 @@ class _StattisticsPageState extends State<StattisticsPage> {
   double? prevision;
   double? percent;
   double? prorata;
-  double? reste_prevision;
-  int year = DateTime.now().year;
-  int month = DateTime.now().month;
+  double reste_prevision = 0;
+  /* int year = DateTime.now().year;
+  int month = DateTime.now().month; */
+  String _month = "";
+  String _year = "";
   int? numberOfDays;
   int jour_utiliser = DateTime.now().day;
   double? point;
-  int? _prevsion;
-  SnackBar snackBar1 = const SnackBar(
-                        content: Text("Le solde doit être défini"),
-                        backgroundColor: Colors.red,
-                      );
-                      //ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+  int? _prevision;
+  int _tab = 0;
+  List<GFLignesPrevisions> _transactionsList = [];
+  List<GFRealisation?> _realisationsList = [];
+  int _index = 0;
+  double _marge = 0;
+  int _monthOrYear = 0;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _prevsion = getPrevisionKey(capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now())), DateFormat("yyyy").format(DateTime.now()));
-    numberOfDays = getNumberOfDaysInMonth(year, month);
-    prevision = totalDepensePrevision(_prevsion);
-    realisation = totalDepenseRealisation(capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now())),DateFormat("yyyy").format(DateTime.now()));
-    //percent = (realisation! * 100) / prevision!;
-    reste_prevision = prevision! - realisation!;
-    prorata = (prevision! / numberOfDays!) * jour_utiliser;
-    point = prorata! - realisation!;
+    //_refresh();
+    _month =
+      capitalizeFirstLetter(DateFormat.MMMM('fr_FR').format(DateTime.now()));
+    _year = DateFormat("yyyy").format(DateTime.now());
+    _refresh();
   }
 
-  int getNumberOfDaysInMonth(int year, int month) {
-    // Créez une instance de DateTime pour le premier jour du mois suivant avec l'année et le mois spécifiés.
-    DateTime firstDayOfNextMonth = DateTime(year, month + 1, 1);
-    // Soustrayez un jour de la date du premier jour du mois suivant pour obtenir le dernier jour du mois actuel.
-    DateTime lastDayOfMonth = firstDayOfNextMonth.subtract(Duration(days: 1));
-    // Renvoie le jour du mois pour le dernier jour du mois actuel.
-    return lastDayOfMonth.day;
+  int getNumberOfDaysInMonth(String month, String year) {
+    int? parsedMonth = int.tryParse(month);
+    int? parsedYear = int.tryParse(year);
+
+    if (parsedMonth != null && parsedYear != null) {
+      return DateTime(parsedYear, parsedMonth).day;
+    } else {
+      return 0;
+    }
+  }
+
+  _refresh() {
+    setState((){
+      _prevision = getPrevisionKey(_month,_year);
+      numberOfDays = getNumberOfDaysInMonth(_month, _year);
+      prevision = totalDepensePrevision(_prevision);
+      realisation = totalDepenseRealisation(_month,_year);
+      //percent = (realisation! * 100) / prevision!;
+      reste_prevision = prevision! - realisation!;
+      prorata = (prevision! / numberOfDays!) * jour_utiliser;
+      point = prorata! - realisation!;
+    });
   }
 
   //StatisticsPage({required this.realisation, required this.prevision});
@@ -59,110 +78,234 @@ class _StattisticsPageState extends State<StattisticsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: Column(
-          children: [
-            SizedBox(
-              height: 20,
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(top: 10),
+            //width: double.infinity,
+            decoration: BoxDecoration(
+              color: buttonColor,
+              borderRadius: BorderRadius.circular(25),
+              boxShadow: [
+                BoxShadow(
+                    color: grey.withOpacity(0.01),
+                    spreadRadius: 10,
+                    blurRadius: 3)
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
-              child: Text(
-                "Statistiques du mois",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: black,
-                ),
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 3),
+                    child: Text(
+                      reste_prevision != 0 ? "$reste_prevision FCFA" : "0 FCFA",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: white),
+                    ),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _monthOrYear = 0;
+                          });
+                          _showModal();
+                        },
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 3, vertical: 7),
+                          decoration: BoxDecoration(
+                              color: white.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(50)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                "$_month",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: white,
+                                ),
+                              ),
+                              RotatedBox(
+                                quarterTurns: 1,
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                      color: grey.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(30)),
+                                  child: Icon(
+                                    Icons.chevron_right,
+                                    color: black,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            _monthOrYear = 1;
+                          });
+                          _showModal();
+                        },
+                        child: Container(
+                          padding:
+                              EdgeInsets.symmetric(horizontal: 3, vertical: 7),
+                          decoration: BoxDecoration(
+                              color: white.withOpacity(0.5),
+                              borderRadius: BorderRadius.circular(50)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                "$_year",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  color: white,
+                                ),
+                              ),
+                              RotatedBox(
+                                quarterTurns: 1,
+                                child: Container(
+                                  width: 30,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                      color: grey.withOpacity(0.3),
+                                      borderRadius: BorderRadius.circular(30)),
+                                  child: Icon(
+                                    Icons.chevron_right,
+                                    color: black,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
             ),
-            SizedBox(
-              height: 20,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20.0),
+            child: Text(
+              "Statistiques",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.w700,
+                color: black,
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                AspectRatio(
-                  aspectRatio: 1.5,
-                  child: PieChart(
-                    PieChartData(
-                      sections: [
-                        if (reste_prevision! > 0)
-                          PieChartSectionData(
-                            color: Colors.green,
-                            value: reste_prevision,
-                            title: '',
-                            radius: 70,
-                          ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AspectRatio(
+                aspectRatio: 1.5,
+                child: PieChart(
+                  PieChartData(
+                    sections: [
+                      if (reste_prevision! > 0)
                         PieChartSectionData(
-                          color: Colors.red,
-                          value: realisation,
+                          color: Colors.green,
+                          value: reste_prevision,
                           title: '',
                           radius: 70,
                         ),
-                      ],
-                      sectionsSpace: 0,
-                      centerSpaceRadius: 40,
+                      PieChartSectionData(
+                        color: Colors.red,
+                        value: realisation,
+                        title: '',
+                        radius: 70,
+                      ),
+                    ],
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 40,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(
+                      Icons.square,
+                      color: red,
                     ),
-                  ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Réalisations réalisés: ${realisation!.toStringAsFixed(2)}',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.square,
-                        color: red,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        'Réalisations réalisés: ${realisation!.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
+              ),
+              SizedBox(height: 20),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Icon(
+                      Icons.square,
+                      color: green,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      'Prévisions prévus: ${prevision!.toStringAsFixed(2)}',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                  ],
                 ),
-                SizedBox(height: 20),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Icon(
-                        Icons.square,
-                        color: green,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        'Prévisions prévus: ${prevision!.toStringAsFixed(2)}',
-                        style: TextStyle(fontSize: 18),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Row(
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
                   //mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Expanded(
-                      flex:2,
+                      flex: 2,
                       child: Text(
                         "Avis :",
                         style: TextStyle(
@@ -173,15 +316,14 @@ class _StattisticsPageState extends State<StattisticsPage> {
                     ),
                     if (point! < 0)
                       Expanded(
-                        flex: 8,
-                        child:Text(
-                        "Attention!! Vous êtes en déficit",
-                        style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: red),
-                      )
-                      )
+                          flex: 8,
+                          child: Text(
+                            "Attention!! Vous êtes en déficit",
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: red),
+                          ))
                     else if (point! == 0)
                       Expanded(
                         flex: 8,
@@ -205,12 +347,137 @@ class _StattisticsPageState extends State<StattisticsPage> {
                         ),
                       )
                   ],
-                )
-              ],
-            ),
-          ],
-        ),
+                ),
+              )
+            ],
+          ),
+        ],
       ),
     ));
+  }
+
+  _showSelectedYearModal() {
+    final List<String> years = [
+      '2022',
+      '2023',
+      '2024',
+      '2025',
+      '2026',
+      '2027',
+      '2028',
+      '2029',
+      '2030'
+    ];
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+      ),
+      height: 250,
+      child: Expanded(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: years.length,
+          itemBuilder: (BuildContext context, int index) {
+            String year = years[index];
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _year = year;
+                  _refresh();
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.only(bottom: 8),
+                alignment: Alignment.center,
+                height: 50,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                    color: year == _year ? blue : white,
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.circular(25)),
+                child: Text(
+                  year,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  _showSelectedMonthModal() {
+    final List<String> months = [
+      "Janvier",
+      "Fevrier",
+      "Mars",
+      "Avril",
+      "Mai",
+      "Juin",
+      "Juillet",
+      "Aout",
+      "Septembre",
+      "Octobre",
+      "Novembre",
+      "Decembre"
+    ];
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(40), topRight: Radius.circular(40)),
+      ),
+      height: 250,
+      child: Expanded(
+        child: ListView.builder(
+          scrollDirection: Axis.vertical,
+          itemCount: months.length,
+          itemBuilder: (context, index) {
+            String month = months[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  _month = month;
+                  _refresh();
+                });
+              },
+              child: Container(
+                margin: EdgeInsets.only(bottom: 8),
+                alignment: Alignment.center,
+                height: 50,
+                padding: EdgeInsets.symmetric(horizontal: 10),
+                decoration: BoxDecoration(
+                    color: _month == month ? blue : white,
+                    border: Border.all(color: grey),
+                    borderRadius: BorderRadius.circular(25)),
+                child: Text(
+                  month,
+                  style: TextStyle(fontSize: 18),
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  _showModal() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+        context: context,
+        builder: (_) {
+          return _monthOrYear == 0
+              ? _showSelectedMonthModal()
+              : _showSelectedYearModal();
+        });
   }
 }

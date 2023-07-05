@@ -119,6 +119,7 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                   onTap: () {
                     if (_edit) {
                       _deletePopup();
+                      print(widget.ligneP!.uid!);
                     }
                   },
                   child: Container(
@@ -337,9 +338,10 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                           return;
                         }
 
-                         if (_selectRubriques.nomRubrique.isEmpty) {
+                        if (_selectRubriques.nomRubrique.isEmpty) {
                           SnackBar snackBar1 = const SnackBar(
-                            content: Text("Vous n'avez pas sélectionner de rubrique!"),
+                            content: Text(
+                                "Vous n'avez pas sélectionner de rubrique!"),
                             backgroundColor: red,
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar1);
@@ -356,20 +358,20 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
                         }
                         if (_edit) {
                           await editData();
-                          SnackBar snackBar1 =  SnackBar(
-                          content: Text(
-                              "Votre modification a été enregistrée avec succès!"),
-                          backgroundColor: green,
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                          SnackBar snackBar1 = SnackBar(
+                            content: Text(
+                                "Votre modification a été enregistrée avec succès!"),
+                            backgroundColor: green,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
                         } else {
                           await _savePrevision();
-                          SnackBar snackBar1 =  SnackBar(
-                          content: Text(
-                              "Votre prévision a été enregistrée avec succès!"),
-                          backgroundColor: green,
-                        );
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                          SnackBar snackBar1 = SnackBar(
+                            content: Text(
+                                "Votre prévision a été enregistrée avec succès!"),
+                            backgroundColor: green,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
                         }
                       },
                       child: Container(
@@ -419,8 +421,8 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
         borderRadius: BorderRadius.only(
             topLeft: Radius.circular(40), topRight: Radius.circular(40)),
       ),
-      height: 250,
-      child: Row(
+      height: 450,
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
@@ -457,43 +459,44 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
               },
             ),
           ),
-          SizedBox(width: 20,),
+          SizedBox(
+            width: 20,
+          ),
           GestureDetector(
             onTap: () {
-              Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AllRubriques()));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AllRubriques()));
             },
             child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 8.0,
-                        ),
-                        decoration: BoxDecoration(
-                            color: Colors.green,
-                            borderRadius: BorderRadius.circular(20.0),
-                            border: Border.all(
-                              color: Color.fromARGB(255, 146, 146, 146),
-                              width: 1,
-                            )),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Icon(
-                              Icons.save,
-                              color: white,
-                            ),
-                            Text(
-                              "Ajouter Rubrique",
-                              style: TextStyle(
-                                color: white,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+              width: 200,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 20.0,
+                vertical: 8.0,
+              ),
+              decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(20.0),
+                  border: Border.all(
+                    color: Color.fromARGB(255, 146, 146, 146),
+                    width: 1,
+                  )),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Icon(
+                    Icons.save,
+                    color: white,
+                  ),
+                  Text(
+                    "Ajouter Rubrique",
+                    style: TextStyle(
+                      color: white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           )
         ],
       ),
@@ -578,32 +581,36 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
         builder: (_) {
           return AlertDialog(
             title: Text(
-              'Suprression',
+              'Supression',
               textAlign: TextAlign.center,
             ),
             content:
                 Text('Êtes-vous sûr de vouloir supprimer cette prévision ?'),
             actions: [
               GestureDetector(
-                onTap: () {},
-                child: TextButton(
-                  child: Text(
-                    'Annuler',
-                    style: TextStyle(fontWeight: FontWeight.w400),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal:25,vertical:10),
+                  decoration:BoxDecoration(
+                    color: blue.withOpacity(0.7),
+                    borderRadius:BorderRadius.circular(5)
                   ),
-                  onPressed: () {
-                    // Action à effectuer lorsque l'utilisateur appuie sur "Annuler"
-                    Navigator.of(context).pop();
-                  },
-                ),
+                  child:Text(
+                    'Annuler',
+                    style: TextStyle(fontWeight: FontWeight.w400, color:white),
+                  ),
+                )
               ),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                 child: Text('Supprimer',
                     style:
                         TextStyle(fontWeight: FontWeight.w400, color: white)),
                 onPressed: () async {
                   // Action à effectuer lorsque l'utilisateur appuie sur "Valider"
-                  await lignesPrevisionsBox.deleteAt(widget.ligneP!.uid!);
+                  await lignesPrevisionsBox.delete(widget.ligneP!.uid!);
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
