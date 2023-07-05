@@ -1,89 +1,106 @@
-/* import 'package:flutter/material.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-    FlutterLocalNotificationsPlugin();
+/* void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await tz.initializeTimeZones();
+  runApp(MyApp());
+} */
 
 class NotificationPage extends StatefulWidget {
-  const NotificationPage({Key? key}) : super(key: key);
-
   @override
-  State<NotificationPage> createState() => _NotificationPageState();
+  _NotificationPageState createState() => _NotificationPageState();
 }
 
 class _NotificationPageState extends State<NotificationPage> {
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  int notificationId = 0;
+
   @override
   void initState() {
     super.initState();
-    Noti.initialize(flutterLocalNotificationsPlugin);
+    //tz.initializeTimeZones();
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    initializeNotifications();
+    scheduleNotifications();
+  }
+
+  Future<void> initializeNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('budget1');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> showNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      channelDescription: 'channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      notificationId,
+      'Notification Title',
+      'Notification Body',
+      platformChannelSpecifics,
+    );
+    notificationId++;
+  }
+
+  Future<void> scheduleNotifications() async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      notificationId,
+      'Scheduled Notification Title',
+      'Scheduled Notification Body',
+      _nextInstanceOfNotification(),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'your_channel_id',
+          'your_channel_name',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+    );
+    notificationId++;
+  }
+
+  tz.TZDateTime _nextInstanceOfNotification() {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      now.hour,
+      now.minute + 1,
+    ); // Planifier la notification 1 minute après le démarrage de l'application
+
+    return scheduledDate;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              colors: [Color(0xFF3ac3cb), Color(0xFFf85187)])),
-      child: Scaffold(
-          backgroundColor: Colors.transparent,
-          appBar: AppBar(
-            backgroundColor: Colors.blue.withOpacity(0.5),
-          ),
-          body: Center(
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white, borderRadius: BorderRadius.circular(20)),
-              width: 200,
-              height: 80,
-              child: ElevatedButton(
-                onPressed: () {
-                  Noti.showBigTextNotification(
-                      title: "New message title",
-                      body: "Your long body",
-                      fln: flutterLocalNotificationsPlugin);
-                },
-                child: Text("click"),
-              ),
-            ),
-          )),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Local Notifications Demo'),
+      ),
+      body: Center(
+        child: Text('Notifications seront planifiées automatiquement.'),
+      ),
     );
   }
 }
-
-class Noti {
-  static Future initialize(
-      FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
-    var androidInitialize =
-        new AndroidInitializationSettings('mipmap/ic_launcher');
-    var iOSInitialize = new IOSInitializationSettings();
-    var initializationsSettings = new InitializationSettings(
-        android: androidInitialize, iOS: iOSInitialize);
-    await flutterLocalNotificationsPlugin.initialize(initializationsSettings);
-  }
-
-  static Future showBigTextNotification(
-      {var id = 0,
-      required String title,
-      required String body,
-      var payload,
-      required FlutterLocalNotificationsPlugin fln}) async {
-    AndroidNotificationDetails androidPlatformChannelSpecifics =
-        new AndroidNotificationDetails(
-      'you_can_name_it_whatever1',
-      'channel_name',
-      playSound: true,
-      sound:
-          RawResourceAndroidNotificationSound('android/app/main/res/raw/son'),
-      importance: Importance.max,
-      priority: Priority.high,
-    );
-
-    var not = NotificationDetails(
-        android: androidPlatformChannelSpecifics,
-        iOS: IOSNotificationDetails());
-    await fln.show(0, title, body, not);
-  }
-}
- */

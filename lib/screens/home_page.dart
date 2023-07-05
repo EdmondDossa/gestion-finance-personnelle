@@ -8,6 +8,11 @@ import 'package:gestion_finance/utilities/db_services.dart';
 import 'package:gestion_finance/utilities/fonctions.dart';
 import 'package:gestion_finance/widgets/prevision-widget.dart';
 import 'package:intl/intl.dart';
+import 'dart:async';
+import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -31,7 +36,10 @@ class _StartPageState extends State<StartPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    
+    tz.initializeTimeZones();
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    initializeNotifications();
+    scheduleNotifications();
     _refreshData();
   }
 
@@ -43,6 +51,73 @@ class _StartPageState extends State<StartPage> {
       _recetteRealisation = totalRecettesRealisation(_month, _year);
       _depenseRealisation = totalDepenseRealisation(_month, _year);
     });
+  }
+
+  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+  int notificationId = 0;
+
+  Future<void> initializeNotifications() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('budget1');
+    final InitializationSettings initializationSettings =
+        InitializationSettings(android: initializationSettingsAndroid);
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> showNotification() async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+      'your_channel_id',
+      'your_channel_name',
+      channelDescription: 'channel description',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+    );
+    const NotificationDetails platformChannelSpecifics =
+        NotificationDetails(android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      notificationId,
+      'Notification Title',
+      'Notification Body',
+      platformChannelSpecifics,
+    );
+    notificationId++;
+  }
+
+  Future<void> scheduleNotifications() async {
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      notificationId,
+      'Planification du budget',
+      'Pour une meilleur gestion de vos finances enregistrer et suiver régulièrement vos dépenses',
+      _nextInstanceOfNotification(),
+      const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'your_channel_id',
+          'your_channel_name',
+          importance: Importance.max,
+          priority: Priority.high,
+        ),
+      ),
+      androidAllowWhileIdle: true,
+      uiLocalNotificationDateInterpretation:
+          UILocalNotificationDateInterpretation.absoluteTime,
+    );
+    notificationId++;
+  }
+
+  tz.TZDateTime _nextInstanceOfNotification() {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      now.hour,
+      now.minute + 1,
+    ); // Planifier la notification 1 minute après le démarrage de l'application
+
+    return scheduledDate;
   }
 
   @override
@@ -123,7 +198,9 @@ class _StartPageState extends State<StartPage> {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(width: 5,),
+                                    SizedBox(
+                                      width: 5,
+                                    ),
                                     GestureDetector(
                                       onTap: () {
                                         setState(() {
@@ -522,7 +599,17 @@ class _StartPageState extends State<StartPage> {
   }
 
   _showSelectedYearModal() {
-    final List<String> years = ['2022', '2023', '2024', '2025', '2026','2027','2028','2029','2030'];
+    final List<String> years = [
+      '2022',
+      '2023',
+      '2024',
+      '2025',
+      '2026',
+      '2027',
+      '2028',
+      '2029',
+      '2030'
+    ];
     return Container(
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -543,7 +630,7 @@ class _StartPageState extends State<StartPage> {
                 setState(() {
                   _year = year;
                 });
-                  _refreshData();
+                _refreshData();
               },
               child: Container(
                 margin: EdgeInsets.only(bottom: 8),
@@ -601,7 +688,7 @@ class _StartPageState extends State<StartPage> {
                 setState(() {
                   _month = month;
                 });
-                  _refreshData();
+                _refreshData();
               },
               child: Container(
                 margin: EdgeInsets.only(bottom: 8),
