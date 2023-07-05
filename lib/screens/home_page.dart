@@ -9,10 +9,10 @@ import 'package:gestion_finance/utilities/fonctions.dart';
 import 'package:gestion_finance/widgets/prevision-widget.dart';
 import 'package:intl/intl.dart';
 import 'dart:async';
-import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:background_fetch/background_fetch.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -33,13 +33,14 @@ class _StartPageState extends State<StartPage> {
   int _monthOrYear = 0;
 
   @override
-  void initState() {
+ void initState(){
     // TODO: implement initState
     super.initState();
     tz.initializeTimeZones();
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     initializeNotifications();
-    scheduleNotifications();
+    initBackgroundFetch();
+    //scheduleNotifications();
     _refreshData();
   }
 
@@ -78,47 +79,66 @@ class _StartPageState extends State<StartPage> {
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await flutterLocalNotificationsPlugin.show(
       notificationId,
-      'Notification Title',
-      'Notification Body',
+      'Planifier vos dépenses',
+      'Enregistrez et suivez vos dépenses pour une bonne gestion de vos finances',
       platformChannelSpecifics,
     );
     notificationId++;
   }
 
-  Future<void> scheduleNotifications() async {
-    await flutterLocalNotificationsPlugin.zonedSchedule(
-      notificationId,
-      'Planification du budget',
-      'Pour une meilleur gestion de vos finances enregistrer et suiver régulièrement vos dépenses',
-      _nextInstanceOfNotification(),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'your_channel_id',
-          'your_channel_name',
-          importance: Importance.max,
-          priority: Priority.high,
-        ),
+
+
+  void initBackgroundFetch() {
+    BackgroundFetch.configure(
+      BackgroundFetchConfig(
+        minimumFetchInterval: 30,
+        stopOnTerminate: false,
+        enableHeadless: true,
+        requiresBatteryNotLow: false,
+        requiresCharging: false,
+        requiresDeviceIdle: false,
+        requiresStorageNotLow: false,
       ),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-          UILocalNotificationDateInterpretation.absoluteTime,
+      (String taskId) async {
+        // Exécuter vos tâches ici
+        // Par exemple, afficher une notification
+        showNotification();
+        BackgroundFetch.finish(taskId);
+      },
     );
-    notificationId++;
   }
 
-  tz.TZDateTime _nextInstanceOfNotification() {
-    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-    tz.TZDateTime scheduledDate = tz.TZDateTime(
-      tz.local,
-      now.year,
-      now.month,
-      now.day,
-      now.hour,
-      now.minute + 1,
-    ); // Planifier la notification 1 minute après le démarrage de l'application
 
-    return scheduledDate;
-  }
+  
+
+
+/* Future<void> scheduleNotifications() async {
+  const AndroidNotificationDetails androidPlatformChannelSpecifics =
+      AndroidNotificationDetails(
+    'your_channel_id',
+    'your_channel_name',
+    channelDescription: 'channel description',
+    importance: Importance.max,
+    priority: Priority.defaultPriority,
+    playSound: true,
+  );
+  const NotificationDetails platformChannelSpecifics =
+      NotificationDetails(android: androidPlatformChannelSpecifics);
+
+  await flutterLocalNotificationsPlugin.periodicallyShow(
+    notificationId,
+    'Planifier vos dépenses',
+    'Enregistrez et suivez vos dépenses pour une bonne gestion de vos finances',
+    RepeatInterval.hourly, // Répétition toutes les 30 minutes
+    platformChannelSpecifics,
+    androidAllowWhileIdle: true,
+  );
+  notificationId++;
+}
+ */
+
+
+   
 
   @override
   Widget build(BuildContext context) {
