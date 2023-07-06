@@ -5,6 +5,7 @@ import 'package:gestion_finance/models/avoirs.dart';
 import 'package:gestion_finance/models/dettes.dart';
 import 'package:gestion_finance/models/prets.dart';
 import 'package:gestion_finance/screens/all_rubriques.dart';
+import 'package:gestion_finance/screens/dette.dart';
 import 'package:gestion_finance/screens/prets.dart';
 import 'package:gestion_finance/screens/login.dart';
 import 'package:gestion_finance/screens/notification.dart';
@@ -287,7 +288,7 @@ class _ProfilPageState extends State<ProfilPage> {
                           ),
                         ),
                       ),
-                       GestureDetector(
+                       /* GestureDetector(
                         onTap: () {
                           Navigator.push(
                               context,
@@ -315,6 +316,10 @@ class _ProfilPageState extends State<ProfilPage> {
                       ),
                        GestureDetector(
                         onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => CreateDettePage()));
                           
                         },
                         child: Container(
@@ -335,7 +340,7 @@ class _ProfilPageState extends State<ProfilPage> {
                             ],
                           ),
                         ),
-                      ),
+                      ), */
                       GestureDetector(
                         onTap: () {
                           Navigator.push(

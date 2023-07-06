@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:gestion_finance/utilities/colors.dart';
 
@@ -76,10 +77,10 @@ class _CreatePretPageState extends State<CreatePretPage> {
                       vertical: 8.0,
                     ),
                     decoration: BoxDecoration(
-                        color: Colors.orange,
+                        color: green,
                         borderRadius: BorderRadius.circular(20.0),
                         border: Border.all(
-                          color: Colors.orange,
+                          color: green,
                           width: 1,
                         )),
                     child: Row(
@@ -191,7 +192,7 @@ class _CreatePretPageState extends State<CreatePretPage> {
                     )),
                 child: Row(
                   children: [
-                    Icon(Icons.list_outlined),
+                    Icon(Icons.money_outlined),
                     SizedBox(
                       width: 5,
                     ),
@@ -201,6 +202,7 @@ class _CreatePretPageState extends State<CreatePretPage> {
                         controller: _montantTotal,
                         maxLines: null,
                         cursorColor: black,
+                      keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Renseigner le montant prêter",
@@ -235,7 +237,7 @@ class _CreatePretPageState extends State<CreatePretPage> {
                     )),
                 child: Row(
                   children: [
-                    Icon(Icons.list_outlined),
+                    Icon(Icons.money_outlined),
                     SizedBox(
                       width: 5,
                     ),
@@ -245,6 +247,7 @@ class _CreatePretPageState extends State<CreatePretPage> {
                         controller: _montantRendu,
                         maxLines: null,
                         cursorColor: black,
+                      keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Renseigner le montant rendu",
@@ -289,6 +292,7 @@ class _CreatePretPageState extends State<CreatePretPage> {
                         controller: _taux,
                         maxLines: null,
                         cursorColor: black,
+                      keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Taux",
@@ -515,6 +519,7 @@ class _CreatePretPageState extends State<CreatePretPage> {
                     TextField(
                       controller: _amount,
                       cursorColor: black,
+                      keyboardType: TextInputType.phone,
                       style: const TextStyle(
                         fontWeight: FontWeight.w400,
                         color: black,

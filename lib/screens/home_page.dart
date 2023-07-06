@@ -12,7 +12,7 @@ import 'dart:async';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:background_fetch/background_fetch.dart';
+//import 'package:background_fetch/background_fetch.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key});
@@ -39,7 +39,7 @@ class _StartPageState extends State<StartPage> {
     tz.initializeTimeZones();
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     initializeNotifications();
-    initBackgroundFetch();
+    //initBackgroundFetch(); 
     //scheduleNotifications();
     _refreshData();
   }
@@ -54,57 +54,57 @@ class _StartPageState extends State<StartPage> {
     });
   }
 
-  late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-  int notificationId = 0;
+    late FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+    int notificationId = 0;
 
-  Future<void> initializeNotifications() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('budget1');
-    final InitializationSettings initializationSettings =
-        InitializationSettings(android: initializationSettingsAndroid);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-  }
+    Future<void> initializeNotifications() async {
+      const AndroidInitializationSettings initializationSettingsAndroid =
+          AndroidInitializationSettings('budget1');
+      final InitializationSettings initializationSettings =
+          InitializationSettings(android: initializationSettingsAndroid);
+      await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    }
 
-  Future<void> showNotification() async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
-        AndroidNotificationDetails(
-      'your_channel_id',
-      'your_channel_name',
-      channelDescription: 'channel description',
-      importance: Importance.max,
-      priority: Priority.high,
-      playSound: true,
-    );
-    const NotificationDetails platformChannelSpecifics =
-        NotificationDetails(android: androidPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-      notificationId,
-      'Planifier vos dépenses',
-      'Enregistrez et suivez vos dépenses pour une bonne gestion de vos finances',
-      platformChannelSpecifics,
-    );
-    notificationId++;
-  }
+    Future<void> showNotification() async {
+      const AndroidNotificationDetails androidPlatformChannelSpecifics =
+          AndroidNotificationDetails(
+        'your_channel_id',
+        'your_channel_name',
+        channelDescription: 'channel description',
+        importance: Importance.max,
+        priority: Priority.high,
+        playSound: true,
+      );
+      const NotificationDetails platformChannelSpecifics =
+          NotificationDetails(android: androidPlatformChannelSpecifics);
+      await flutterLocalNotificationsPlugin.show(
+        notificationId,
+        'Planifier vos dépenses',
+        'Enregistrez et suivez vos dépenses pour une bonne gestion de vos finances',
+        platformChannelSpecifics,
+      );
+      notificationId++;
+    }
 
-  void initBackgroundFetch() {
-    BackgroundFetch.configure(
-      BackgroundFetchConfig(
-        minimumFetchInterval: 30,
-        stopOnTerminate: false,
-        enableHeadless: true,
-        requiresBatteryNotLow: false,
-        requiresCharging: false,
-        requiresDeviceIdle: false,
-        requiresStorageNotLow: false,
-      ),
-      (String taskId) async {
-        // Exécuter vos tâches ici
-        // Par exemple, afficher une notification
-        showNotification();
-        BackgroundFetch.finish(taskId);
-      },
-    );
-  }
+    /* void initBackgroundFetch() {
+      BackgroundFetch.configure(
+        BackgroundFetchConfig(
+          minimumFetchInterval: 30,
+          stopOnTerminate: false,
+          enableHeadless: true,
+          requiresBatteryNotLow: false,
+          requiresCharging: false,
+          requiresDeviceIdle: false,
+          requiresStorageNotLow: false,
+        ),
+        (String taskId) async {
+          // Exécuter vos tâches ici
+          // Par exemple, afficher une notification
+          showNotification();
+          BackgroundFetch.finish(taskId);
+        },
+      );
+    } */
 
 /* Future<void> scheduleNotifications() async {
   const AndroidNotificationDetails androidPlatformChannelSpecifics =

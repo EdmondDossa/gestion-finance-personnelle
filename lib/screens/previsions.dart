@@ -557,7 +557,7 @@ class _CreatePrevisionPageState extends State<CreatePrevisionPage> {
   }
 
   editData() async {
-    await lignesPrevisionsBox.putAt(
+    await lignesPrevisionsBox.put(
         widget.ligneP!.uid!,
         HLignesPrevisions(
           _selectedType,
