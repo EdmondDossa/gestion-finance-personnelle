@@ -5,6 +5,7 @@ import 'package:gestion_finance/models/avoirs.dart';
 import 'package:gestion_finance/models/dettes.dart';
 import 'package:gestion_finance/models/prets.dart';
 import 'package:gestion_finance/screens/all_rubriques.dart';
+import 'package:gestion_finance/screens/prets.dart';
 import 'package:gestion_finance/screens/login.dart';
 import 'package:gestion_finance/screens/notification.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
@@ -286,23 +287,23 @@ class _ProfilPageState extends State<ProfilPage> {
                           ),
                         ),
                       ),
-                      /*  GestureDetector(
+                       GestureDetector(
                         onTap: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => NotificationPage()));
+                                  builder: (context) => CreatePretPage()));
                         },
                         child: Container(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
                             children: [
                               Icon(
-                                Icons.notification_add_outlined,
+                                Icons.payments_outlined,
                                 color: buttonColor,
                               ),
                               Text(
-                                "Notification",
+                                "Prêts",
                                 style: TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w200,
@@ -311,7 +312,30 @@ class _ProfilPageState extends State<ProfilPage> {
                             ],
                           ),
                         ),
-                      ), */
+                      ),
+                       GestureDetector(
+                        onTap: () {
+                          
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.money_off_rounded,
+                                color: buttonColor,
+                              ),
+                              Text(
+                                "Dettes",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w200,
+                                    color: black),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                       GestureDetector(
                         onTap: () {
                           Navigator.push(

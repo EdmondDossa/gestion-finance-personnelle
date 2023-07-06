@@ -33,7 +33,7 @@ class _StartPageState extends State<StartPage> {
   int _monthOrYear = 0;
 
   @override
- void initState(){
+  void initState() {
     // TODO: implement initState
     super.initState();
     tz.initializeTimeZones();
@@ -86,8 +86,6 @@ class _StartPageState extends State<StartPage> {
     notificationId++;
   }
 
-
-
   void initBackgroundFetch() {
     BackgroundFetch.configure(
       BackgroundFetchConfig(
@@ -107,10 +105,6 @@ class _StartPageState extends State<StartPage> {
       },
     );
   }
-
-
-  
-
 
 /* Future<void> scheduleNotifications() async {
   const AndroidNotificationDetails androidPlatformChannelSpecifics =
@@ -136,9 +130,6 @@ class _StartPageState extends State<StartPage> {
   notificationId++;
 }
  */
-
-
-   
 
   @override
   Widget build(BuildContext context) {

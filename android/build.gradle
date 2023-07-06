@@ -31,4 +31,7 @@ tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
 
+maven {
+   url "${project(':background_fetch').projectDir}/libs"
+}
 
