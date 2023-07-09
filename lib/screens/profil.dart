@@ -23,9 +23,9 @@ class ProfilPage extends StatefulWidget {
 class _ProfilPageState extends State<ProfilPage> {
   TextEditingController _email = TextEditingController();
   TextEditingController _username = TextEditingController();
-  var _avoir;
-  var _dette;
-  var _pret;
+  GFAvoirs? _avoir;
+  GFDettes? _dette;
+  GFPrets? _pret;
   bool isModalOpen = false;
 
   _getConfig() async {
@@ -38,13 +38,13 @@ class _ProfilPageState extends State<ProfilPage> {
     final dataDettes = dettesBox.keys.map((key) {
       final item = dettesBox.get(key);
 
-      return GFDettes(montantTotal: item!.montant);
+      return GFDettes(item!.montant);
     }).toList();
 
     final dataPrets = pretsBox.keys.map((key) {
       final item = pretsBox.get(key);
 
-      return GFPrets(montantTotal: item!.montant);
+      return GFPrets(item!.montant);
     }).toList();
 
     setState(() {
@@ -212,7 +212,7 @@ class _ProfilPageState extends State<ProfilPage> {
                               ),
                               Text(
                                 _dette != null
-                                    ? _dette!.montantTotal.toString() + " FCFA"
+                                    ? _dette!.capital.toString() + " FCFA"
                                     : "0 FCFA",
                                 style: TextStyle(
                                     fontSize: 18,
@@ -238,7 +238,7 @@ class _ProfilPageState extends State<ProfilPage> {
                               ),
                               Text(
                                 _pret != null
-                                    ? _pret!.montantTotal.toString() + " FCFA"
+                                    ? _pret!.capital.toString() + " FCFA"
                                     : "0 FCFA",
                                 style: TextStyle(
                                     fontSize: 18,

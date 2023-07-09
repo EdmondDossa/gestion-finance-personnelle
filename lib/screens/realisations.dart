@@ -31,7 +31,7 @@ class CreateRealisationPage extends StatefulWidget {
 class _CreateRealisationPageState extends State<CreateRealisationPage> {
   TextEditingController _nameEspense = TextEditingController();
   TextEditingController _description = TextEditingController(text: "");
-  TextEditingController _amount = TextEditingController();
+  TextEditingController _amountController = TextEditingController();
   GFRubriques _selectRubriques =
       GFRubriques("", "", authServices.currentUser.uid);
   GFRubriques _selectSource = GFRubriques("", "", authServices.currentUser.uid);
@@ -44,15 +44,19 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
   void initState() {
     super.initState();
     _prevision = getPrevisionKey(widget.month, widget.year);
-    _recetteRubriques = getAllRubriquesRecettes(_prevision!);
+
     if (widget.selectRealisation != null) {
       _edit = true;
       _selectRubriques = getRubrique(widget.selectRealisation!.rubriquesUid!);
       if (widget.selectRealisation!.source != null) {
         _selectSource = getRubrique(widget.selectRealisation!.source!);
       }
+      if (widget.selectRealisation!.type == "Depense") {
+        _recetteRubriques = getAllRubriquesRecettes(
+            widget.month!, widget.year!, widget.selectRealisation!.montant!);
+      }
       _description.text = widget.selectRealisation!.description!;
-      _amount.text = widget.selectRealisation!.montant!.toString();
+      _amountController.text = widget.selectRealisation!.montant!.toString();
     }
   }
 
@@ -261,7 +265,112 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                 ),
               ),
             ),
-            if (_selectedType == "Depense")
+            SizedBox(
+              height: 15,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              child: GestureDetector(
+                onTap: () => _selectDate(context),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0,
+                    vertical: 20.0,
+                  ),
+                  decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(20.0),
+                      border: Border.all(
+                        color: Color.fromARGB(255, 146, 146, 146),
+                        width: 1,
+                      )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.calendar_month_outlined),
+                          Text(
+                            !_edit ? "Enrégistrer le" : "Modifier le",
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.normal,
+                              color: grey.withOpacity(0.5),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        DateFormat.yMMMMd("fr_FR").format(_date),
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                          color: black.withOpacity(0.5),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+              padding: const EdgeInsets.all(50),
+              decoration: BoxDecoration(
+                  color: white,
+                  borderRadius: BorderRadius.circular(25),
+                  boxShadow: [
+                    BoxShadow(
+                        color: grey.withOpacity(0.03),
+                        spreadRadius: 10,
+                        blurRadius: 3)
+                  ]),
+              child: Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Entrez le montant",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: black,
+                      ),
+                    ),
+                    TextField(
+                      controller: _amountController,
+                      cursorColor: black,
+                      keyboardType: TextInputType.phone,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: black,
+                      ),
+                      textAlign: TextAlign.center,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "800 XOF",
+                      ),
+                      onChanged: (value) {
+                        if (value.isNotEmpty) {
+                          setState(() {
+                            _recetteRubriques = getAllRubriquesRecettes(
+                                widget.month!,
+                                widget.year!,
+                                double.parse(value));
+                          });
+                        } else {
+                          _recetteRubriques = [];
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            if (_selectedType == "Depense" && _recetteRubriques.length > 0)
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Container(
@@ -313,51 +422,6 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
             SizedBox(
               height: 15,
             ),
-            GestureDetector(
-              onTap: () => _selectDate(context),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 30.0,
-                  vertical: 20.0,
-                ),
-                decoration: BoxDecoration(
-                    color: white,
-                    borderRadius: BorderRadius.circular(20.0),
-                    border: Border.all(
-                      color: Color.fromARGB(255, 146, 146, 146),
-                      width: 1,
-                    )),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Icon(Icons.calendar_month_outlined),
-                        Text(
-                          !_edit ? "Enrégistrer le" : "Modifier le",
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal,
-                            color: grey.withOpacity(0.5),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Text(
-                      DateFormat.yMMMMd("fr_FR").format(_date),
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        color: black.withOpacity(0.5),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
@@ -402,132 +466,92 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
             SizedBox(
               height: 25,
             ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-              padding: const EdgeInsets.all(50),
-              decoration: BoxDecoration(
-                  color: white,
-                  borderRadius: BorderRadius.circular(25),
-                  boxShadow: [
-                    BoxShadow(
-                        color: grey.withOpacity(0.03),
-                        spreadRadius: 10,
-                        blurRadius: 3)
-                  ]),
-              child: Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+            GestureDetector(
+              onTap: () async {
+                if (_amountController.text.isEmpty) {
+                  SnackBar snackBar1 = const SnackBar(
+                    content: Text("Le montant n'a pas été renseigner!"),
+                    backgroundColor: red,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                  return;
+                }
+
+                if (_selectRubriques.nomRubrique.isEmpty) {
+                  SnackBar snackBar1 = const SnackBar(
+                    content: Text("Vous n'avez pas sélectionner de rubrique!"),
+                    backgroundColor: red,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                  return;
+                }
+
+                if (_selectedType == "Depense" &&
+                    _recetteRubriques.length > 0) {
+                  if (_selectSource.nomRubrique.isEmpty) {
+                    SnackBar snackBar1 = const SnackBar(
+                      content: Text(
+                          "Vous n'avez pas renseigner la source de la dépense!"),
+                      backgroundColor: red,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                    return;
+                  }
+                }
+
+                if (_description.text.isEmpty) {
+                  SnackBar snackBar1 = const SnackBar(
+                    content: Text("Le champ description est vide!"),
+                    backgroundColor: red,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                  return;
+                }
+                if (!_edit) {
+                  await _saveRealisation();
+                  SnackBar snackBar1 = SnackBar(
+                    content: Text(
+                        "Votre ${_selectedType} a été enregistrée avec succès!"),
+                    backgroundColor: green,
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                } else {
+                  _editRealisation();
+                }
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20.0,
+                  vertical: 8.0,
+                ),
+                decoration: BoxDecoration(
+                    color: !_edit ? Colors.green : Colors.orange,
+                    borderRadius: BorderRadius.circular(20.0),
+                    border: Border.all(
+                      color: Color.fromARGB(255, 146, 146, 146),
+                      width: 1,
+                    )),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
+                    Icon(
+                      !_edit ? Icons.save : Icons.edit,
+                      color: white,
+                    ),
                     Text(
-                      "Entrez le montant",
+                      !_edit ? "Enregistrer" : "Modifier",
                       style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: black,
+                        color: white,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    TextField(
-                      controller: _amount,
-                      cursorColor: black,
-                      keyboardType: TextInputType.phone,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: black,
-                      ),
-                      textAlign: TextAlign.center,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: "800 XOF",
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () async {
-                        if (_amount.text.isEmpty) {
-                          SnackBar snackBar1 = const SnackBar(
-                            content: Text("Le montant n'a pas été renseigner!"),
-                            backgroundColor: red,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-                          return;
-                        }
-
-                        if (_selectRubriques.nomRubrique.isEmpty) {
-                          SnackBar snackBar1 = const SnackBar(
-                            content: Text(
-                                "Vous n'avez pas sélectionner de rubrique!"),
-                            backgroundColor: red,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-                          return;
-                        }
-
-                        if (_selectedType == "Depense") {
-                          if (_selectSource.nomRubrique.isEmpty) {
-                            SnackBar snackBar1 = const SnackBar(
-                              content: Text(
-                                  "Vous n'avez pas renseigner la source de la dépense!"),
-                              backgroundColor: red,
-                            );
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar1);
-                            return;
-                          }
-                        }
-
-                        if (_description.text.isEmpty) {
-                          SnackBar snackBar1 = const SnackBar(
-                            content: Text("Le champ description est vide!"),
-                            backgroundColor: red,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-                          return;
-                        }
-                        if (!_edit) {
-                          await _saveRealisation();
-                          SnackBar snackBar1 = SnackBar(
-                            content: Text(
-                                "Votre ${_selectedType} a été enregistrée avec succès!"),
-                            backgroundColor: green,
-                          );
-                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-                        } else {
-                          _editRealisation();
-                        }
-                      },
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 20.0,
-                          vertical: 8.0,
-                        ),
-                        decoration: BoxDecoration(
-                            color: !_edit ? Colors.green : Colors.orange,
-                            borderRadius: BorderRadius.circular(20.0),
-                            border: Border.all(
-                              color: Color.fromARGB(255, 146, 146, 146),
-                              width: 1,
-                            )),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Icon(
-                              !_edit ? Icons.save : Icons.edit,
-                              color: white,
-                            ),
-                            Text(
-                              !_edit ? "Enregistrer" : "Modifier",
-                              style: TextStyle(
-                                color: white,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
                   ],
                 ),
               ),
             ),
+            SizedBox(
+              height: 50,
+            )
           ],
         ),
       ),
@@ -676,9 +700,19 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
       await realisationsBox.add(HRealisations(
           type: _selectedType,
           date: _date,
-          montant: double.parse(_amount.text),
+          montant: double.parse(_amountController.text),
           rubrique: _selectRubriques.uid!,
           description: _description.text));
+      var amount = getAvoirs() + double.parse(_amountController.text);
+      await avoirsBox.putAt(0, HAvoirs(amount));
+      if (_selectRubriques.uid == 0) {
+        var amount = getDettes() + double.parse(_amountController.text);
+        await dettesBox.putAt(0, HDettes(amount));
+      }
+      if (_selectRubriques.uid == 1) {
+        var amount = getPrets() - double.parse(_amountController.text);
+        await pretsBox.putAt(0, HPrets(amount));
+      }
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -690,10 +724,21 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
       await realisationsBox.add(HRealisations(
           type: _selectedType,
           date: _date,
-          montant: double.parse(_amount.text),
+          montant: double.parse(_amountController.text),
           rubrique: _selectRubriques.uid!,
           source: _selectSource.uid,
           description: _description.text));
+
+      var amount = getAvoirs() - double.parse(_amountController.text);
+      await avoirsBox.putAt(0, HAvoirs(amount));
+      if (_selectRubriques.uid == 0) {
+        var amount = getDettes() - double.parse(_amountController.text);
+        await dettesBox.putAt(0, HDettes(amount));
+      }
+      if (_selectRubriques.uid == 1) {
+        var amount = getPrets() + double.parse(_amountController.text);
+        await pretsBox.putAt(0, HPrets(amount));
+      }
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -711,9 +756,19 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
           HRealisations(
               type: _selectedType,
               date: _date,
-              montant: double.parse(_amount.text),
+              montant: double.parse(_amountController.text),
               rubrique: _selectRubriques.uid!,
               description: _description.text));
+      var amount = getAvoirs() - double.parse(_amountController.text);
+      await avoirsBox.putAt(0, HAvoirs(amount));
+      if (_selectRubriques.uid == 0) {
+        var amount = getDettes() - double.parse(_amountController.text);
+        await dettesBox.putAt(0, HDettes(amount));
+      }
+      if (_selectRubriques.uid == 1) {
+        var amount = getPrets() + double.parse(_amountController.text);
+        await pretsBox.putAt(0, HPrets(amount));
+      }
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -727,10 +782,20 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
           HRealisations(
               type: _selectedType,
               date: _date,
-              montant: double.parse(_amount.text),
+              montant: double.parse(_amountController.text),
               rubrique: _selectRubriques.uid!,
               source: _selectSource.uid,
               description: _description.text));
+      var amount = getAvoirs() - double.parse(_amountController.text);
+      await avoirsBox.putAt(0, HAvoirs(amount));
+      if (_selectRubriques.uid == 0) {
+        var amount = getDettes() - double.parse(_amountController.text);
+        await dettesBox.putAt(0, HDettes(amount));
+      }
+      if (_selectRubriques.uid == 1) {
+        var amount = getPrets() + double.parse(_amountController.text);
+        await pretsBox.putAt(0, HPrets(amount));
+      }
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
@@ -778,21 +843,20 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                 Text('Êtes-vous sûr de vouloir supprimer cette réalisation ?'),
             actions: [
               GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal:25,vertical:10),
-                  decoration:BoxDecoration(
-                    color: blue.withOpacity(0.7),
-                    borderRadius:BorderRadius.circular(5)
-                  ),
-                  child:Text(
-                    'Annuler',
-                    style: TextStyle(fontWeight: FontWeight.w400, color:white),
-                  ),
-                )
-              ),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                    decoration: BoxDecoration(
+                        color: blue.withOpacity(0.7),
+                        borderRadius: BorderRadius.circular(5)),
+                    child: Text(
+                      'Annuler',
+                      style:
+                          TextStyle(fontWeight: FontWeight.w400, color: white),
+                    ),
+                  )),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
                 child: Text('Supprimer',
@@ -800,8 +864,7 @@ class _CreateRealisationPageState extends State<CreateRealisationPage> {
                         TextStyle(fontWeight: FontWeight.w400, color: white)),
                 onPressed: () async {
                   // Action à effectuer lorsque l'utilisateur appuie sur "Valider"
-                  await realisationsBox
-                      .delete(widget.selectRealisation!.uid!);
+                  await realisationsBox.delete(widget.selectRealisation!.uid!);
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

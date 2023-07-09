@@ -257,7 +257,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                     ),
                   ),
                 ),
-                GestureDetector(
+                /* GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
@@ -279,7 +279,7 @@ class _ConfigurationPageState extends State<ConfigurationPage> {
                             fontWeight: FontWeight.w400,
                             color: blue),
                       )),
-                ),
+                ), */
               ],
             )
           ],

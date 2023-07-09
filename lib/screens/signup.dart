@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gestion_finance/Hive_Models/allModels.dart';
+import 'package:gestion_finance/Hive_Models/box.dart';
 import 'package:gestion_finance/screens/configuration.dart';
 import 'package:gestion_finance/utilities/auth_services.dart';
 import 'package:gestion_finance/utilities/colors.dart';
@@ -278,6 +280,8 @@ class _SignupPageState extends State<SignupPage> {
                     _isDifferent = false;
                   });
                 } else {
+                  await rubriquesBox.add(HRubriques("Dettes", "Rubriques concernant mes emprunts"));
+                  await rubriquesBox.add(HRubriques("Prêts", "Rubriques concernant mes prêts à autrui"));
                   Navigator.push(
                       context,
                       MaterialPageRoute(

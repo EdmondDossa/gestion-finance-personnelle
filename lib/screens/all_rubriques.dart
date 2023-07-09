@@ -78,7 +78,9 @@ class _AllRubriquesState extends State<AllRubriques> {
                   itemBuilder: (_, index) {
                     return GestureDetector(
                       onTap: () {
-                        _selectRubrique(_rubriquesListe[index]);
+                        if (index != 0 && index != 1) {
+                          _selectRubrique(_rubriquesListe[index]);
+                        }
                       },
                       child: WCategorie(
                           icon: Icon(Icons.category_outlined),
@@ -112,157 +114,189 @@ class _AllRubriquesState extends State<AllRubriques> {
   _showModal(GFRubriques rubrique) {
     showModalBottomSheet(
       isScrollControlled: true,
-      backgroundColor: white.withOpacity(0.6),
+      backgroundColor: black.withOpacity(0.8),
       context: context,
       builder: (_) {
-        return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Container(
-            width: double.infinity,
-            alignment: Alignment.center,
-            child: Column(children: [
+        return Container(
+          height: MediaQuery.sizeOf(context).height,
+          child: Column(
+            children: [
               Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 25),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: white,
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                          color: grey.withOpacity(0.03),
-                          spreadRadius: 10,
-                          blurRadius: 3)
-                    ]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        "Nom Rubrique",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                          color: Color(0xFF67727d),
+                alignment: Alignment.topLeft,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 50.0, horizontal: 30),
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      _nomRubrique.text = "";
+                      _description.text = "";
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: white.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Icon(
+                        Icons.arrow_back_ios_new_outlined,
+                        color: black,
+                        size: 30,
+                      ),
+                    )),
+              ),
+              SizedBox(
+                height: 100,
+              ),
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  child: Column(children: [
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(horizontal: 25),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: white,
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow: [
+                            BoxShadow(
+                                color: grey.withOpacity(0.03),
+                                spreadRadius: 10,
+                                blurRadius: 3)
+                          ]),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              "Nom Rubrique",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
+                                color: Color(0xFF67727d),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: TextField(
+                              controller: _nomRubrique,
+                              cursorColor: black,
+                              keyboardType: TextInputType.emailAddress,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: black,
+                              ),
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none, hintText: "Transport"),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Container(
+                      width: double.infinity,
+                      margin: const EdgeInsets.symmetric(horizontal: 25),
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                          color: white,
+                          borderRadius: BorderRadius.circular(25),
+                          boxShadow: [
+                            BoxShadow(
+                                color: grey.withOpacity(0.03),
+                                spreadRadius: 10,
+                                blurRadius: 3)
+                          ]),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              "description",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 13,
+                                color: Color(0xFF67727d),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: TextField(
+                              controller: _description,
+                              cursorColor: black,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w400,
+                                color: black,
+                              ),
+                              decoration: const InputDecoration(
+                                  border: InputBorder.none, hintText: "Aboka21"),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        if (_nomRubrique.text.isEmpty) {
+                          SnackBar snackBar1 = const SnackBar(
+                            content: Text("Le champ nom rubrique est vide!"),
+                            backgroundColor: red,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                          return;
+                        }
+        
+                        if (_description.text.isEmpty) {
+                          SnackBar snackBar1 = const SnackBar(
+                            content: Text("Le champ description est vide!"),
+                            backgroundColor: red,
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                          return;
+                        }
+                        _updateRubrique(rubrique.uid,
+                            HRubriques(_nomRubrique.text, _description.text));
+        
+                        SnackBar snackBar1 = const SnackBar(
+                          content: Text("Modification réussie!"),
+                          backgroundColor: green,
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        margin: const EdgeInsets.symmetric(horizontal: 25),
+                        decoration: BoxDecoration(
+                            color: Colors.deepOrange,
+                            borderRadius: BorderRadius.circular(25)),
+                        child: const Center(
+                          child: Text(
+                            "Modifier",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                letterSpacing: 1),
+                          ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: TextField(
-                        controller: _nomRubrique,
-                        cursorColor: black,
-                        keyboardType: TextInputType.emailAddress,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: black,
-                        ),
-                        decoration: const InputDecoration(
-                            border: InputBorder.none, hintText: "Transport"),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Container(
-                width: double.infinity,
-                margin: const EdgeInsets.symmetric(horizontal: 25),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: white,
-                    borderRadius: BorderRadius.circular(25),
-                    boxShadow: [
-                      BoxShadow(
-                          color: grey.withOpacity(0.03),
-                          spreadRadius: 10,
-                          blurRadius: 3)
-                    ]),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Text(
-                        "description",
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 13,
-                          color: Color(0xFF67727d),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: TextField(
-                        controller: _description,
-                        cursorColor: black,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: black,
-                        ),
-                        decoration: const InputDecoration(
-                            border: InputBorder.none, hintText: "Aboka21"),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              GestureDetector(
-                onTap: () {
-                  if (_nomRubrique.text.isEmpty) {
-                SnackBar snackBar1 = const SnackBar(
-                  content: Text("Le champ nom rubrique est vide!"),
-                  backgroundColor: red,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-                return;
-              }
-
-              if (_description.text.isEmpty) {
-                SnackBar snackBar1 = const SnackBar(
-                  content: Text("Le champ description est vide!"),
-                  backgroundColor: red,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-                return;
-              }
-                  _updateRubrique(rubrique.uid,
-                      HRubriques(_nomRubrique.text, _description.text));
-
-              SnackBar snackBar1 = const SnackBar(
-                  content: Text("Modification réussie!"),
-                  backgroundColor: green,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  margin: const EdgeInsets.symmetric(horizontal: 25),
-                  decoration: BoxDecoration(
-                      color: Colors.deepOrange,
-                      borderRadius: BorderRadius.circular(25)),
-                  child: const Center(
-                    child: Text(
-                      "Modifier",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1),
-                    ),
-                  ),
-                ),
-              ),
-            ]),
-          )
-        ]);
+                  ]),
+                )
+              ]),
+            ],
+          ),
+        );
       },
     );
   }
@@ -282,148 +316,183 @@ class _AllRubriquesState extends State<AllRubriques> {
   _showAddModal() {
     showModalBottomSheet(
       isScrollControlled: true,
-      backgroundColor: white.withOpacity(0.4),
+      backgroundColor: black.withOpacity(0.68),
       context: context,
       builder: (_) {
-        return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                color: white,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                      color: grey.withOpacity(0.03),
-                      spreadRadius: 10,
-                      blurRadius: 3)
-                ]),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    "Nom Rubrique",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
-                      color: Color(0xFF67727d),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: TextField(
-                    controller: _nomRubrique,
-                    cursorColor: black,
-                    keyboardType: TextInputType.emailAddress,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: black,
-                    ),
-                    decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: "Transport"),
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Container(
-            width: double.infinity,
-            margin: const EdgeInsets.symmetric(horizontal: 25),
-            padding: const EdgeInsets.all(10),
-            decoration: BoxDecoration(
-                color: white,
-                borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                      color: grey.withOpacity(0.03),
-                      spreadRadius: 10,
-                      blurRadius: 3)
-                ]),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10),
-                  child: Text(
-                    "description",
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13,
-                      color: Color(0xFF67727d),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: TextField(
-                    controller: _description,
-                    cursorColor: black,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w400,
-                      color: black,
-                    ),
-                    decoration: const InputDecoration(
-                        border: InputBorder.none, hintText: "Aboka21"),
-                  ),
-                )
-              ],
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          GestureDetector(
-            onTap: () {
-              if (_nomRubrique.text.isEmpty) {
-                SnackBar snackBar1 = const SnackBar(
-                  content: Text("Le champ nom rubrique est vide!"),
-                  backgroundColor: red,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-                return;
-              }
-
-              if (_description.text.isEmpty) {
-                SnackBar snackBar1 = const SnackBar(
-                  content: Text("Le champ description est vide!"),
-                  backgroundColor: red,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-                return;
-              }
-
-              _createRubrique(HRubriques(_nomRubrique.text, _description.text));
-              SnackBar snackBar1 = const SnackBar(
-                  content: Text("La rubrique a été créer avec succès!"),
-                  backgroundColor: green,
-                );
-                ScaffoldMessenger.of(context).showSnackBar(snackBar1);
-            },
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              margin: const EdgeInsets.symmetric(horizontal: 25),
-              decoration: BoxDecoration(
-                  color: buttonColor, borderRadius: BorderRadius.circular(25)),
-              child: const Center(
-                child: Text(
-                  "Enregistrer",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      letterSpacing: 1),
-                ),
+        return Container(
+          height: MediaQuery.sizeOf(context).height,
+          child: Column(
+            children: [
+              Container(
+                alignment: Alignment.topLeft,
+                padding:
+                    const EdgeInsets.symmetric(vertical: 50.0, horizontal: 30),
+                child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      _nomRubrique.text = "";
+                      _description.text = "";
+                    },
+                    child: Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                          color: white.withOpacity(0.5),
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Icon(
+                        Icons.arrow_back_ios_new_outlined,
+                        color: black,
+                        size: 30,
+                      ),
+                    )),
               ),
-            ),
+              SizedBox(
+                height: 100,
+              ),
+              Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 25),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                            color: grey.withOpacity(0.03),
+                            spreadRadius: 10,
+                            blurRadius: 3)
+                      ]),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          "Nom Rubrique",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                            color: Color(0xFF67727d),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: TextField(
+                          controller: _nomRubrique,
+                          cursorColor: black,
+                          keyboardType: TextInputType.emailAddress,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: black,
+                          ),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none, hintText: "Transport"),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  width: double.infinity,
+                  margin: const EdgeInsets.symmetric(horizontal: 25),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                      color: white,
+                      borderRadius: BorderRadius.circular(25),
+                      boxShadow: [
+                        BoxShadow(
+                            color: grey.withOpacity(0.03),
+                            spreadRadius: 10,
+                            blurRadius: 3)
+                      ]),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          "description",
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 13,
+                            color: Color(0xFF67727d),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: TextField(
+                          controller: _description,
+                          cursorColor: black,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w400,
+                            color: black,
+                          ),
+                          decoration: const InputDecoration(
+                              border: InputBorder.none, hintText: "Aboka21"),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    if (_nomRubrique.text.isEmpty) {
+                      SnackBar snackBar1 = const SnackBar(
+                        content: Text("Le champ nom rubrique est vide!"),
+                        backgroundColor: red,
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                      return;
+                    }
+
+                    if (_description.text.isEmpty) {
+                      SnackBar snackBar1 = const SnackBar(
+                        content: Text("Le champ description est vide!"),
+                        backgroundColor: red,
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                      return;
+                    }
+
+                    _createRubrique(
+                        HRubriques(_nomRubrique.text, _description.text));
+                    SnackBar snackBar1 = const SnackBar(
+                      content: Text("La rubrique a été créer avec succès!"),
+                      backgroundColor: green,
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    margin: const EdgeInsets.symmetric(horizontal: 25),
+                    decoration: BoxDecoration(
+                        color: buttonColor,
+                        borderRadius: BorderRadius.circular(25)),
+                    child: const Center(
+                      child: Text(
+                        "Enregistrer",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 1),
+                      ),
+                    ),
+                  ),
+                ),
+              ]),
+            ],
           ),
-        ]);
+        );
       },
     );
   }
